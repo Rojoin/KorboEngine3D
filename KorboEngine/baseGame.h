@@ -3,9 +3,12 @@
 class Game
 {
 public:
-
+	GLFWwindow* window;
+	Game();
+	~Game();
+		void gameLoop();
 	private:
 		void initGame();
-		void gameLoop(GLFWwindow* window);
+		void endGame();
 };
 
