@@ -36,6 +36,9 @@ Window::~Window()
 void Window::initWindow()
 {
 	this->GlfWindow = glfwCreateWindow(width, height, title, monitor, share);
+
+	/* Make the window's context current */
+	glfwMakeContextCurrent(GlfWindow);
 }
 
 void Window::destroyWindow()
