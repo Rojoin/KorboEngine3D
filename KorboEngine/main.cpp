@@ -1,4 +1,5 @@
 #include <GLFW/glfw3.h>
+#include "main.h"
 
 int main(void)
 {
@@ -20,6 +21,14 @@ int main(void)
     glfwMakeContextCurrent(window);
 
     /* Loop until the user closes the window */
+    gameLoop(window);
+
+    glfwTerminate();
+    return 0;
+}
+
+void gameLoop(GLFWwindow* window)
+{
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
@@ -31,7 +40,4 @@ int main(void)
         /* Poll for and process events */
         glfwPollEvents();
     }
-
-    glfwTerminate();
-    return 0;
 }
