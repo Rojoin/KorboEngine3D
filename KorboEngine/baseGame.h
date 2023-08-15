@@ -1,14 +1,19 @@
 #pragma once
-#include <GLFW/glfw3.h>
-class Game
+#include "renderer.h"
+#include "window.h"
+
+class engine
 {
+private:
+
+	Renderer* renderer;
+	Window* window;
+	void initGame();
+	void endGame();
 public:
-	GLFWwindow* window;
-	Game();
-	~Game();
-		void gameLoop();
-	private:
-		void initGame();
-		void endGame();
+	engine();
+	~engine();
+	void gameLoop();
+
 };
 

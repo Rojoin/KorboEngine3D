@@ -3,10 +3,9 @@
 
 int main(void)
 {
-    Game* basegame = new Game();
+    engine* basegame = new engine();
     basegame->gameLoop();
     delete basegame;
-    
-
+   
     return 0;
 }

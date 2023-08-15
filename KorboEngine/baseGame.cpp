@@ -1,49 +1,43 @@
 #include "baseGame.h"
 
-Game::Game()
+engine::engine()
 {
-    initGame();
+	initGame();
 }
 
-Game::~Game()
+engine::~engine()
 {
-    endGame();
+	endGame();
 }
 
-void Game::initGame()
+void engine::initGame()
 {
-    /* Initialize the library */
-    if (!glfwInit())
-        return;
+	/* Initialize the library */
+	if (!glfwInit())
+		return;
 
-    /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        return;
-    }
+	/* Create a windowed mode window and its OpenGL context */
+	window = new Window(640, 480, "Korbo Engine", NULL, NULL);
 
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
+	if (!window)
+	{
+		glfwTerminate();
+		return;
+	}
+	renderer = new Renderer(window);
+
+
 }
 
-void Game::gameLoop()
+void engine::gameLoop()
 {
-    while (!glfwWindowShouldClose(window))
-    {
-        /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window);
-
-        /* Poll for and process events */
-        glfwPollEvents();
-    }
+	while (!glfwWindowShouldClose(window->getWindow()))
+	{
+		renderer->RenderScreen();
+	}
 }
 
-void Game::endGame()
+void engine::endGame()
 {
-    glfwTerminate();
+	glfwTerminate();
 }
