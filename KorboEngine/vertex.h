@@ -13,6 +13,12 @@ struct Position
 		this->y = y;
 		this->z = z;
 	}
+	Position(float x, float y)
+	{
+		this->x = x;
+		this->y = y;
+		this->z = 0;
+	}
 
 	Position()
 	{
@@ -111,6 +117,12 @@ struct Vertex
 	Vertex(Position pos)
 	{
 		this->pos = pos;
+		this->uv = UV::UV();
+		color = Color::Color();
+	}
+	Vertex()
+	{
+		this->pos = Position::Position();
 		this->uv = UV::UV();
 		color = Color::Color();
 	}
