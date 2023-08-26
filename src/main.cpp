@@ -1,4 +1,3 @@
-#include <GLFW/glfw3.h>
 #include "Base Game/baseGame.h"
 
 void main()

@@ -1,4 +1,7 @@
+#include <GL/glew.h>
 #include "window.h"
+
+#include <cstdio>
 
 Window::Window(int width,int height, const char* title, GLFWmonitor* monitor,GLFWwindow* share)
 {
@@ -39,6 +42,11 @@ void Window::initWindow()
 
 	/* Make the window's context current */
 	glfwMakeContextCurrent(GlfWindow);
+	if (glewInit()!=GLEW_OK)
+	{
+		printf("glew not initialized\n");
+	}
+
 }
 
 void Window::destroyWindow()
