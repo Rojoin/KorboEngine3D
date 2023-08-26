@@ -1,11 +1,9 @@
 #include <GLFW/glfw3.h>
-#include "baseGame.h"
+#include "Base Game/baseGame.h"
 
-int main(void)
+void main()
 {
     engine* basegame = new engine();
     basegame->gameLoop();
     delete basegame;
-   
-    return 0;
 }

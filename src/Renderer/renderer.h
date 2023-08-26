@@ -1,7 +1,7 @@
 #pragma once
 #include "GLFW/glfw3.h"
 #include <iostream>
-#include "window.h"
+#include "Window/window.h"
 
 using namespace std;
 

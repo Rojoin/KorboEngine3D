@@ -1,5 +1,5 @@
 #include "renderer.h"
-#include "vertex.h"
+#include "Vertex/vertex.h"
 
 Renderer::Renderer(Window* window, GLbitfield mask)
 {
@@ -24,6 +24,7 @@ void Renderer::RenderScreen()
 {
 	/* Render here */
 	glClear(mask);
+
 	Vertex vertex[3] = { Vertex::Vertex() , Vertex::Vertex() , Vertex::Vertex() };
 
 	vertex[0].pos = { -0.5f,0.5f };
@@ -32,6 +33,7 @@ void Renderer::RenderScreen()
 
 	unsigned int buffer;
 //TODO:AGREGAR FUNCION DE GLBUFFER
+
 	/* Swap front and back buffers */
 	glfwSwapBuffers(GLFWW->getWindow());
 
