@@ -1,5 +1,7 @@
 #include "baseGame.h"
 
+#include "Entity/Entity.h"
+
 engine::engine()
 {
 	initGame();
@@ -31,9 +33,12 @@ void engine::initGame()
 
 void engine::gameLoop()
 {
+	Entity2D entity_2d;
+	
 	while (!glfwWindowShouldClose(window->getWindow()))
 	{
 		renderer->RenderScreen();
+		
 	}
 }
 
