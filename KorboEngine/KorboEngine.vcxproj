@@ -22,11 +22,13 @@
     <ClCompile Include="..\src\Base Game\baseGame.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\Renderer\renderer.cpp" />
+    <ClCompile Include="..\src\Shader\shader.cpp" />
     <ClCompile Include="..\src\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Base Game\baseGame.h" />
     <ClInclude Include="..\src\Renderer\renderer.h" />
+    <ClInclude Include="..\src\Shader\shader.h" />
     <ClInclude Include="..\src\Vertex\vertex.h" />
     <ClInclude Include="..\src\Window\window.h" />
   </ItemGroup>
@@ -114,7 +116,8 @@
       <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command></Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -137,7 +140,8 @@
       <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command></Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

@@ -4,6 +4,9 @@
 #include <iostream>
 #include "Window/window.h"
 
+#include "Vertex/vertex.h"
+#include "Shader/shader.h"
+
 using namespace std;
 
 class Renderer
@@ -19,4 +22,6 @@ public:
 private:
 	Window* GLFWW;
 	GLbitfield mask;
+	Shader shader;
+	GLuint shaderProgram;
 };
