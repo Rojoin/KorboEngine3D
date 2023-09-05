@@ -7,7 +7,7 @@ enum ShapeType {TRIANGLE,SQUARE};
 class  Shape : Entity2D
 {
 public:
-    Shape();
+    Shape(ShapeType type);
     ~Shape();
     
     void SetType(ShapeType type);
@@ -21,7 +21,13 @@ public:
     
     void SetColor(Vec4 color);
     Vec4 GetColor();
+
+    void SetShapeVertexBuffer(unsigned int vertexBuffer);
+    unsigned int GetShapeVertexBuffer();
 private:
+    float* positions;
+    float* indices;
+    unsigned int vertexBuffer;
     ShapeType type;
     Vec4 color;
 };

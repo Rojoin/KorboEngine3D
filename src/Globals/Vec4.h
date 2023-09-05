@@ -15,35 +15,35 @@ public:
         z = 0;
         w = 0;
     }
-    Vec4(float x)
+    Vec4(float newX)
     {
-        this.x = x;
-        this.y = 0f;
-        this.z = 0f;
-        this.w = 0f;
+        x = newX;
+        y = 0.0f;
+        z = 0.0f;
+        w = 0.0f;
     }
-    Vec4(float x,float y)
+    Vec4(float newX,float newY)
     {
-        this.x = x;
-        this.y = y;
-        this.z = 0f;
-        this.w = 0f;
+        x = newX;
+        y = newY;
+        z = 0.0f;
+        w = 0.0f;
     }
-    Vec4(float x,float y,float z)
+    Vec4(float newX,float newY,float newZ)
     {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.w = 0f;
+        x = newX;
+        y = newY;
+        z = newZ;
+        w = 0.0f;
     }
-    Vec4(float x,float y,float z , float w)
+    Vec4(float newX,float newY,float newZ , float newW)
     {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.w = w;
+        x = newX;
+        y = newY;
+        z = newZ;
+        w = newW;
     }
-    Vec4(Vec4 newVec)
+    Vec4(Vec4& newVec)
     {
         x = newVec.x;
         y = newVec.y;

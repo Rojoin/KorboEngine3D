@@ -1,14 +1,16 @@
 #include "Shape.h"
 #include <iostream>
 
-Shape::Shape(): Entity2D()
+Shape::Shape(ShapeType type): Entity2D()
 {
-    std::cout << "Shape " << type << "Created" << std::endl;
+    this->type = type;
+    color = Vec4();
+    std::cout << "Shape " << this->type << "Created" << std::endl;
 }
 
-Shape::~Shape()
+Shape::~Shape() 
 {
-    std::cout << "Shape " << type << "Destroyed" << std::endl;
+    std::cout << "Shape " << this->type << "Destroyed" << std::endl;
 }
 
 void Shape::SetType(ShapeType type)
@@ -26,7 +28,7 @@ void Shape::SetPositions(float positions[])
 }
 float* Shape::GetPositions()
 {
-    return  positions;
+    return positions;
 }
 
 void Shape::Setindices(float indices[])
@@ -45,4 +47,13 @@ void Shape::SetColor(Vec4 color)
 Vec4 Shape::GetColor()
 {
     return color;
+}
+
+void Shape::SetShapeVertexBuffer(unsigned int vertexBuffer)
+{
+    this->vertexBuffer = vertexBuffer;
+}
+unsigned int Shape::GetShapeVertexBuffer()
+{
+    return vertexBuffer;
 }
