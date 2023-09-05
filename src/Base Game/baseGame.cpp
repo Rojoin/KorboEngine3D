@@ -33,7 +33,7 @@ void engine::initGame()
 
 void engine::gameLoop()
 {
-	Entity2D entity_2d;
+	
 	
 	while (!glfwWindowShouldClose(window->getWindow()))
 	{

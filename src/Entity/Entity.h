@@ -6,11 +6,11 @@ class Entity
 {
 public:
     Entity();
-    virtual ~ Entity();
+     ~Entity() = default;
     //Matrix4x4 TRS;
     Vec3 pos;
     bool isEnable;
-    Vertex vertex[];
+    Vertex* vertex;
     virtual void Draw() const =0;
 
 private:

@@ -5,6 +5,12 @@ public:
     float y;
     float z;
 
+    Vec3()
+    {
+        x = 0;
+        y = 0;
+        z = 0;
+    }
     Vec3(float newX, float newY, float newZ)
     {
         x = newX;
