@@ -1,21 +1,27 @@
 #pragma once
+#include "Entity/Entity2D.h"
 #include "Globals/Vec4.h"
 
 enum ShapeType {TRIANGLE,SQUARE};
 
-class Shape
+class  Shape : Entity2D
 {
 public:
     Shape();
     ~Shape();
+    
     void SetType(ShapeType type);
-    ShapeType GetType;
+    ShapeType GetType();
+    
     void SetPositions(float positions[]);
-   // float*[] GetPositions;
+    float* GetPositions();
 
-protected:
+    void Setindices(float indices[]);
+    float* Getindices();
+    
+    void SetColor(Vec4 color);
+    Vec4 GetColor();
+private:
     ShapeType type;
-    float* positions[];
-    float* index[];
     Vec4 color;
 };

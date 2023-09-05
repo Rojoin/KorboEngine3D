@@ -1,9 +1,7 @@
 #include "Entity.h"
-
 #include "Renderer/renderer.h"
 
-Entity::Entity()
-= default;
+Entity::Entity() = default;
 
 void Entity2D::Draw() const
 {
