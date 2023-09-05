@@ -19,7 +19,8 @@ public:
     void SetWindow(Window* window);
     void Setbitfield(GLbitfield mask);
     GLbitfield Getbitfield();
-    void Draw(Vertex vertex[], float maxVertices);
+    unsigned CreateVecBuffer(float positions[],unsigned int indices[], int positionsSize, int indicesSize);
+    void Draw(float positions[], float indices[], unsigned int& buffer);
     void Draw();
 
 private:
