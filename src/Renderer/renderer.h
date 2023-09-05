@@ -20,6 +20,7 @@ public:
     void Setbitfield(GLbitfield mask);
     GLbitfield Getbitfield();
     void Draw(Vertex vertex[], float maxVertices);
+    void Draw();
 
 private:
     Window* GLFWW;

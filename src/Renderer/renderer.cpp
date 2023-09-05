@@ -33,7 +33,7 @@ Renderer::Renderer(Window* window)
     //glEnableVertexAttribArray(0);
     //glVertexAttribPointer(0, 2,GL_FLOAT,GL_FALSE, sizeof(float) * 2, 0);
     //glBindBuffer(GL_ARRAY_BUFFER, 0);
-
+    Draw();
     ShaderProgramSource source = shader.ParseShader("../res/shaders/BasicShader.shader");
     shaderProgram = shader.CreateShader(source.vertexSource, source.fragmentSource);
 
@@ -52,7 +52,7 @@ void Renderer::RenderScreen()
     /* Render here */
     glClear(mask);
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
     /* Swap front and back buffers */
     glfwSwapBuffers(GLFWW->getWindow());
@@ -78,16 +78,47 @@ GLbitfield Renderer::Getbitfield()
     return this->mask;
 }
 
-void Renderer::Draw(float vertexPos[], float maxVertices)
+
+void Renderer::Draw(Vertex vertexPos[], float maxVertices)
 {
     unsigned int buffer; // Id of the generated buffer
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     //glBufferData(GL_ARRAY_BUFFER, 3 * sizeof(vertex), vertex,GL_STATIC_DRAW);
-    //  glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions,GL_STATIC_DRAW);
+    //glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions,GL_STATIC_DRAW);
     glBufferData(GL_ARRAY_BUFFER, maxVertices * sizeof(float), vertexPos,GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2,GL_FLOAT,GL_FALSE, sizeof(float) * 2, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Renderer::Draw()
+{
+    float positions[] =
+    {
+        -0.5f, -0.5f,
+        0.5f, -0.5f,
+        0.5f, 0.5f,
+        -0.5f, 0.5f
+    };
+    unsigned int indices[] =
+    {
+        0, 1, 2,
+        2, 3, 0
+    };
+    unsigned int buffer; // Id of the generated buffer
+    glGenBuffers(1, &buffer);
+   
+   glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBufferData(GL_ARRAY_BUFFER, 6 * 2* sizeof(float), positions,GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2,GL_FLOAT,GL_FALSE, sizeof(float) * 2, 0);
+    
+    unsigned int ibo; // Id of the generated buffer
+    glGenBuffers(1, &ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices,GL_STATIC_DRAW);
+
 }
