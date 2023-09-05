@@ -79,7 +79,7 @@ GLbitfield Renderer::Getbitfield()
 }
 
 
-unsigned int Renderer::CreateVecBuffer(float positions[],unsigned int indices[], int positionsSize, int indicesSize)
+unsigned int Renderer::CreateVecBuffer(float positions[], unsigned int indices[], int positionsSize, int indicesSize)
 {
     unsigned int buffer;
     glGenBuffers(1, &buffer);
@@ -89,7 +89,7 @@ unsigned int Renderer::CreateVecBuffer(float positions[],unsigned int indices[],
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2,GL_FLOAT,GL_FALSE, sizeof(float) * 2, 0);
-    
+
     unsigned int ibo; // Id of the generated buffer
     glGenBuffers(1, &ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
@@ -99,8 +99,6 @@ unsigned int Renderer::CreateVecBuffer(float positions[],unsigned int indices[],
 
 void Renderer::Draw(float positions[], float indices[], unsigned int& buffer)
 {
-    
-    
 }
 
 void Renderer::Draw()
@@ -117,7 +115,7 @@ void Renderer::Draw()
         0, 1, 2,
         2, 3, 0
     };
-    
-    unsigned int buffer = CreateVecBuffer(positions, indices, sizeof(float) * 8, sizeof(float) *6);;
 
+    unsigned int buffer = CreateVecBuffer(positions, indices, sizeof(float) * 8, sizeof(float) * 6);;
+    //TODO: Poner esto en en inicializador
 }
