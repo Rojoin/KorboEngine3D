@@ -21,18 +21,20 @@
   <ItemGroup>
     <ClCompile Include="..\src\Base Game\baseGame.cpp" />
     <ClCompile Include="..\src\Entity\Entity.cpp" />
-    <ClCompile Include="..\src\Globals\Vec3.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\Renderer\renderer.cpp" />
     <ClCompile Include="..\src\Shader\shader.cpp" />
+    <ClCompile Include="..\src\Shape\Shape.cpp" />
     <ClCompile Include="..\src\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Base Game\baseGame.h" />
     <ClInclude Include="..\src\Entity\Entity.h" />
     <ClInclude Include="..\src\Globals\Vec3.h" />
+    <ClInclude Include="..\src\Globals\Vec4.h" />
     <ClInclude Include="..\src\Renderer\renderer.h" />
     <ClInclude Include="..\src\Shader\shader.h" />
+    <ClInclude Include="..\src\Shape\Shape.h" />
     <ClInclude Include="..\src\Vertex\vertex.h" />
     <ClInclude Include="..\src\Window\window.h" />
   </ItemGroup>
