@@ -1,12 +1,24 @@
 #pragma once
 #include "Entity.h"
 
-class Entity2D : Entity
+ class Entity2D : public Entity
 {
 public:
-    Entity2D();
-    ~Entity2D() = default;
+    Entity2D(Renderer* renderer);
+    ~Entity2D() override;
     void Draw() const override;
 protected:
-    
+     //Vertex Array Object
+     unsigned int VAO;
+
+     //Vertex buffer Object
+     unsigned int VBO;
+     int vertexSize;
+     int atribVertexSize = 3;
+     float* vertexPositions;
+
+     //Elements buffer Object
+     unsigned int EBO;
+     int indexSize;
+     int* indices;
 };
