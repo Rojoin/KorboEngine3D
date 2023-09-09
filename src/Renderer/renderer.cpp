@@ -11,29 +11,7 @@ Renderer::Renderer(Window* window)
 {
     this->GLFWW = window;
     this->mask = GL_COLOR_BUFFER_BIT;
-    //Vertex vertex[3] = {Vertex::Vertex(), Vertex::Vertex(), Vertex::Vertex()};
-    //
-    //vertex[0].pos = {-0.5f, 0.5f};
-    //vertex[1].pos = {0.0f, 0.5f};
-    //vertex[2].pos = {0.5f, -0.5f};
 
-    //float positions[6] =
-    //{
-    //    -0.5f, -0.5f,
-    //    0.0f, 0.5f,
-    //    0.5f, -0.5f
-    //};
-
-    //unsigned int buffer; // Id of the generated buffer
-    //glGenBuffers(1, &buffer);
-    //glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    ////glBufferData(GL_ARRAY_BUFFER, 3 * sizeof(vertex), vertex,GL_STATIC_DRAW);
-    //glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions,GL_STATIC_DRAW);
-
-    //glEnableVertexAttribArray(0);
-    //glVertexAttribPointer(0, 2,GL_FLOAT,GL_FALSE, sizeof(float) * 2, 0);
-    //glBindBuffer(GL_ARRAY_BUFFER, 0);
-    Draw();
     ShaderProgramSource source = shader.ParseShader("../res/shaders/BasicShader.shader");
     shaderProgram = shader.CreateShader(source.vertexSource, source.fragmentSource);
 
@@ -47,21 +25,29 @@ Renderer::~Renderer()
     glDeleteProgram(shaderProgram);
 }
 
-void Renderer::RenderScreen()
+void Renderer::DeleteObjects(unsigned& VAO, unsigned& VBO, unsigned& EBO)
 {
-    /* Render here */
-    glClear(mask);
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
+}
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
+void Renderer::EndDrawing()
+{
     /* Swap front and back buffers */
     glfwSwapBuffers(GLFWW->getWindow());
 
     /* Poll for and process events */
     glfwPollEvents();
-
-    // Cuando se termina el loop tenemos que usar el glDeleteProgram(shader)
 }
+
+void Renderer::BeginDrawing()
+{
+    /* Render here */
+    glClear(mask);
+}
+
+
 
 void Renderer::SetWindow(Window* window)
 {
@@ -79,43 +65,37 @@ GLbitfield Renderer::Getbitfield()
 }
 
 
-unsigned int Renderer::CreateVecBuffer(float positions[], unsigned int indices[], int positionsSize, int indicesSize)
+void Renderer::CreateVecBuffer(float* positions,  int* indices, int positionsSize, int indicesSize, int atribVertexSize, unsigned int& VAO, unsigned int& VBO, unsigned int& EBO)
 {
-    unsigned int buffer;
-    glGenBuffers(1, &buffer);
+   
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+    glBindVertexArray(VAO);
 
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, positionsSize, positions,GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float)* positionsSize, positions, GL_STATIC_DRAW);
 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float)* indicesSize, indices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, atribVertexSize, GL_FLOAT, GL_FALSE, atribVertexSize * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2,GL_FLOAT,GL_FALSE, sizeof(float) * 2, 0);
 
-    unsigned int ibo; // Id of the generated buffer
-    glGenBuffers(1, &ibo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices,GL_STATIC_DRAW);
-    return buffer;
+    
+    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+
+    glBindVertexArray(0); 
+   
 }
 
-void Renderer::Draw(float positions[], float indices[], unsigned int& buffer)
+void Renderer::DrawEntity2D(unsigned int VAO,int sizeIndices)
 {
+    glUseProgram(shaderProgram);
+    glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+    glDrawElements(GL_TRIANGLES, sizeIndices, GL_UNSIGNED_INT, 0);
+
 }
 
-void Renderer::Draw()
-{
-    float positions[] =
-    {
-        -0.5f, -0.5f,
-        0.5f, -0.5f,
-        0.5f, 0.5f,
-        -0.5f, 0.5f
-    };
-    unsigned int indices[] =
-    {
-        0, 1, 2,
-        2, 3, 0
-    };
 
-    unsigned int buffer = CreateVecBuffer(positions, indices, sizeof(float) * 8, sizeof(float) * 6);;
-    //TODO: Poner esto en en inicializador
-}

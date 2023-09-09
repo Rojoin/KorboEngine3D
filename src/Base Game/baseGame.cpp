@@ -1,48 +1,50 @@
 #include "baseGame.h"
 
-#include "Entity/Entity.h"
+#include "Shape/Square.h"
+#include "Shape/Triangle.h"
 
 engine::engine()
 {
-	initGame();
+    initGame();
 }
 
 engine::~engine()
 {
-	endGame();
+    endGame();
 }
 
 void engine::initGame()
 {
-	/* Initialize the library */
-	if (!glfwInit())
-		return;
+    /* Initialize the library */
+    if (!glfwInit())
+        return;
 
-	/* Create a windowed mode window and its OpenGL context */
-	window = new Window(640, 480, "Korbo Engine", NULL, NULL);
+    /* Create a windowed mode window and its OpenGL context */
+    window = new Window(640, 480, "Korbo Engine", NULL, NULL);
 
-	if (!window)
-	{
-		glfwTerminate();
-		return;
-	}
-	renderer = new Renderer(window);
-
-
+    if (!window)
+    {
+        glfwTerminate();
+        return;
+    }
+    renderer = new Renderer(window);
+    shape = new Square(renderer);
 }
 
 void engine::gameLoop()
 {
-	
-	
-	while (!glfwWindowShouldClose(window->getWindow()))
-	{
-		renderer->RenderScreen();
-		
-	}
+    while (!glfwWindowShouldClose(window->getWindow()))
+    {
+        renderer->BeginDrawing();
+        shape->Draw();
+        renderer->EndDrawing();
+    }
 }
 
 void engine::endGame()
 {
-	glfwTerminate();
+    delete shape;
+    delete window;
+    delete renderer;
+    glfwTerminate();
 }
