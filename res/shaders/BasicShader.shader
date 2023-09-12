@@ -12,8 +12,9 @@ void main()
 #version 330 core
 
 layout(location = 0) out vec4 color;
+uniform vec4 colorTint;
 
 void main()
 {
-   color = vec4(1.0f,0.0f,0.0f,1.0f);
+   color = vec4(colorTint.x,colorTint.y,colorTint.z,colorTint.w);
 };
