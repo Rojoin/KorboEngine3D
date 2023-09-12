@@ -1,8 +1,9 @@
 #pragma once
 #include "Globals/Vec4.h"
 #include "Renderer/renderer.h"
+#include "Globals/dllHeader.h"
 
-class Entity
+class EXPORT Entity
 {
 public:
     Entity(Renderer* renderer);

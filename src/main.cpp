@@ -2,7 +2,7 @@
 
 void main()
 {
-    engine* basegame = new engine();
+	Korbo::engine* basegame = new Korbo::engine();
     basegame->gameLoop();
     delete basegame;
 }

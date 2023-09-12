@@ -1,7 +1,8 @@
 #pragma once
 #include <GLFW/glfw3.h>
+#include "Globals/dllHeader.h"
 
-class Window
+class EXPORT Window
 {
 private:
 	GLFWwindow* GlfWindow;

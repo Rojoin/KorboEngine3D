@@ -1,4 +1,5 @@
 #pragma once
+#include "Globals/dllHeader.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -9,7 +10,7 @@
 
 using namespace std;
 
-class Renderer
+class EXPORT Renderer
 {
 public:
     Renderer(Window* window);

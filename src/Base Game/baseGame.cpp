@@ -3,12 +3,13 @@
 #include "Shape/Square.h"
 #include "Shape/Triangle.h"
 
-engine::engine()
+using namespace Korbo;
+ engine::engine()
 {
     initGame();
 }
 
-engine::~engine()
+ engine::~engine()
 {
     endGame();
 }

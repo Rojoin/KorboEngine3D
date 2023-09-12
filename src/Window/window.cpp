@@ -2,6 +2,7 @@
 #include "window.h"
 
 #include <cstdio>
+#include <GLFW/glfw3.h>
 
 Window::Window(int width,int height, const char* title, GLFWmonitor* monitor,GLFWwindow* share)
 {
