@@ -5,25 +5,24 @@
 #include "Window/window.h"
 
 
-
 namespace Korbo
 {
+    class EXPORT engine
+    {
+    private:
+        Renderer* renderer;
+        Window* window;
+        void initGame();
+        void endGame();
+        Shape* shape;
 
-	class EXPORT engine
-	{
-	private:
-
-		Renderer* renderer;
-		Window* window;
-		void initGame();
-		void endGame();
-		Shape* shape;
-	public:
-		 engine();
-			~engine();
-		 void gameLoop();
-
-	};
-
+    public:
+        engine();
+        virtual ~engine();
+        Renderer* getRenderer(); //TODO CAMBIAR POR Factory
+        virtual void init();
+        virtual void update();
+        virtual void exit();
+        void gameLoop();
+    };
 };
-

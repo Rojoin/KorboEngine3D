@@ -7,7 +7,7 @@
 public:
     Entity2D(Renderer* renderer);
     ~Entity2D() override;
-    void Draw() const override;
+    void Draw() override;
 protected:
      //Vertex Array Object
      unsigned int VAO;

@@ -14,6 +14,23 @@ using namespace Korbo;
     endGame();
 }
 
+Renderer* engine::getRenderer()
+{
+     return renderer;
+}
+
+void engine::init()
+{
+}
+
+void engine::update()
+{
+}
+
+void engine::exit()
+{
+}
+
 void engine::initGame()
 {
     /* Initialize the library */
@@ -29,7 +46,8 @@ void engine::initGame()
         return;
     }
     renderer = new Renderer(window);
-    shape = new Square(renderer);
+
+    shape = new Square(renderer,{1,1,0,1});
 }
 
 void engine::gameLoop()
@@ -37,7 +55,7 @@ void engine::gameLoop()
     while (!glfwWindowShouldClose(window->getWindow()))
     {
         renderer->BeginDrawing();
-        shape->Draw();
+        update();
         renderer->EndDrawing();
     }
 }

@@ -3,7 +3,7 @@
 #include "Globals/Vec4.h"
 
 
-class Shape : public Entity2D
+class EXPORT Shape : public Entity2D
 {
 public:
     Shape(Renderer* renderer);

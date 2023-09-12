@@ -5,6 +5,7 @@
 Entity::Entity(Renderer* renderer)
 {
     this->renderer =renderer;
+    color = {1,1,1,1};
     cout << "Init Entity";
 }
 

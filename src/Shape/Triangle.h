@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Shape.h"
 
-class Triangle final : public Shape
+class EXPORT Triangle final : public Shape
 {
 public:
     Triangle(Renderer* renderer);

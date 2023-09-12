@@ -3,6 +3,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+
+#include "Globals/Vec4.h"
 #include "Window/window.h"
 
 #include "Vertex/vertex.h"
@@ -12,6 +14,7 @@ using namespace std;
 
 class EXPORT Renderer
 {
+    //TODO CREAR MATRICES VIEW Y PROYECCION
 public:
     Renderer(Window* window);
     Renderer(Window* window, GLbitfield mask);
@@ -25,7 +28,7 @@ public:
     void CreateVecBuffer(float* positions,  int* indices, int positionsSize, int indicesSize, int atribVertexSize,
                          unsigned int& VAO,
                          unsigned int& VBO, unsigned int& EBO);
-    void DrawEntity2D(unsigned int VAO, int sizeIndices);
+    void DrawEntity2D(unsigned VAO, int sizeIndices, Vec4 color) const;
 
 
 private:

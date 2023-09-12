@@ -8,7 +8,7 @@ class EXPORT Entity
 public:
     Entity(Renderer* renderer);
     virtual ~Entity();
-    virtual void Draw() const =0;
+    virtual void Draw() =0;
 
 protected:
     Renderer* renderer;

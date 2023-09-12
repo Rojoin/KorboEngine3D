@@ -2,96 +2,127 @@
 
 Shader::Shader()
 {
-	cout << "Shader Created" << endl;
+    cout << "Shader Created" << endl;
 }
 
 Shader::~Shader()
 {
-	cout << "Shader Deleted" << endl;
+    cout << "Shader Deleted" << endl;
 }
 
 GLuint Shader::CompileShader(const GLuint type, const std::string& source)
 {
+    GLuint id = glCreateShader(type);
+    const char* src = source.c_str();
+    glShaderSource(id, 1, &src, nullptr);
+    glCompileShader(id);
 
-	GLuint id = glCreateShader(type);
-	const char* src = source.c_str();
-	glShaderSource(id, 1, &src, nullptr);
-	glCompileShader(id);
+    int result;
+    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
 
-	int result;
-	glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+    if (result == GL_FALSE)
+    {
+        int lenght;
+        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &lenght);
+        char* message = (char*)alloca(lenght * sizeof(char));
+        // esto lo hace con alloca para asignarlo en el stack dinamicamente
 
-	if (result == GL_FALSE)
-	{
+        glGetShaderInfoLog(id, lenght, &lenght, message);
 
-		int lenght;
-		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &lenght);
-		char* message = (char*)alloca(lenght * sizeof(char)); // esto lo hace con alloca para asignarlo en el stack dinamicamente
+        cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "Vertex Shader" : "Fragment Shader") << endl;
+        cout << message << endl;
 
-		glGetShaderInfoLog(id, lenght, &lenght, message);
+        glDeleteShader(id);
+        return 0;
+    }
 
-		cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "Vertex Shader" : "Fragment Shader") << endl;
-		cout << message << endl;
-
-		glDeleteShader(id);
-		return 0;
-	}
-
-	return id;
-
+    return id;
 }
-
 
 
 int Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentshader)
 {
-	GLuint program = glCreateProgram(); // unsigned int of GL
-	GLuint vertex_S = CompileShader(GL_VERTEX_SHADER, vertexShader);
-	GLuint fragment_S = CompileShader(GL_FRAGMENT_SHADER, fragmentshader);
+    GLuint program = glCreateProgram(); // unsigned int of GL
+    GLuint vertex_S = CompileShader(GL_VERTEX_SHADER, vertexShader);
+    GLuint fragment_S = CompileShader(GL_FRAGMENT_SHADER, fragmentshader);
 
-	//Link shaders to program
-	glAttachShader(program, vertex_S);
-	glAttachShader(program, fragment_S);
-	glLinkProgram(program);
+    //Link shaders to program
+    glAttachShader(program, vertex_S);
+    glAttachShader(program, fragment_S);
+    glLinkProgram(program);
 
 
-	glValidateProgram(program);
+    glValidateProgram(program);
 
-	//Deleted because they are already linked to the program
-	glDeleteShader(vertex_S);
-	glDeleteShader(fragment_S);
+    //Deleted because they are already linked to the program
+    glDeleteShader(vertex_S);
+    glDeleteShader(fragment_S);
 
-	return program;
+    return program;
 }
 
 ShaderProgramSource Shader::ParseShader(const string& filepath)
 {
-	ifstream inputStream(filepath);
-	enum class ShaderType
-	{
-		NONE = -1,
-		VERTEX = 0,
-		FRAGMENT = 1
-	};
+    ifstream inputStream(filepath);
+    enum class ShaderType
+    {
+        NONE = -1,
+        VERTEX = 0,
+        FRAGMENT = 1
+    };
 
-	string line;
-	stringstream ss[2];
-	ShaderType type = ShaderType::NONE;
+    string line;
+    stringstream ss[2];
+    ShaderType type = ShaderType::NONE;
+    try
+    {
+        if (inputStream.is_open())
+        {
+            while (getline(inputStream, line))
+            {
+                if (line.find("#shader") != std::string::npos)
+                {
+                    if (line.find("vertex") != std::string::npos)
+                        type = ShaderType::VERTEX;
+                    else if (line.find("fragment") != std::string::npos)
+                        type = ShaderType::FRAGMENT;
+                }
+                else
+                {
+                    ss[(int)type] << line << '\n';
+                }
+            }
+        }
+        else
+        {
+            //
+        }
+        
+    }
+    catch (ios::failure& exception)
+    {
+      string vertexShader=  R"(#version 330 core
 
-	while (getline(inputStream, line))
-	{
-		if (line.find("#shader") != std::string::npos)
-		{
-			if (line.find("vertex") != std::string::npos)
-				type = ShaderType::VERTEX;
-			else if (line.find("fragment") != std::string::npos)
-				type = ShaderType::FRAGMENT;
-		}
-		else
-		{
-			ss[(int)type] << line << '\n';
-		}
-	}
+layout(location = 0) in vec4 position;
 
-	return { ss[0].str() , ss[1].str() };
+void main()
+{
+	gl_Position = position;
+};
+)";
+        string fragmentShader=  R"(#version 330 core
+
+layout(location = 0) out vec4 color;
+uniform vec4 colorTint;
+
+void main()
+{
+   color = vec4(colorTint.x,colorTint.y,colorTint.z,colorTint.w);
+};)";
+
+        return {vertexShader,fragmentShader};
+    }
+
+
+    return {ss[0].str(), ss[1].str()};
 }
