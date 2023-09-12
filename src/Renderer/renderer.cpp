@@ -14,7 +14,8 @@ Renderer::Renderer(Window* window)
 
     ShaderProgramSource source = shader.ParseShader("../res/shaders/BasicShader.shader");
     shaderProgram = shader.CreateShader(source.vertexSource, source.fragmentSource);
-
+    glEnable(GL_BLEND);//Transparency
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glUseProgram(shaderProgram);
     cout << "Renderer Created" << endl;
 }
@@ -92,7 +93,9 @@ void Renderer::CreateVecBuffer(float* positions,  int* indices, int positionsSiz
 
 void Renderer::DrawEntity2D(unsigned int VAO,int sizeIndices)
 {
+    glClearColor(0.2f,0.4f,1,1);
     glUseProgram(shaderProgram);
+    Shader::SetVec4("colorTint",1,1,0,0.5f,shaderProgram);
     glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
     glDrawElements(GL_TRIANGLES, sizeIndices, GL_UNSIGNED_INT, 0);
 
