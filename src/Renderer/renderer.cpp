@@ -1,5 +1,7 @@
 #include "renderer.h"
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include "Globals/Vec4.h"
 
 Renderer::Renderer(Window* window, GLbitfield mask)
@@ -93,10 +95,12 @@ void Renderer::CreateVecBuffer(float* positions,  int* indices, int positionsSiz
    
 }
 
-void Renderer::DrawEntity2D(unsigned int VAO,int sizeIndices, Vec4 color) const
+void Renderer::DrawEntity2D(unsigned int VAO,int sizeIndices, Vec4 color, glm::mat4x4 trans) const
 {
     glClearColor(0.2f,0.4f,1,1);
     glUseProgram(shaderProgram);
+    unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
     Shader::SetVec4("colorTint",color.x,color.y,color.z,color.w,shaderProgram);
     glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
     glDrawElements(GL_TRIANGLES, sizeIndices, GL_UNSIGNED_INT, 0);

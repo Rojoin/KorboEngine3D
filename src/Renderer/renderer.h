@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <glm/mat4x4.hpp>
 
 #include "Globals/Vec4.h"
 #include "Window/window.h"
@@ -28,7 +29,7 @@ public:
     void CreateVecBuffer(float* positions,  int* indices, int positionsSize, int indicesSize, int atribVertexSize,
                          unsigned int& VAO,
                          unsigned int& VBO, unsigned int& EBO);
-    void DrawEntity2D(unsigned VAO, int sizeIndices, Vec4 color) const;
+    void DrawEntity2D(unsigned VAO, int sizeIndices, Vec4 color,glm::mat4x4 trans) const;
 
 
 private:
