@@ -7,8 +7,8 @@ Entity2D::Entity2D(Renderer* renderer) : Entity(renderer)
     
     vec = TRS * vec;
     std::cout << vec.x << vec.y << vec.z << std::endl;
-    TRS = glm::rotate(TRS, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-    TRS = glm::scale(TRS, glm::vec3(1, 0.5, 0.5)); 
+   TRS = glm::rotate(TRS, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+   TRS = glm::scale(TRS, glm::vec3(1.8f, 0.5, 0.5)); 
 }
 
 Entity2D::~Entity2D()

@@ -30,7 +30,7 @@ Game::~Game()
 
  void Game::init() 
 {
-	aux = new Square(getRenderer(),{1,0,1,1});
+	aux = new Triangle(getRenderer(),{1,0,1,1});
 }
 
  void Game::update() 
