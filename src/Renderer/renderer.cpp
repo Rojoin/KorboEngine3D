@@ -10,13 +10,15 @@ Renderer::Renderer(Window* window, GLbitfield mask)
     this->mask = mask;
     cout << "Renderer Created" << endl;
 }
-
+ 
 Renderer::Renderer(Window* window)
 {
     this->GLFWW = window;
     this->mask = GL_COLOR_BUFFER_BIT;
     
-    proj = glm::ortho(-2.0f,2.0f,-1.5f,1.5f,-1.0f,1.0f);
+    proj = glm::ortho(-2.0f,2.0f,-1.5f,1.5f,-1.0f,1.0f); // Orthograpic
+    model = glm::mat4(1.0f);
+    view = glm::mat4(1.0f);
     
     ShaderProgramSource source = shader.ParseShader("../res/shaders/BasicShader.shader");
     shaderProgram = shader.CreateShader(source.vertexSource, source.fragmentSource);
@@ -101,7 +103,8 @@ void Renderer::DrawEntity2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::
     glUseProgram(shaderProgram);
     unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
    // trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-    trans = trans * proj;
+    glm::mat4 PVM = proj * view * model;
+    trans = trans * PVM;
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
     Shader::SetVec4("colorTint", color.x, color.y, color.z, color.w, shaderProgram);
     //TODO: CAMBIAR ESTO A FUNCIONES Y AGREGAR EL MODEL VIEW A ESTO
