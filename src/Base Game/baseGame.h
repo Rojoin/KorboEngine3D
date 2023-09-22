@@ -12,12 +12,12 @@ namespace Korbo
     private:
         Renderer* renderer;
         Window* window;
-        void initGame();
+        void initGame(int windowWhidth,int windowHeight);
         void endGame();
         Shape* shape;
 
     public:
-        engine();
+        engine(int windowWidth,int windowHeight);
         virtual ~engine();
         Renderer* getRenderer(); //TODO CAMBIAR POR Factory
         virtual void init();

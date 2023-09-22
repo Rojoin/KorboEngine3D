@@ -4,9 +4,9 @@
 #include "Shape/Triangle.h"
 
 using namespace Korbo;
- engine::engine()
+ engine::engine(int windowWidth,int windowHeight)
 {
-    initGame();
+    initGame(windowWidth,windowHeight);
 }
 
  engine::~engine()
@@ -31,15 +31,14 @@ void engine::exit()
 {
 }
 
-void engine::initGame()
+void engine::initGame(int windowWhidth,int windowHeight)
 {
     /* Initialize the library */
     if (!glfwInit())
         return;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = new Window(800, 480, "Korbo Engine", NULL, NULL);
-
+    window = new Window(windowWhidth, windowHeight, "Korbo Engine", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
