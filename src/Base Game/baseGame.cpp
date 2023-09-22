@@ -38,7 +38,7 @@ void engine::initGame()
         return;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = new Window(640, 480, "Korbo Engine", NULL, NULL);
+    window = new Window(800, 480, "Korbo Engine", NULL, NULL);
 
     if (!window)
     {
