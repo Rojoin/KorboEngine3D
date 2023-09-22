@@ -11,16 +11,16 @@ private:
 	const char* title;
 	GLFWmonitor* monitor;
 	GLFWwindow* share;
-	void initWindow();
-	void destroyWindow();
-	int GetWindowWidth();
-	int GetWindowHeight();
 public:
 
 	Window(int width, int height, const char* title, GLFWmonitor* monitor, GLFWwindow* share);
 	Window(int width, int height, const char* title);
 	Window(int width, int height);
 	~Window();
+	void initWindow();
+	void destroyWindow();
+	int GetWindowWidth();
+	int GetWindowHeight();
 	GLFWwindow* getWindow();
 };
 
