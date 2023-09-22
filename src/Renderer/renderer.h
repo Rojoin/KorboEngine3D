@@ -39,4 +39,5 @@ private:
     GLuint shaderProgram;
     glm::mat4x4 model;
     glm::mat4x4 view;
+    glm::mat4x4 proj;
 };

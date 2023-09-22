@@ -48,6 +48,9 @@
   <ItemGroup>
     <Folder Include="..\src\Entity\Shape\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\res\shaders\BasicShader.shader" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
