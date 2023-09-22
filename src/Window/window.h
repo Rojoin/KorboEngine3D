@@ -13,6 +13,8 @@ private:
 	GLFWwindow* share;
 	void initWindow();
 	void destroyWindow();
+	int GetWindowWidth();
+	int GetWindowHeight();
 public:
 
 	Window(int width, int height, const char* title, GLFWmonitor* monitor, GLFWwindow* share);

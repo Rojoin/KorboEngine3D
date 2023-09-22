@@ -37,6 +37,11 @@ Window::~Window()
 	destroyWindow();
 }
 
+int Window::GetWindowWidth() { return width; }
+
+int Window::GetWindowHeight() { return height; }
+
+
 void Window::initWindow()
 {
 	this->GlfWindow = glfwCreateWindow(width, height, title, monitor, share);
