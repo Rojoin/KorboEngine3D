@@ -16,7 +16,7 @@ Renderer::Renderer(Window* window)
     this->GLFWW = window;
     this->mask = GL_COLOR_BUFFER_BIT;
     
-    proj = glm::ortho(-2.0f,2.0f,-1.5f,1.5f,-1.0f,1.0f); // Orthograpic
+    proj = glm::ortho(0.0f, 800.0f, 0.0f, 480.0f, 0.1f, 100.0f); // Orthograpic
     model = glm::mat4(1.0f);
     view = glm::mat4(1.0f);
     

@@ -27,9 +27,9 @@ Triangle::Triangle(Renderer* renderer,Vec4 color) : Shape(renderer)
     //If diferent use glFrontFace(GL_CCW) (Graphics 2)
     vertexPositions = new float[vertexSize]
     {
-        0.0f,  0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-       -0.5f, -0.5f, 0.0f
+        200.0f,  200.0f, 0.0f,
+        350.0f, 500.0f, 0.0f,
+        500.0f, 200.0f, 0.0f
    };
     indexSize = 3;
     indices = new int[indexSize]
