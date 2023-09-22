@@ -37,4 +37,6 @@ private:
     GLbitfield mask;
     Shader shader;
     GLuint shaderProgram;
+    glm::mat4x4 model;
+    glm::mat4x4 view;
 };
