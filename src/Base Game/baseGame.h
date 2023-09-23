@@ -14,8 +14,7 @@ namespace Korbo
         Window* window;
         void initGame(int windowWhidth,int windowHeight);
         void endGame();
-        Shape* shape;
-
+    
     public:
         engine(int windowWidth,int windowHeight);
         virtual ~engine();

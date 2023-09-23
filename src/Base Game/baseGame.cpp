@@ -45,8 +45,7 @@ void engine::initGame(int windowWhidth,int windowHeight)
         return;
     }
     renderer = new Renderer(window);
-
-    shape = new Square(renderer,{1,1,0,1});
+     
 }
 
 void engine::gameLoop()
@@ -61,7 +60,6 @@ void engine::gameLoop()
 
 void engine::endGame()
 {
-    delete shape;
     delete window;
     delete renderer;
     glfwTerminate();

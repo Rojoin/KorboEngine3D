@@ -22,5 +22,7 @@ public:
 	int GetWindowWidth();
 	int GetWindowHeight();
 	GLFWwindow* getWindow();
+	float getHeight();
+	float getWidth();
 };
 

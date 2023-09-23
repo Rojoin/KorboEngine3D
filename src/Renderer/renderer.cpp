@@ -16,9 +16,13 @@ Renderer::Renderer(Window* window)
     this->GLFWW = window;
     this->mask = GL_COLOR_BUFFER_BIT;
     
-    proj = glm::ortho(0.0f,(float)window->GetWindowWidth(), 0.0f, (float)window->GetWindowHeight(), 0.1f, 100.0f); // Orthograpic
-    model = glm::mat4(1.0f);
-    view = glm::mat4(1.0f);
+
+    projection = glm::ortho(0.0f,window->getWidth(),0.0f,window->getHeight(),0.1f,100.0f); // Orthograpic
+    
+    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 1.0f);
+    view = glm::lookAt(cameraPos,{0, 0,0},{0,1,0});
+    
+
     
     ShaderProgramSource source = shader.ParseShader("../res/shaders/BasicShader.shader");
     shaderProgram = shader.CreateShader(source.vertexSource, source.fragmentSource);
@@ -88,15 +92,19 @@ void Renderer::CreateVecBuffer(float* positions, int* indices, int positionsSize
     glBindVertexArray(0);
 }
 
-void Renderer::DrawEntity2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 trans) const
+void Renderer::DrawEntity2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 model) const
 {
     glClearColor(0.2f, 0.4f, 1, 1);//TODO: pasar a otra funcion
     glUseProgram(shaderProgram);
     unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
    // trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-    glm::mat4 PVM = proj * view * model;
-    trans = trans * PVM;
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+
+    
+    glm::mat4 PVM = projection * view * model;
+
+
+    
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(PVM));
     Shader::SetVec4("colorTint", color.x, color.y, color.z, color.w, shaderProgram);
     //TODO: CAMBIAR ESTO A FUNCIONES Y AGREGAR EL MODEL VIEW A ESTO
     glBindVertexArray(VAO);
