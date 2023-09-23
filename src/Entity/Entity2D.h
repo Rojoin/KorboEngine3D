@@ -26,5 +26,5 @@ protected:
      int indexSize;
      int* indices;
      //Transform Matrix
-     glm::mat4x4 TRS;
+     glm::mat4x4 model;
 };

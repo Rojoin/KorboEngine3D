@@ -29,7 +29,7 @@ public:
     void CreateVecBuffer(float* positions,  int* indices, int positionsSize, int indicesSize, int atribVertexSize,
                          unsigned int& VAO,
                          unsigned int& VBO, unsigned int& EBO);
-    void DrawEntity2D(unsigned VAO, int sizeIndices, Vec4 color,glm::mat4x4 trans) const;
+    void DrawEntity2D(unsigned VAO, int sizeIndices, Vec4 color,glm::mat4x4 model) const;
 
 
 private:
@@ -39,5 +39,5 @@ private:
     GLuint shaderProgram;
     glm::mat4x4 model;
     glm::mat4x4 view;
-    glm::mat4x4 proj;
+    glm::mat4x4 projection;
 };
