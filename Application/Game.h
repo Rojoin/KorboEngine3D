@@ -4,7 +4,7 @@
 #include "Shape/Triangle.h"
 #include "Shape/Square.h"
 
-class Game final : public Korbo::engine
+class Game final : public Korbo::Engine
 {
 private:
     Shape* aux;

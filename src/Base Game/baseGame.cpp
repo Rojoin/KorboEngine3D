@@ -4,34 +4,34 @@
 #include "Shape/Triangle.h"
 
 using namespace Korbo;
- engine::engine(int windowWidth,int windowHeight)
+ Engine::Engine(int windowWidth,int windowHeight)
 {
     initGame(windowWidth,windowHeight);
 }
 
- engine::~engine()
+ Engine::~Engine()
 {
     endGame();
 }
 
-Renderer* engine::getRenderer()
+Renderer* Engine::getRenderer()
 {
      return renderer;
 }
 
-void engine::init()
+void Engine::init()
 {
 }
 
-void engine::update()
+void Engine::update()
 {
 }
 
-void engine::exit()
+void Engine::exit()
 {
 }
 
-void engine::initGame(int windowWhidth,int windowHeight)
+void Engine::initGame(int windowWhidth,int windowHeight)
 {
     /* Initialize the library */
     if (!glfwInit())
@@ -48,7 +48,7 @@ void engine::initGame(int windowWhidth,int windowHeight)
      
 }
 
-void engine::gameLoop()
+void Engine::gameLoop()
 {
     while (!glfwWindowShouldClose(window->getWindow()))
     {
@@ -58,7 +58,7 @@ void engine::gameLoop()
     }
 }
 
-void engine::endGame()
+void Engine::endGame()
 {
     delete window;
     delete renderer;

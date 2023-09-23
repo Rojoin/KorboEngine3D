@@ -26,8 +26,8 @@ Square::Square(Renderer* renderer,Vec4 color) : Shape(renderer)
     //Reads clockwise
     //If diferent use glFrontFace(GL_CCW) (Graphics 2)
     vertexPositions = new float[12]{
-        0.5f, 0.5f, 0.0f, // top right
-        0.5f, -0.5f, 0.0f, // bottom right
+        0.5f, 0.5f, 0.0f,   // top right
+        0.5f, -0.5f, 0.0f,  // bottom right
         -0.5f, -0.5f, 0.0f, // bottom left
         -0.5f, 0.5f, 0.0f
     };

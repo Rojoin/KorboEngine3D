@@ -7,7 +7,7 @@
 
 namespace Korbo
 {
-    class EXPORT engine
+    class EXPORT Engine
     {
     private:
         Renderer* renderer;
@@ -16,8 +16,8 @@ namespace Korbo
         void endGame();
     
     public:
-        engine(int windowWidth,int windowHeight);
-        virtual ~engine();
+        Engine(int windowWidth,int windowHeight);
+        virtual ~Engine();
         Renderer* getRenderer(); //TODO CAMBIAR POR Factory
         virtual void init();
         virtual void update();

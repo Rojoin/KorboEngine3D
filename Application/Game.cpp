@@ -1,6 +1,6 @@
 ﻿#include "Game.h"
 
-Game::Game(int windowWidth,int windowHeight) : engine(windowWidth,windowHeight)
+Game::Game(int windowWidth,int windowHeight) : Engine(windowWidth,windowHeight)
 {
     this->windowWidth = windowWidth;
     this->windowHeight = windowHeight;
