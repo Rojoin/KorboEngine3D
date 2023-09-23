@@ -19,10 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Base Game\baseGame.cpp" />
+    <ClCompile Include="..\src\Base Game\Engine.cpp" />
     <ClCompile Include="..\src\Entity\Entity.cpp" />
     <ClCompile Include="..\src\Entity\Entity2D.cpp" />
-    <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\Renderer\renderer.cpp" />
     <ClCompile Include="..\src\Shader\shader.cpp" />
     <ClCompile Include="..\src\Shape\Shape.cpp" />
@@ -31,7 +30,7 @@
     <ClCompile Include="..\src\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\Base Game\baseGame.h" />
+    <ClInclude Include="..\src\Base Game\Engine.h" />
     <ClInclude Include="..\src\Entity\Entity.h" />
     <ClInclude Include="..\src\Entity\Entity2D.h" />
     <ClInclude Include="..\src\Globals\dllHeader.h" />
