@@ -27,4 +27,7 @@ protected:
      int* indices;
      //Transform Matrix
      glm::mat4x4 model;
+     glm::mat4 tranlate;
+     glm::mat4 rotation;
+     glm::mat4 scale;
 };

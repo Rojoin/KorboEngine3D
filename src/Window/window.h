@@ -20,5 +20,7 @@ public:
 	Window(int width, int height);
 	~Window();
 	GLFWwindow* getWindow();
+	float getHeight();
+	float getWidth();
 };
 

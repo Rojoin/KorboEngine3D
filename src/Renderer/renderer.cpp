@@ -16,22 +16,10 @@ Renderer::Renderer(Window* window)
     this->GLFWW = window;
     this->mask = GL_COLOR_BUFFER_BIT;
     
-  //  proj = glm::perspective(90.0f,16.0f/9.0f,0.01f,500.0f); // Orthograpic
-
-   //proj = glm::ortho(-2.0f,2.0f,-1.5f,1.5f,-1.0f,1.0f); // Orthograpic
+    projection = glm::ortho(0.0f,window->getWidth(),0.0f,window->getHeight(),0.1f,100.0f); // Orthograpic
     
-    //projection = glm::ortho(-2.0f,2.0f,-1.5f,1.5f,0.01f,1.0f);
-    //projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-
-    
-    projection = glm::ortho(0.0f,640.0f,0.0f,480.0f,0.1f,100.0f); // Orthograpic
-    view = glm::mat4(1.0f);
-    view = glm::translate(view,glm::vec3(320.0f, 240.0f, -100.0f));
-    // note that we're translating the scene in the reverse direction of where we want to move
-    //view = glm::translate(view, glm::vec3(0.0f, 0.0f, -15.0f));
-    
-    auto camerapos = glm::vec3(0.0f, 0.0f, -15.0f);
-    //view = glm::lookAt(camerapos,{10, 10,0},{0,1,0});
+    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 1.0f);
+    view = glm::lookAt(cameraPos,{0, 0,0},{0,1,0});
     
 
     
