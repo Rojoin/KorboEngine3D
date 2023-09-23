@@ -14,7 +14,7 @@ Game::~Game()
 
 void Game::init() 
 {
-    aux = new Triangle(getRenderer(),{1,0,1,1});
+    aux = new Square(getRenderer(),{1,0,1,1});
 }
 
 void Game::update() 
