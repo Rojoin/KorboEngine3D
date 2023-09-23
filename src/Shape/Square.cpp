@@ -1,6 +1,6 @@
 ﻿#include "Square.h"
 
-Square::Square(Renderer* renderer) : Shape(renderer)
+Square::Square(Renderer* renderer,Vec3 position,Vec3 newScale) : Shape(renderer,position,newScale)
 {
     vertexSize = 12;
     //Reads clockwise
@@ -20,7 +20,7 @@ Square::Square(Renderer* renderer) : Shape(renderer)
     renderer->CreateVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribVertexSize, VAO, VBO, EBO);
 }
 
-Square::Square(Renderer* renderer,Vec4 color) : Shape(renderer)
+Square::Square(Renderer* renderer,Vec4 color,Vec3 position,Vec3 newScale): Shape(renderer,position,newScale)
 {
     vertexSize = 12;
     //Reads clockwise

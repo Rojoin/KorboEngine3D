@@ -1,6 +1,6 @@
 ﻿#include "Triangle.h"
 
-Triangle::Triangle(Renderer* renderer) : Shape(renderer)
+Triangle::Triangle(Renderer* renderer,Vec3 position, Vec3 newScale): Shape(renderer,position,newScale)
 {
     vertexSize = 9;
     //Reads clockwise
@@ -20,7 +20,7 @@ Triangle::Triangle(Renderer* renderer) : Shape(renderer)
     renderer->CreateVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribVertexSize, VAO, VBO, EBO);
 }
 
-Triangle::Triangle(Renderer* renderer,Vec4 color) : Shape(renderer)
+Triangle::Triangle(Renderer* renderer,Vec4 color,Vec3 position, Vec3 newScale) : Shape(renderer,position,newScale)
 {
     vertexSize = 9;
     //Reads clockwise

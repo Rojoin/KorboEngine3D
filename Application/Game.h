@@ -8,6 +8,7 @@ class Game final : public Korbo::Engine
 {
 private:
     Shape* aux;
+    Shape* aux2;
     int windowWidth = 800;
     int windowHeight = 400;
 public:
