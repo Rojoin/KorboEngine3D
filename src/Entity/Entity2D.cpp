@@ -29,7 +29,6 @@ void Entity2D::Draw()
 
 void Entity2D::SetPosition(Vec3 newPosition)
 {
-    tranlate = glm::mat4(1.0f);
     glm::vec3 newPos = {newPosition.x, newPosition.y, newPosition.z};
     tranlate = glm::translate(tranlate, newPos);
     UpdateMatrix();
