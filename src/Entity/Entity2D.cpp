@@ -59,7 +59,8 @@ void Entity2D::SetRotationZ(float angle)
 
 void Entity2D::SetScale(Vec3 newScale)
 {
-    scale = glm::scale(scale, glm::vec3(newScale.x, newScale.y, scale[2][2]));
+    scale = glm::mat4(1.0f);
+    scale = glm::scale(scale, glm::vec3(newScale.x, newScale.y,newScale.z));
     UpdateMatrix();
 }
 
