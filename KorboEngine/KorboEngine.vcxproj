@@ -22,6 +22,7 @@
     <ClCompile Include="..\src\Base Game\Engine.cpp" />
     <ClCompile Include="..\src\Entity\Entity.cpp" />
     <ClCompile Include="..\src\Entity\Entity2D.cpp" />
+    <ClCompile Include="..\src\Input\Input.cpp" />
     <ClCompile Include="..\src\Renderer\renderer.cpp" />
     <ClCompile Include="..\src\Shader\shader.cpp" />
     <ClCompile Include="..\src\Shape\Shape.cpp" />
@@ -36,6 +37,8 @@
     <ClInclude Include="..\src\Globals\dllHeader.h" />
     <ClInclude Include="..\src\Globals\Vec3.h" />
     <ClInclude Include="..\src\Globals\Vec4.h" />
+    <ClInclude Include="..\src\Input\Input.h" />
+    <ClInclude Include="..\src\Input\KeyCode.h" />
     <ClInclude Include="..\src\Renderer\renderer.h" />
     <ClInclude Include="..\src\Shader\shader.h" />
     <ClInclude Include="..\src\Shape\Shape.h" />

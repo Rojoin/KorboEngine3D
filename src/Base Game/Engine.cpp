@@ -1,5 +1,4 @@
 #include "Engine.h"
-
 #include "Shape/Square.h"
 #include "Shape/Triangle.h"
 
@@ -45,7 +44,7 @@ void Engine::initGame(int windowWhidth,int windowHeight)
         return;
     }
     renderer = new Renderer(window);
-     
+    input = new Input(window->getWindow());
 }
 
 void Engine::gameLoop()

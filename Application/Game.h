@@ -1,6 +1,5 @@
 ﻿#pragma once
-
-#include "..\src\Base Game\Engine.h"
+#include "Base Game/Engine.h"
 #include "Shape/Triangle.h"
 #include "Shape/Square.h"
 

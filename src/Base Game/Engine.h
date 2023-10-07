@@ -3,6 +3,7 @@
 #include "Renderer/renderer.h"
 #include "Shape/Shape.h"
 #include "Window/window.h"
+#include "Input/Input.h"
 
 
 namespace Korbo
@@ -23,5 +24,7 @@ namespace Korbo
         virtual void update();
         virtual void exit();
         void gameLoop();
+    protected:
+        Input* input;
     };
 };
