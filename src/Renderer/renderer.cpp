@@ -1,9 +1,11 @@
+#define STB_IMAGE_IMPLEMENTATION
 #include "renderer.h"
 
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Globals/Vec4.h"
-
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb/stb_image.h"
 Renderer::Renderer(Window* window, GLbitfield mask)
 {
     this->GLFWW = window;
@@ -91,6 +93,39 @@ void Renderer::CreateVecBuffer(float* positions, int* indices, int positionsSize
 
     glBindVertexArray(0);
 }
+void Renderer::createTextureBinder(float* uvPositions,int uvSize,unsigned int& textureId,string imagePath, int& width, int& height , int& nrChannels)
+{
+    glGenBuffers(1, &textureId);
+    glBindBuffer(GL_ARRAY_BUFFER, textureId);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) *uvSize, uvPositions, GL_STATIC_DRAW);
+    
+    glVertexAttribPointer(1, uvSize, GL_FLOAT, GL_FALSE, uvSize * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    
+    glGenTextures(1, &textureId);
+    glBindTexture(GL_TEXTURE_2D, textureId); 
+    // set the texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // load image, create texture and generate mipmaps
+    
+    stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
+    // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
+    unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &nrChannels, 0);
+    if (data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Image couldnt be loaded.";
+    }
+     
+}
 
 void Renderer::DrawEntity2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 model) const
 {
@@ -106,3 +141,4 @@ void Renderer::DrawEntity2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::
     // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
     glDrawElements(GL_TRIANGLES, sizeIndices, GL_UNSIGNED_INT, 0);
 }
+

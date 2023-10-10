@@ -31,6 +31,11 @@ protected:
     int atribVertexSize = 3;
     float* vertexPositions;
 
+    unsigned int UVAO;
+    int uvSize;
+    int atribUVSize = 2;
+    float* uvPositions;
+
     //Elements buffer Object
     unsigned int EBO;
     int indexSize;

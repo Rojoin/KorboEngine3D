@@ -1,19 +1,17 @@
-#shader vertex 
 #version 330 core
 
-layout(location = 0) in vec4 position;
+layout (location = 0) in vec4 position;
 
 uniform mat4 transform;
 
 void main()
 {
-	gl_Position = transform * position;
+    gl_Position = transform * position;
 };
 
-#shader fragment
 #version 330 core
 
-layout(location = 0) out vec4 color;
+layout (location = 0) out vec4 color;
 out vec4 FragColor;
 
 uniform vec4 colorTint;

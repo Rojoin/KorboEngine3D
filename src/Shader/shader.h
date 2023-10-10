@@ -21,6 +21,7 @@ public:
 	static ShaderProgramSource ParseShader(const string& filepath);
 	static int CreateShader(const std::string& vertexShader, const std::string& fragmentshader);
 	static GLuint CompileShader(const GLuint type, const std::string& source);
+	static void SetVec2(const std::string& name, float x, float y,unsigned int ID)  { glUniform2f(glGetUniformLocation(ID, name.c_str()), x, y); }
 	static void SetVec3(const std::string& name, float x, float y, float z,unsigned int ID)  { glUniform4f(glGetUniformLocation(ID, name.c_str()), x, y, z,1.0f); }
 	static void SetVec4(const std::string& name, float x, float y, float z, float w,unsigned int ID)  { glUniform4f(glGetUniformLocation(ID, name.c_str()), x, y, z, w); }
 private:

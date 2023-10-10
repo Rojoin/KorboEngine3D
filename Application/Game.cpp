@@ -1,5 +1,6 @@
 ﻿#include "Game.h"
 #include "Input/Input.h"
+#include "Sprite/Sprite.h"
 
 Game::Game(int windowWidth,int windowHeight) : Engine(windowWidth,windowHeight)
 {
@@ -15,7 +16,7 @@ Game::~Game()
 
 void Game::init() 
 {
-    aux = new Square(getRenderer(),{1,0,1,1},{windowWidth/2.0f,windowHeight/2.0f,0.0f},{20,100,0});
+    aux = new Sprite(getRenderer(),{1,1,1,1},{windowWidth/2.0f,windowHeight/2.0f,0.0f},{100,100,0},"../res/images/test.png",400,400);
     aux2 = new Triangle(getRenderer(),{1,0,0,1,},{windowWidth/2.0f,windowHeight/2.0f,0.0f},{20,100,0});
     //aux->SetPosition({windowWidth/2.0f,windowHeight/2.0f,0.0f});
     aux2->SetPosition({windowWidth/2.0f,windowHeight/2.0f,0.0f});
@@ -43,8 +44,7 @@ void Game::update()
         aux->SetPosition( newPos);
     }
 
-        
-    aux->SetRotationZ(10);
+    
 
     aux->Draw();
     aux2->Draw();

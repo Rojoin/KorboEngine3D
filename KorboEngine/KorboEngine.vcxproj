@@ -28,6 +28,7 @@
     <ClCompile Include="..\src\Shape\Shape.cpp" />
     <ClCompile Include="..\src\Shape\Square.cpp" />
     <ClCompile Include="..\src\Shape\Triangle.cpp" />
+    <ClCompile Include="..\src\Sprite\Sprite.cpp" />
     <ClCompile Include="..\src\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -44,6 +45,7 @@
     <ClInclude Include="..\src\Shape\Shape.h" />
     <ClInclude Include="..\src\Shape\Square.h" />
     <ClInclude Include="..\src\Shape\Triangle.h" />
+    <ClInclude Include="..\src\Sprite\Sprite.h" />
     <ClInclude Include="..\src\Vertex\vertex.h" />
     <ClInclude Include="..\src\Window\window.h" />
   </ItemGroup>
