@@ -61,7 +61,7 @@ int Shader::CreateShader(const std::string& vertexShader, const std::string& fra
     return program;
 }
 
-ShaderProgramSource Shader::ParseShader(const string& filepath)
+ShaderProgramSource Shader::ParseShader(const string& filepath,ShaderUsed shaderUsed)
 {
     ifstream inputStream(filepath);
     enum class ShaderType
@@ -101,7 +101,9 @@ ShaderProgramSource Shader::ParseShader(const string& filepath)
     }
     catch (ios::failure& exception)
     {
-      string vertexShader=  R"(#version 330 core
+        if (shaderUsed == ShaderUsed::Shapes)
+        {
+            string vertexShader = R"(#version 330 core
 
 layout(location = 0) in vec4 position;
 
@@ -112,7 +114,7 @@ void main()
 	gl_Position = transform * position;
 };
 )";
-        string fragmentShader=  R"(#version 330 core
+            string fragmentShader = R"(#version 330 core
 
 layout(location = 0) out vec4 color;
 uniform vec4 colorTint;
@@ -122,7 +124,33 @@ void main()
    color = vec4(colorTint.x,colorTint.y,colorTint.z,colorTint.w);
 };)";
 
-        return {vertexShader,fragmentShader};
+            return {vertexShader, fragmentShader};
+        }
+        else if (shaderUsed == ShaderUsed::Sprites)
+        {
+            string vertexShader = R"(#version 330 core
+
+layout(location = 0) in vec4 position;
+
+uniform mat4 transform;
+
+void main()
+{
+	gl_Position = transform * position;
+};
+)";
+            string fragmentShader = R"(#version 330 core
+
+layout(location = 0) out vec4 color;
+uniform vec4 colorTint;
+
+void main()
+{
+   color = vec4(colorTint.x,colorTint.y,colorTint.z,colorTint.w);
+};)";
+
+            return {vertexShader, fragmentShader};
+        }
     }
 
 

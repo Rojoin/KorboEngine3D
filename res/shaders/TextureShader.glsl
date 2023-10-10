@@ -1,25 +1,28 @@
+#shader vertex 
 #version 330 core
 
 layout (location = 0) in vec4 position;
-
+layout (location = 1) in vec2 aTexCoord;
 uniform mat4 transform;
 
 void main()
 {
     gl_Position = transform * position;
+    TexCoord = aTexCoord;
 };
 
+#shader fragment 
 #version 330 core
 
-layout (location = 0) out vec4 color;
+
 out vec4 FragColor;
+in vec2 TexCoord;
 
 uniform vec4 colorTint;
-uniform vec2 TexCoord;
+
 uniform sampler2D ourTexture;
 
 void main()
 {
-    color = vec4(colorTint.x, colorTint.y, colorTint.z, colorTint.w);
     FragColor = texture(ourTexture, TexCoord);
 };

@@ -31,7 +31,7 @@ protected:
     int atribVertexSize = 3;
     float* vertexPositions;
 
-    unsigned int UVAO;
+    unsigned int textureId;
     int uvSize;
     int atribUVSize = 2;
     float* uvPositions;

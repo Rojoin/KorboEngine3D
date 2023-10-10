@@ -15,7 +15,7 @@ using namespace std;
 
 class EXPORT Renderer
 {
-    //TODO CREAR MATRICES VIEW Y PROYECCION
+
 public:
     Renderer(Window* window);
     Renderer(Window* window, GLbitfield mask);
@@ -33,13 +33,15 @@ public:
                              int& height,
                              int& nrChannels);
     void DrawEntity2D(unsigned VAO, int sizeIndices, Vec4 color,glm::mat4x4 model) const;
+    void DrawEntity2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 model, unsigned int& texture)  const;
 
 
 private:
     Window* GLFWW;
     GLbitfield mask;
     Shader shader;
-    GLuint shaderProgram;
+    GLuint shaderShape;
+    GLuint shaderSprite;
     glm::mat4x4 model;
     glm::mat4x4 view;
     glm::mat4x4 projection;

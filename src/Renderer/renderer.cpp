@@ -5,6 +5,8 @@
 
 #include "Globals/Vec4.h"
 #define STB_IMAGE_IMPLEMENTATION
+#include "Base Game/Engine.h"
+#include "Base Game/Engine.h"
 #include "stb/stb_image.h"
 Renderer::Renderer(Window* window, GLbitfield mask)
 {
@@ -26,18 +28,22 @@ Renderer::Renderer(Window* window)
     
 
     
-    ShaderProgramSource source = shader.ParseShader("../res/shaders/BasicShader.shader");
-    shaderProgram = shader.CreateShader(source.vertexSource, source.fragmentSource);
+    ShaderProgramSource source = shader.ParseShader("../res/shaders/BasicShader.shader",ShaderUsed::Shapes);
+    shaderShape = shader.CreateShader(source.vertexSource, source.fragmentSource);
+    source = shader.ParseShader("../res/shaders/TextureShader.glsl",ShaderUsed::Sprites);
+    shaderSprite = shader.CreateShader(source.vertexSource, source.fragmentSource);
     glEnable(GL_BLEND); //Transparency
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glUseProgram(shaderProgram);
+    glUseProgram(shaderShape);
+    glUseProgram(shaderSprite);
     cout << "Renderer Created" << endl;
 }
 
 Renderer::~Renderer()
 {
     cout << "Renderer Deleted" << endl;
-    glDeleteProgram(shaderProgram);
+    glDeleteProgram(shaderShape);
+    glDeleteProgram(shaderSprite);
 }
 
 void Renderer::DeleteObjects(unsigned& VAO, unsigned& VBO, unsigned& EBO)
@@ -103,7 +109,8 @@ void Renderer::createTextureBinder(float* uvPositions,int uvSize,unsigned int& t
     glEnableVertexAttribArray(1);
     
     glGenTextures(1, &textureId);
-    glBindTexture(GL_TEXTURE_2D, textureId); 
+    glBindTexture(GL_TEXTURE_2D, textureId);
+    
     // set the texture wrapping parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -130,15 +137,38 @@ void Renderer::createTextureBinder(float* uvPositions,int uvSize,unsigned int& t
 void Renderer::DrawEntity2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 model) const
 {
     glClearColor(0.2f, 0.4f, 1, 1);//TODO: pasar a otra funcion
-    glUseProgram(shaderProgram);
-    unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
+    glUseProgram(shaderShape);
+    unsigned int transformLoc = glGetUniformLocation(shaderShape, "transform");
+    
+    unsigned int textureLocation = glGetUniformLocation(shaderShape, "outTexture");
 
     glm::mat4 PVM = projection * view * model;
     
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(PVM));
-    Shader::SetVec4("colorTint", color.x, color.y, color.z, color.w, shaderProgram);
+    
+  
+    Shader::SetVec4("colorTint", color.x, color.y, color.z, color.w, shaderShape);
     glBindVertexArray(VAO);
     // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
     glDrawElements(GL_TRIANGLES, sizeIndices, GL_UNSIGNED_INT, 0);
+}
+void Renderer::DrawEntity2D(unsigned VAO, int sizeIndices, ::Vec4 color, glm::mat4x4 model, unsigned& texture) const
+{
+    glClearColor(0.2f, 0.4f, 1, 1);//TODO: pasar a otra funcion
+    glUseProgram(shaderSprite);
+    unsigned int transformLoc = glGetUniformLocation(shaderShape, "transform");
+    
+    glm::mat4 PVM = projection * view * model;
+    glUniform1i(glGetUniformLocation(shaderShape, "ourTexture"), 0);
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(PVM));
+    
+  
+    Shader::SetVec4("colorTint", color.x, color.y, color.z, color.w, shaderShape);
+    
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, 0, GL_UNSIGNED_INT, 0);
+    // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+    //glDrawElements(GL_TRIANGLES, sizeIndices, GL_UNSIGNED_INT, 0);
 }
 
