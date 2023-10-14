@@ -53,7 +53,8 @@
     <Folder Include="..\src\Entity\Shape\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\res\shaders\BasicShader.shader" />
+    <Compile Include="..\res\shaders\BasicShader.shader" />
+    <Compile Include="..\res\shaders\TextureShader.shader" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

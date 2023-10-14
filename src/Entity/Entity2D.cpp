@@ -29,14 +29,23 @@ void Entity2D::Draw()
 
 void Entity2D::SetPosition(Vec3 newPosition)
 {
+    tranlate = glm::mat4(1.0);
     glm::vec3 newPos = {newPosition.x, newPosition.y, newPosition.z};
+    position = newPos;
+    tranlate = glm::translate(tranlate, newPos);
+    UpdateMatrix();
+}
+void Entity2D::MovePosition(Vec3 newPosition)
+{
+    glm::vec3 newPos = {newPosition.x, newPosition.y, newPosition.z};
+    position = newPos;
     tranlate = glm::translate(tranlate, newPos);
     UpdateMatrix();
 }
 
 Vec3 Entity2D::GetPosition()
 {
-    return {tranlate[0][3], tranlate[1][3], tranlate[2][3]};
+    return {model[0][3], model[1][3], model[2][3]};
 }
 
 void Entity2D::SetRotationX(float angle)

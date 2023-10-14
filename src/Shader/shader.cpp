@@ -101,6 +101,7 @@ ShaderProgramSource Shader::ParseShader(const string& filepath,ShaderUsed shader
     }
     catch (ios::failure& exception)
     {
+        std::cout << endl << "Couldnt Load Shader, using default one." << endl;
         if (shaderUsed == ShaderUsed::Shapes)
         {
             string vertexShader = R"(#version 330 core
@@ -130,24 +131,35 @@ void main()
         {
             string vertexShader = R"(#version 330 core
 
-layout(location = 0) in vec4 position;
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec4 aColor;
+layout (location = 2) in vec2 aTexCoord;
 
-uniform mat4 transform;
+uniform mat4 MVP;
+
+out vec4 ourColor;
+out vec2 TexCoord;
 
 void main()
 {
-	gl_Position = transform * position;
+    gl_Position = MVP * position;
+    ourColor = aColor;
+    TexCoord = vec2(aTexCoord.x, aTexCoord.y);
 };
 )";
             string fragmentShader = R"(#version 330 core
 
-layout(location = 0) out vec4 color;
-uniform vec4 colorTint;
+out vec4 FragColor;
+
+in vec4 ourColor;
+in vec2 TexCoord;
+
+uniform sampler2D ourTexture;
 
 void main()
 {
-   color = vec4(colorTint.x,colorTint.y,colorTint.z,colorTint.w);
-};)";
+    FragColor = texture(ourTexture, TexCoord);
+})";
 
             return {vertexShader, fragmentShader};
         }

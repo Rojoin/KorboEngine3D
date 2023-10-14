@@ -14,6 +14,7 @@ public:
     ~Entity2D() override;
     void Draw() override;
     void SetPosition(Vec3 newPosition);
+    void MovePosition(Vec3 newPosition);
     Vec3 GetPosition();
     void SetRotationX(float angle);
     void SetRotationY(float angle);
@@ -28,7 +29,8 @@ protected:
     //Vertex buffer Object
     unsigned int VBO;
     int vertexSize;
-    int atribVertexSize = 3;
+    int atribPosSize = 3;
+    int atribColorSize = 4;
     float* vertexPositions;
 
     unsigned int textureId;
@@ -45,6 +47,8 @@ protected:
     glm::mat4 tranlate;
     glm::mat4 rotation;
     glm::mat4 scale;
+    //Transform Vectors
+    glm::vec3 position;
 
     void UpdateMatrix();
 };
