@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Base Game\Engine.cpp" />
+    <ClCompile Include="..\src\Colitions\Colitions.cpp" />
     <ClCompile Include="..\src\Entity\Entity.cpp" />
     <ClCompile Include="..\src\Entity\Entity2D.cpp" />
     <ClCompile Include="..\src\Input\Input.cpp" />
@@ -33,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Base Game\Engine.h" />
+    <ClInclude Include="..\src\Colitions\Colitions.h" />
     <ClInclude Include="..\src\Entity\Entity.h" />
     <ClInclude Include="..\src\Entity\Entity2D.h" />
     <ClInclude Include="..\src\Globals\dllHeader.h" />
