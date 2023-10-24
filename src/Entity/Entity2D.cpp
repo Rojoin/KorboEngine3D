@@ -45,7 +45,12 @@ void Entity2D::MovePosition(Vec3 newPosition)
 
 Vec3 Entity2D::GetPosition()
 {
-    return {model[0][3], model[1][3], model[2][3]};
+    glm::vec3 tempPos = glm::vec3(model[3]);
+    //tempPos.x = tranlate[0][3];
+    //tempPos.y = tranlate[1][3];
+    //tempPos.z = tranlate[2][3];
+    //= {model[0][3], model[1][3], model[2][3]};
+    return (tempPos);
 }
 
 void Entity2D::SetRotationX(float angle)

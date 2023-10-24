@@ -11,6 +11,7 @@ public:
         y = 0;
         z = 0;
     }
+
     Vec3(float newX, float newY, float newZ)
     {
         x = newX;
@@ -19,6 +20,20 @@ public:
     }
 
     Vec3(Vec3& newVec)
+    {
+        x = newVec.x;
+        y = newVec.y;
+        z = newVec.z;
+    }
+
+    Vec3(glm::vec3& newVec)
+    {
+        x = newVec.x;
+        y = newVec.y;
+        z = newVec.z;
+    }
+
+    Vec3(glm::vec3 newVec)
     {
         x = newVec.x;
         y = newVec.y;

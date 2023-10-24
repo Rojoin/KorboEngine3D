@@ -8,6 +8,7 @@ class Game final : public Korbo::Engine
 private:
     Entity2D* aux;
     Entity2D* aux2;
+    Entity2D* aux3;
     int windowWidth = 800;
     int windowHeight = 400;
 public:
