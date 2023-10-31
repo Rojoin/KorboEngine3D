@@ -36,7 +36,6 @@ protected:
     unsigned int textureId;
     int uvSize;
     int atribUVSize = 2;
-    float* uvPositions;
 
     //Elements buffer Object
     unsigned int EBO;

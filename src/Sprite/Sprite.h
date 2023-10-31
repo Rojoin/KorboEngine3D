@@ -8,7 +8,7 @@ private:
     int height;
     int nrChannels;
 public:
-    Sprite(Renderer* renderer,Vec4 color,  Vec3 position,  Vec3 newScale,const char* imagePath, int width,int height);
+    Sprite(Renderer* renderer, Vec4 color, Vec3 position, Vec3 newScale, const char* imagePath);
     int getWidth();
     int getHeight();
     void Draw() override;
