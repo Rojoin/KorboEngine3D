@@ -17,9 +17,8 @@ Game::~Game()
 void Game::init() 
 {
     const char* filePath = "../res/images/test.png";
-    aux2 = new Triangle(getRenderer(),{windowWidth/2.0f,windowHeight/2.0f,0.0f},{100,100,0});
-    aux3 = new Triangle(getRenderer(),{aux2->GetPosition().x,aux2->GetPosition().y,aux2->GetPosition().z},{50,50,0});
-    aux = new Sprite(getRenderer(),{1,1,1,1},{windowWidth/2.0f,windowHeight/2.0f,0.0f},{600,600,0},filePath,1024,1024);
+   
+    aux = new Sprite(getRenderer(),{1,1,1,1},{windowWidth/2.0f,windowHeight/2.0f,0.0f},{600,600,0},filePath);
     //aux = new Square(getRenderer(),{1,1,1,1},{windowWidth/2.0f,windowHeight/2.0f,0.0f},{100,100,0});
     
  
@@ -57,8 +56,8 @@ void Game::update()
 
     
 
-    aux2->Draw();
-    aux3->Draw();
+    aux->Draw();
+    
 
 
     

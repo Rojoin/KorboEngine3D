@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\Animation\Animation.cpp" />
+    <ClCompile Include="..\src\Animation\Frame.cpp" />
     <ClCompile Include="..\src\Base Game\Engine.cpp" />
     <ClCompile Include="..\src\Colitions\Colitions.cpp" />
     <ClCompile Include="..\src\Entity\Entity.cpp" />
@@ -33,6 +35,8 @@
     <ClCompile Include="..\src\Window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\Animation\Animation.h" />
+    <ClInclude Include="..\src\Animation\Frame.h" />
     <ClInclude Include="..\src\Base Game\Engine.h" />
     <ClInclude Include="..\src\Colitions\Colitions.h" />
     <ClInclude Include="..\src\Entity\Entity.h" />
