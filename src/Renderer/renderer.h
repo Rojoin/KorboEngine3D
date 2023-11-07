@@ -32,6 +32,8 @@ public:
                          unsigned& VAO, unsigned& VBO, unsigned& EBO, int atribColorSize, int atribUVSize);
     void createTextureBinder(unsigned& textureId, const char* imagePath);
     void createTextureBinder(unsigned& textureId, const char* imagePath, int& width, int& height);
+    void createTextureBinder(unsigned& textureId, const char* imagePath, int& width, int& height,
+                             GLint textureWrapping);
     void DrawEntity2D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4x4 model) const;
     void DrawSprite2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 model, unsigned int& texture) const;
 
