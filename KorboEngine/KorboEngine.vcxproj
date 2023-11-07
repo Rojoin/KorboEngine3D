@@ -25,6 +25,7 @@
     <ClCompile Include="..\src\Colitions\Colitions.cpp" />
     <ClCompile Include="..\src\Entity\Entity.cpp" />
     <ClCompile Include="..\src\Entity\Entity2D.cpp" />
+    <ClCompile Include="..\src\Globals\Time.cpp" />
     <ClCompile Include="..\src\Input\Input.cpp" />
     <ClCompile Include="..\src\Renderer\renderer.cpp" />
     <ClCompile Include="..\src\Shader\shader.cpp" />
@@ -42,6 +43,7 @@
     <ClInclude Include="..\src\Entity\Entity.h" />
     <ClInclude Include="..\src\Entity\Entity2D.h" />
     <ClInclude Include="..\src\Globals\dllHeader.h" />
+    <ClInclude Include="..\src\Globals\Time.h" />
     <ClInclude Include="..\src\Globals\Vec3.h" />
     <ClInclude Include="..\src\Globals\Vec4.h" />
     <ClInclude Include="..\src\Input\Input.h" />
