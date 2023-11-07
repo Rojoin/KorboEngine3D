@@ -21,7 +21,7 @@ void Game::init()
     aux = new Sprite(getRenderer(), {1, 1, 1, 1}, {windowWidth / 2.0f, windowHeight / 2.0f, 0.0f}, {400, 400, 0},
                      filePath,GL_NEAREST);
     //aux = new Square(getRenderer(),{1,1,1,1},{windowWidth/2.0f,windowHeight/2.0f,0.0f},{100,100,0});
-    Animation animation = Animation(4, 0.5f, 136, 25, 136 / 4, 25);
+    Animation animation = Animation(4, 1.2f, 120, 22, 120 / 4, 22);
     aux->ChangeAnimation(animation);
 }
 
