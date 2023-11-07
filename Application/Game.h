@@ -2,11 +2,12 @@
 #include "Base Game/Engine.h"
 #include "Shape/Triangle.h"
 #include "Shape/Square.h"
+#include "Sprite/Sprite.h"
 
 class Game final : public Korbo::Engine
 {
 private:
-    Entity2D* aux;
+    Sprite* aux;
     Entity2D* aux2;
     Entity2D* aux3;
     int windowWidth = 800;
