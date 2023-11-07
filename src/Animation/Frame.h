@@ -8,4 +8,5 @@ private :
     glm::vec2 uvCoord[maxFrameSize];
 public:
     glm::vec2 getUVCoord(int id);
+    Frame(glm::vec2 firstUV,glm::vec2 secondUV,glm::vec2 thirdUV,glm::vec2 fourthUV);
 };
