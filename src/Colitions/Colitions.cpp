@@ -11,19 +11,29 @@ Colitions::~Colitions()
     cout << "Colitions Deleted" << endl;
 }
 
-bool Colitions::SquareSquareColition(Square a, Square b)
+bool Colitions::CheckCollitions(Entity2D a, Entity2D b)
 {
-    return false;
+    // collision x-axis?
+    bool collisionX = a.GetPosition().x + a.GetScale().x >= b.GetPosition().x &&
+        b.GetPosition().x + b.GetScale().x >= a.GetPosition().x;
+    // collision y-axis?
+    bool collisionY = a.GetPosition().y + a.GetScale().y >= b.GetPosition().y &&
+        b.GetPosition().y + b.GetScale().y >= a.GetPosition().y;
+    // collision only if on both axes
+    return collisionX && collisionY;
 }
 
-bool Colitions::TriangleTriangleColition(Triangle a, Triangle b)
+bool Colitions::CheckCollitions(Entity2D *a, Entity2D *b)
 {
-    return false; 
-}
 
-bool Colitions::SquareTriangleColition(Square a, Triangle b)
-{
-    return false;
+    // collision x-axis?
+    bool collisionX = a->GetPosition().x + a->GetScale().x >= b->GetPosition().x &&
+        b->GetPosition().x + b->GetScale().x >= a->GetPosition().x;
+    // collision y-axis?
+    bool collisionY = a->GetPosition().y + a->GetScale().y >= b->GetPosition().y &&
+        b->GetPosition().y + b->GetScale().y >= a->GetPosition().y;
+    // collision only if on both axes
+    return collisionX && collisionY;
 }
 
 

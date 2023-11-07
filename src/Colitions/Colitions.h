@@ -1,13 +1,11 @@
 ﻿#pragma once
-#include "Shape/Square.h"
-#include "Shape/Triangle.h"
+#include "Entity/Entity2D.h"
 
-class Colitions
+class EXPORT Colitions
 {
 public:
     Colitions();
     ~Colitions();
-    bool SquareSquareColition(Square a,Square b);
-    bool TriangleTriangleColition(Triangle a,Triangle b);
-    bool SquareTriangleColition(Square a,Triangle b);
+    static bool CheckCollitions(Entity2D a,Entity2D b);
+    static bool CheckCollitions(Entity2D *a,Entity2D *b);
 };

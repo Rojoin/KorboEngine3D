@@ -4,6 +4,7 @@
 #include "Shape/Shape.h"
 #include "Window/window.h"
 #include "Input/Input.h"
+#include "Colitions/Colitions.h"
 
 
 namespace Korbo
