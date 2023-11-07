@@ -56,7 +56,7 @@ void Game::update()
         obj2->SetPosition(newPos2);
     }
 
-    if (Colitions::CheckCollitions(obj1,aux))
+    if (Colitions::CheckCollitions(obj1,obj2))
     {
         cout << "Collision" << endl;
     }
