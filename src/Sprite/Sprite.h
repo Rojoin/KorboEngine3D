@@ -11,6 +11,7 @@ private:
     Animation animation;
 public:
     Sprite(Renderer* renderer, Vec4 color, Vec3 position, Vec3 newScale, const char* imagePath);
+    Sprite(Renderer* renderer, Vec4 color, Vec3 position, Vec3 newScale, const char* imagePath, GLint textureFilter);
     int getWidth();
     int getHeight();
     void Draw() override;
