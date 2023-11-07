@@ -97,12 +97,17 @@ void Sprite::UpdateAnimation()
 {
     if (animation.hasFrames())
     {
+        animation.update();
         int numberOfUVS = 4;
         int strife = 7;
+        int row = 9;
         for (int i = 0; i < numberOfUVS; ++i)
         {
-            ChangeUVCoord(strife * (i+1), animation.currentFrame.getUVCoord(i));
+            ChangeUVCoord(strife + (i * row), animation.currentFrame->getUVCoord(i));
         }
+
+        renderer->CreateVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO,
+                                  atribColorSize, atribUVSize);
     }
 }
 
