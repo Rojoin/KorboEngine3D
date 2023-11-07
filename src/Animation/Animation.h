@@ -1,20 +1,24 @@
 ﻿#pragma once
+#include <list>
 #include <vector>
 
 #include "Frame.h"
-#include "Sprite/Sprite.h"
+#include "Globals/dllHeader.h"
 
 
-class final Animation
+class EXPORT Animation
 {
 public:
     Animation(int maxFrames, int frameTime, int spriteWidth, int spriteHeight, int frameWidth, int frameHeight);
     Animation();
     bool hasFrames();
-    Frame currentFrame;
+    void addFrames();
+    void update();
+    Frame* currentFrame;
+    std::list<Frame*> totalFrames;
     
 private:
-    vector<Frame> framesInAnimation;
+    std::vector<Frame> framesInAnimation;
     int spriteWidth;
     int spriteHeight;
     int frameWidth;
