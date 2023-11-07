@@ -1,7 +1,9 @@
 ﻿#include "Animation.h"
 
+#include "Globals/Time.h"
 
-Animation::Animation(int maxFrames, int frameTime, int spriteWidth, int spriteHeight, int frameWidth,
+
+Animation::Animation(int maxFrames, float frameTime, int spriteWidth, int spriteHeight, int frameWidth,
                      int frameHeight)
 {
     this->maxFramesInAnimation = maxFrames;
@@ -11,6 +13,7 @@ Animation::Animation(int maxFrames, int frameTime, int spriteWidth, int spriteHe
     this->frameWidth = frameWidth;
     this->frameHeight = frameHeight;
     addFrames();
+    currentTime = 0;
     currentFrame = totalFrames.front();
 }
 
@@ -46,11 +49,20 @@ void Animation::addFrames()
                                       (frameHeight / spriteHeightF));
 
         Frame* aux = new Frame(topRight, botRight, botLeft, topLeft);
-        totalFrames.push_front(aux);
+        totalFrames.push_back(aux);
     }
 }
 
 void Animation::update()
 {
-    currentFrame = totalFrames.front();
+    currentTime += Time::getDeltaTime();
+
+    while (currentTime > frameTime)
+    {
+        currentTime-= frameTime;
+    }
+
+    float frameLengh = (frameTime / maxFramesInAnimation);
+    currentFrameCounter = static_cast<int>(currentTime / frameLengh);
+   currentFrame = totalFrames[currentFrameCounter];
 }
