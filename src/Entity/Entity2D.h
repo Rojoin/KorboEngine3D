@@ -21,6 +21,7 @@ public:
     void SetRotationZ(float angle);
     void SetScale(Vec3 newScale);
     Vec3 GetScale();
+    Vec3 GetPreviousPosition();
 
 protected:
     //Vertex Array Object
@@ -51,5 +52,6 @@ protected:
 
     glm::vec3 previousPos;
 
+    void SetPosition(glm::vec3 newPosition);
     void UpdateMatrix();
 };

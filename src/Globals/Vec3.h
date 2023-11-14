@@ -39,4 +39,6 @@ public:
         y = newVec.y;
         z = newVec.z;
     }
+
+    
 };

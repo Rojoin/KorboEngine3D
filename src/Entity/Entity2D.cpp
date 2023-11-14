@@ -1,7 +1,7 @@
 #include "Entity2D.h"
 
 
-Entity2D::Entity2D(Renderer* renderer,Vec3 position,Vec3 newScale): Entity(renderer)
+Entity2D::Entity2D(Renderer* renderer, Vec3 position, Vec3 newScale): Entity(renderer)
 {
     model = glm::mat4(1.0f);
 
@@ -14,6 +14,7 @@ Entity2D::Entity2D(Renderer* renderer,Vec3 position,Vec3 newScale): Entity(rende
     scale = glm::scale(scale, glm::vec3(1, 1, scale[2][2]));
     UpdateMatrix();
     SetScale(newScale);
+    SetPosition(newPos);
 }
 
 
@@ -31,13 +32,25 @@ void Entity2D::SetPosition(Vec3 newPosition)
 {
     tranlate = glm::mat4(1.0);
     glm::vec3 newPos = {newPosition.x, newPosition.y, newPosition.z};
+    previousPos = position;
     position = newPos;
     tranlate = glm::translate(tranlate, newPos);
     UpdateMatrix();
 }
+void Entity2D::SetPosition(glm::vec3 newPosition)
+{
+    tranlate = glm::mat4(1.0);
+    glm::vec3 newPos = {newPosition.x, newPosition.y, newPosition.z};
+    previousPos = position;
+    position = newPos;
+    tranlate = glm::translate(tranlate, newPos);
+    UpdateMatrix();
+}
+
 void Entity2D::MovePosition(Vec3 newPosition)
 {
     glm::vec3 newPos = {newPosition.x, newPosition.y, newPosition.z};
+    previousPos = position;
     position = newPos;
     tranlate = glm::translate(tranlate, newPos);
     UpdateMatrix();
@@ -74,13 +87,18 @@ void Entity2D::SetRotationZ(float angle)
 void Entity2D::SetScale(Vec3 newScale)
 {
     scale = glm::mat4(1.0f);
-    scale = glm::scale(scale, glm::vec3(newScale.x, newScale.y,newScale.z));
+    scale = glm::scale(scale, glm::vec3(newScale.x, newScale.y, newScale.z));
     UpdateMatrix();
 }
 
 Vec3 Entity2D::GetScale()
 {
     return {scale[0][0], scale[1][1], scale[2][2]};
+}
+
+Vec3 Entity2D::GetPreviousPosition()
+{
+    return {previousPos.x, previousPos.y, previousPos.z};
 }
 
 void Entity2D::UpdateMatrix()
