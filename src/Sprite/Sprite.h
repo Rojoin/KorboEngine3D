@@ -17,6 +17,7 @@ public:
     void Draw() override;
     ~Sprite() override;
     void ChangeAnimation(Animation animation);
+    void ChangeAnimation();
     void UpdateAnimation();
     void ChangeUVCoord(int strife, glm::vec2 UVS);
 };

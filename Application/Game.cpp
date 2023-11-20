@@ -16,18 +16,20 @@ Game::~Game()
 
 void Game::init()
 {
-    const char* filePath = "../res/images/KirbySleepSpriteSheet.png";
+    //const char* filePath = "../res/images/KirbySleepSpriteSheet.png";
+    const char* filePath = "../res/images/Megaman.jpeg";
 
     aux = new Sprite(getRenderer(), {1, 1, 1, 1}, {windowWidth / 2.0f, windowHeight / 2.0f, 0.0f}, {400, 400, 0},
                      filePath,GL_NEAREST);
     obj1 = new Square(getRenderer(),{1,1,1,1},{windowWidth/4.0f,windowHeight/2.0f,0.0f},{100,100,0});
     obj2 = new Square(getRenderer(),{1,1,0,1},{windowWidth/2.0f,windowHeight/2.0f,0.0f},{100,100,0});
-    Animation animation = Animation(4, 1.2f, 120, 22, 120 / 4, 22);
-    aux->ChangeAnimation(animation);
 }
 
 void Game::update()
 {
+    Animation animation = Animation(0,-1,5, 1.2f, 660, 279, 660 / 5, 279 / 2);
+
+
     Vec3 newPos = {obj1->GetPosition().x, obj1->GetPosition().y, obj1->GetPosition().z};
     Vec3 newPos2 = {0, 0, 0};
 
@@ -35,12 +37,22 @@ void Game::update()
     {
         newPos .x -=1.0f;
         obj1->SetPosition(newPos);
+        
+        aux->ChangeAnimation(animation);
     }
+    else
+    {
+        aux->ChangeAnimation();
+    }
+    
     if (input->isKeyPressed(KeyKode::KEY_W))
     {
         newPos .y +=1.0f;
         obj1->SetPosition(newPos);
-    }if (input->isKeyPressed(KeyKode::KEY_S))
+        aux->ChangeAnimation();
+    }
+
+    if (input->isKeyPressed(KeyKode::KEY_S))
     {
         newPos .y -= 1.0f;
         obj1->SetPosition(newPos);
@@ -70,8 +82,8 @@ void Game::update()
         cout << "Collision" << endl;
     }
     
-     //aux->UpdateAnimation();
-    // aux->Draw();
+    aux->UpdateAnimation();
+    aux->Draw();
     obj1->Draw();
     obj2->Draw();
 }

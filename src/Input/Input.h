@@ -12,6 +12,7 @@ public:
     
     bool isKeyPressed(KeyKode keycode);
     bool isKeyRepeated(KeyKode keycode);
+    void callBack(GLFWwindow* window, int key, int scancode, int action, int mods);
     bool isKeyReleased(KeyKode keycode);
     
 private:

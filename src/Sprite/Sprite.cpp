@@ -90,7 +90,15 @@ Sprite::~Sprite()
 
 void Sprite::ChangeAnimation(Animation animation)
 {
+    if (this->animation == animation)
+        return;
+    
     this->animation = animation;
+}
+
+void Sprite::ChangeAnimation()
+{
+    this->animation = Animation();
 }
 
 void Sprite::UpdateAnimation()

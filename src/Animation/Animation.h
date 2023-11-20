@@ -9,11 +9,13 @@
 class EXPORT Animation
 {
 public:
-    Animation(int maxFrames, float frameTime, int spriteWidth, int spriteHeight, int frameWidth, int frameHeight);
+    Animation(int initialX, int initialY, int maxFrames, float maxAnimationTime, int spriteWidth, int spriteHeight,
+              int frameWidth, int frameHeight);
     Animation();
     bool hasFrames();
     void addFrames();
     void update();
+    bool operator==(const Animation& animation) const;
     Frame* currentFrame;
     std::vector<Frame*> totalFrames;
     
@@ -25,6 +27,8 @@ private:
     int frameHeight;
     int currentFrameCounter;
     int maxFramesInAnimation;
-    float frameTime;
+    float maxAnimationTime;
     float currentTime;
+    int initialX;
+    int initialY;
 };
