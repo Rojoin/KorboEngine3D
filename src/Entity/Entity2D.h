@@ -14,6 +14,7 @@ public:
     ~Entity2D() override;
     void Draw() override;
     void SetPosition(Vec3 newPosition);
+    void SetPreviousPosition();
     void MovePosition(Vec3 newPosition);
     Vec3 GetPosition();
     void SetRotationX(float angle);

@@ -9,6 +9,8 @@ Entity2D::Entity2D(Renderer* renderer, Vec3 position, Vec3 newScale): Entity(ren
     scale = glm::mat4(1.0f);
     rotation = glm::mat4(1.0f);
     glm::vec3 newPos(position.x, position.y, position.z);
+    position = {newPos.x,newPos.y, newPos.z};
+    previousPos =  glm::vec3(position.x, position.y, position.z);
     tranlate = glm::translate(tranlate, newPos);
     rotation = glm::rotate(rotation, glm::radians(0.0f), glm::vec3(0.0, 0.0, 1.0));
     scale = glm::scale(scale, glm::vec3(1, 1, scale[2][2]));
@@ -37,11 +39,18 @@ void Entity2D::SetPosition(Vec3 newPosition)
     tranlate = glm::translate(tranlate, newPos);
     UpdateMatrix();
 }
+void Entity2D::SetPreviousPosition()
+{
+    tranlate = glm::mat4(1.0);
+    position = previousPos;
+    tranlate = glm::translate(tranlate, previousPos);
+    UpdateMatrix();
+}
 void Entity2D::SetPosition(glm::vec3 newPosition)
 {
     tranlate = glm::mat4(1.0);
     glm::vec3 newPos = {newPosition.x, newPosition.y, newPosition.z};
-    previousPos = position;
+    previousPos =  glm::vec3(newPosition.x, newPosition.y, newPosition.z);
     position = newPos;
     tranlate = glm::translate(tranlate, newPos);
     UpdateMatrix();

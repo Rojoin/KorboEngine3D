@@ -34,10 +34,10 @@ bool Colitions::CheckCollitions(Entity2D* a, Entity2D* b)
     // collision only if on both axes
     if (collisionX && collisionY)
     {
-        Vec3 aux = {a->GetPreviousPosition().x, a->GetPreviousPosition().y, a->GetPreviousPosition().z};
-        a->SetPosition(aux);
-        aux = {b->GetPreviousPosition().x, b->GetPreviousPosition().y, b->GetPreviousPosition().z};
-        b->SetPosition(aux);
+        
+        a->SetPreviousPosition();
+   
+        b->SetPreviousPosition();
         return true;
     }
     return false;
