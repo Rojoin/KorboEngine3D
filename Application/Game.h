@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include <map>
+
 #include "Base Game/Engine.h"
 #include "Shape/Triangle.h"
 #include "Shape/Square.h"
@@ -10,6 +12,7 @@ private:
     Sprite* aux;
     Entity2D* obj1;
     Entity2D* obj2;
+    map<string, Animation> Animator;
     int windowWidth = 800;
     int windowHeight = 400;
 public:
