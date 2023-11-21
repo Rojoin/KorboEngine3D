@@ -44,13 +44,13 @@ void Animation::addFrames()
     for (int i = 0; i < maxFramesInAnimation; ++i)
     {
         glm::vec2 topRight = glm::vec2((initialX + (i * frameWidth) + frameWidth) / spriteWidthF,
-                                       ((initialY + frameHeight) / spriteHeightF));
+                                       (initialY + frameHeight) / spriteHeightF);
         
         glm::vec2 botRight = glm::vec2((initialX + (i * frameWidth) + frameWidth) / spriteWidthF,
-                                       initialY);
+                                       initialY/spriteHeightF);
         
         glm::vec2 botLeft = glm::vec2((initialX + i * frameWidth) / spriteWidthF,
-                                      initialY);
+                                      initialY/spriteHeightF);
         
         glm::vec2 topLeft = glm::vec2((initialX + i * frameWidth) / spriteWidthF,
                                       ((initialY + frameHeight) / spriteHeightF));
