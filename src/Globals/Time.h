@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-static class Time
+
+ static class Time
 {
 
 public:

@@ -50,7 +50,7 @@ protected:
     glm::mat4 scale;
     //Transform Vectors
     glm::vec3 position;
-
+    glm::vec3 scaleVector;
     glm::vec3 previousPos;
 
     void SetPosition(glm::vec3 newPosition);

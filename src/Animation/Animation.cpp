@@ -73,7 +73,7 @@ void Animation::update()
     currentFrameCounter = static_cast<int>(currentTime / frameLengh);
    currentFrame = totalFrames[currentFrameCounter];
     
-    std::cout << "Current Time : " << currentTime << std::endl;
+  //  std::cout << "Current Time : " << currentTime << std::endl;
 }
 
 bool Animation::operator==(const Animation& animation) const

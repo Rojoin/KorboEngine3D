@@ -4,7 +4,7 @@
 Entity2D::Entity2D(Renderer* renderer, Vec3 position, Vec3 newScale): Entity(renderer)
 {
     model = glm::mat4(1.0f);
-
+    scaleVector = glm::vec3(newScale.x,newScale.y,newScale.z);
     tranlate = glm::mat4(1.0f);
     scale = glm::mat4(1.0f);
     rotation = glm::mat4(1.0f);
@@ -13,7 +13,7 @@ Entity2D::Entity2D(Renderer* renderer, Vec3 position, Vec3 newScale): Entity(ren
     previousPos =  glm::vec3(position.x, position.y, position.z);
     tranlate = glm::translate(tranlate, newPos);
     rotation = glm::rotate(rotation, glm::radians(0.0f), glm::vec3(0.0, 0.0, 1.0));
-    scale = glm::scale(scale, glm::vec3(1, 1, scale[2][2]));
+  
     UpdateMatrix();
     SetScale(newScale);
     SetPosition(newPos);
@@ -96,13 +96,14 @@ void Entity2D::SetRotationZ(float angle)
 void Entity2D::SetScale(Vec3 newScale)
 {
     scale = glm::mat4(1.0f);
+    scaleVector = glm::vec3(newScale.x,newScale.y,newScale.z);
     scale = glm::scale(scale, glm::vec3(newScale.x, newScale.y, newScale.z));
     UpdateMatrix();
 }
 
 Vec3 Entity2D::GetScale()
 {
-    return {scale[0][0], scale[1][1], scale[2][2]};
+    return { scaleVector.x,scaleVector.y,scaleVector.z };
 }
 
 Vec3 Entity2D::GetPreviousPosition()
