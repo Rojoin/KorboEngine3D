@@ -1,4 +1,6 @@
 #include "Engine.h"
+
+#include "Globals/Time.h"
 #include "Shape/Square.h"
 #include "Shape/Triangle.h"
 
@@ -51,6 +53,7 @@ void Engine::gameLoop()
 {
     while (!glfwWindowShouldClose(window->getWindow()))
     {
+        Time::setTime();
         renderer->BeginDrawing();
         update();
         renderer->EndDrawing();
