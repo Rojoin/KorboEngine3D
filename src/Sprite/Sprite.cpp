@@ -113,7 +113,7 @@ void Sprite::UpdateAnimation()
         {
             ChangeUVCoord(strife + (i * row), animation.currentFrame->getUVCoord(i));
         }
-
+        renderer->DeleteObjects(VAO, VBO, EBO);
         renderer->CreateVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO,
                                   atribColorSize, atribUVSize);
     }

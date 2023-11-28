@@ -23,6 +23,8 @@ Entity2D::Entity2D(Renderer* renderer, Vec3 position, Vec3 newScale): Entity(ren
 Entity2D::~Entity2D()
 {
     renderer->DeleteObjects(VAO, VBO, EBO);
+    delete vertexPositions;
+    delete indices;
 }
 
 void Entity2D::Draw()

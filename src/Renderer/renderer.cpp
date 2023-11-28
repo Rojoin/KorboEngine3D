@@ -165,7 +165,7 @@ void Renderer::createTextureBinder( unsigned int& textureId, const char* imagePa
     }
     else
     {
-        std::cout << "Image couldnt be loaded.";
+        std::cout << "Image couldn't be loaded.";
     }
         glGenerateMipmap(GL_TEXTURE_2D);
 
