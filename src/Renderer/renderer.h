@@ -5,6 +5,7 @@
 #include <iostream>
 #include <glm/mat4x4.hpp>
 
+#include "Camera/Camera.h"
 #include "Globals/Vec4.h"
 #include "Window/window.h"
 
@@ -16,7 +17,9 @@ using namespace std;
 class EXPORT Renderer
 {
 public:
+    glm::mat4x4 view;
     Renderer(Window* window);
+    Renderer(Window* window, Camera* mainCamera);
     Renderer(Window* window, GLbitfield mask);
     ~Renderer();
     void DeleteObjects(unsigned int& VAO, unsigned int& VBO, unsigned int& EBO);
@@ -44,6 +47,6 @@ private:
     GLuint shaderShape;
     GLuint shaderSprite;
     glm::mat4x4 model;
-    glm::mat4x4 view;
     glm::mat4x4 projection;
+    Camera* camera;
 };
