@@ -58,9 +58,6 @@
     <ClInclude Include="..\src\Window\window.h" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="..\src\Entity\Shape\" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\res\shaders\BasicShader.shader" />
     <Compile Include="..\res\shaders\TextureShader.shader" />
   </ItemGroup>

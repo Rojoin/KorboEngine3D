@@ -33,6 +33,7 @@ void Game::init()
     Animator.insert_or_assign("Idle", animationPlayerIdle);
     Animator.insert_or_assign("cartel", animationCartel);
     cartel->ChangeAnimation(Animator["cartel"]);
+    player1->ChangeAnimation(Animator["Right"]);
 
 }
 
@@ -119,9 +120,9 @@ if (input->isKeyPressed(KeyKode::KEY_Q))
     }
 
     player1->UpdateAnimation();
-    player1->Draw();
     cartel->UpdateAnimation();
     cartel->Draw();
+    player1->Draw();
 }
 
 void Game::exit()

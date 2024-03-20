@@ -1,4 +1,3 @@
-
 #include "renderer.h"
 
 #include <glm/gtc/type_ptr.hpp>
@@ -23,7 +22,8 @@ Renderer::Renderer(Window* window)
 
 
     //projection = glm::ortho(0.0f, window->getWidth(), 0.0f, window->getHeight(), 0.1f, 100.0f); // Orthograpic
-    projection = glm::perspective(glm::radians(45.0f), (float)window->getWidth()/(float) window->getHeight(), 0.1f, 2000.0f);
+    projection = glm::perspective(glm::radians(45.0f), (float)window->getWidth() / (float)window->getHeight(), 0.1f,
+                                  2000.0f);
 
     glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 1.0f);
     view = glm::lookAt(cameraPos, {0, 0, 0}, {0, 1, 0});
@@ -31,17 +31,24 @@ Renderer::Renderer(Window* window)
 
     ShaderProgramSource source = Shader::ParseShader("../res/shaders/BasicShader.shader", ShaderUsed::Shapes);
     shaderShape = Shader::CreateShader(source.vertexSource, source.fragmentSource);
-    
-  ShaderProgramSource  source2 = Shader::ParseShader("../res/shaders/TextureShader.shader", ShaderUsed::Sprites);
+
+    ShaderProgramSource source2 = Shader::ParseShader("../res/shaders/TextureShader.shader", ShaderUsed::Sprites);
     shaderSprite = Shader::CreateShader(source2.vertexSource, source2.fragmentSource);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    
+    glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
+    glEnable(GL_SAMPLE_ALPHA_TO_ONE);
     
     glEnable(GL_BLEND); //Transparency
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS ); 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.1f);
     glUseProgram(shaderShape);
     glUseProgram(shaderSprite);
     cout << "Renderer Created" << endl;
+    
 }
 
 Renderer::~Renderer()
@@ -71,7 +78,7 @@ void Renderer::BeginDrawing()
 {
     /* Render here */
     //glClear(mask);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 
@@ -124,7 +131,7 @@ void Renderer::CreateVecBuffer(float* positions, int* indices, int positionsSize
 
     glVertexAttribPointer(0, atribVertexSize, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    
+
     glVertexAttribPointer(1, atribColorSize, GL_FLOAT, GL_FALSE, 9 * sizeof(float),
                           (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
@@ -132,10 +139,9 @@ void Renderer::CreateVecBuffer(float* positions, int* indices, int positionsSize
     glVertexAttribPointer(2, atribUVSize, GL_FLOAT, GL_FALSE, 9 * sizeof(float),
                           (void*)((7) * sizeof(float)));
     glEnableVertexAttribArray(2);
-    
 }
 
-void Renderer::createTextureBinder( unsigned int& textureId, const char* imagePath)
+void Renderer::createTextureBinder(unsigned int& textureId, const char* imagePath)
 {
     glGenTextures(1, &textureId);
     glBindTexture(GL_TEXTURE_2D, textureId);
@@ -155,12 +161,13 @@ void Renderer::createTextureBinder( unsigned int& textureId, const char* imagePa
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     else if (nrChannels == 3)
     {
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1); 
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 4); 
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
     }
     else if (nrChannels == 2)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE,
+                     data);
     else if (nrChannels == 1)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width, height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
     if (data)
@@ -171,13 +178,12 @@ void Renderer::createTextureBinder( unsigned int& textureId, const char* imagePa
     {
         std::cout << "Image couldn't be loaded.";
     }
-        glGenerateMipmap(GL_TEXTURE_2D);
+    glGenerateMipmap(GL_TEXTURE_2D);
 
     stbi_image_free(data);
-
-    
 }
-void Renderer::createTextureBinder( unsigned int& textureId, const char* imagePath,int& width, int& height)
+
+void Renderer::createTextureBinder(unsigned int& textureId, const char* imagePath, int& width, int& height)
 {
     glGenTextures(1, &textureId);
     glBindTexture(GL_TEXTURE_2D, textureId);
@@ -197,12 +203,13 @@ void Renderer::createTextureBinder( unsigned int& textureId, const char* imagePa
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     else if (nrChannels == 3)
     {
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1); 
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 4); 
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
     }
     else if (nrChannels == 2)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE,
+                     data);
     else if (nrChannels == 1)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width, height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
     if (data)
@@ -213,14 +220,13 @@ void Renderer::createTextureBinder( unsigned int& textureId, const char* imagePa
     {
         std::cout << "Image couldnt be loaded.";
     }
-        glGenerateMipmap(GL_TEXTURE_2D);
+    glGenerateMipmap(GL_TEXTURE_2D);
 
     stbi_image_free(data);
-
-    
 }
 
-void Renderer::createTextureBinder( unsigned int& textureId, const char* imagePath,int& width, int& height,GLint textureWrapping)
+void Renderer::createTextureBinder(unsigned int& textureId, const char* imagePath, int& width, int& height,
+                                   GLint textureWrapping)
 {
     glGenTextures(1, &textureId);
     glBindTexture(GL_TEXTURE_2D, textureId);
@@ -240,12 +246,13 @@ void Renderer::createTextureBinder( unsigned int& textureId, const char* imagePa
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     else if (nrChannels == 3)
     {
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1); 
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 4); 
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
     }
     else if (nrChannels == 2)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE,
+                     data);
     else if (nrChannels == 1)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width, height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
     if (data)
@@ -256,11 +263,9 @@ void Renderer::createTextureBinder( unsigned int& textureId, const char* imagePa
     {
         std::cout << "Image couldnt be loaded.";
     }
-        glGenerateMipmap(GL_TEXTURE_2D);
+    glGenerateMipmap(GL_TEXTURE_2D);
 
     stbi_image_free(data);
-
-    
 }
 
 void Renderer::DrawEntity2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 model) const
@@ -269,7 +274,6 @@ void Renderer::DrawEntity2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::
     glUseProgram(shaderShape);
     unsigned int transformLoc = glGetUniformLocation(shaderShape, "transform");
 
-   
 
     glm::mat4 PVM = projection * view * model;
 
@@ -284,16 +288,15 @@ void Renderer::DrawEntity2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::
 
 void Renderer::DrawSprite2D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4x4 model, unsigned& texture) const
 {
-   
     glUseProgram(shaderSprite);
-  
-    
+
+
     unsigned int transformLoc = glGetUniformLocation(shaderSprite, "MVP");
 
     glm::mat4 PVM = projection * view * model;
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(PVM));
-    
+
     glBindVertexArray(VAO);
-    glBindTexture(GL_TEXTURE_2D,texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(nullptr));
 }
