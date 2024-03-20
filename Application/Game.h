@@ -11,7 +11,6 @@ class Game final : public Korbo::Engine
 private:
     Sprite* player1;
     Sprite* cartel;
-    Sprite* fondo;
     Entity2D* obj1;
     Entity2D* obj2;
     map<string, Animation> Animator;

@@ -22,7 +22,8 @@ Renderer::Renderer(Window* window)
     this->mask = GL_COLOR_BUFFER_BIT;
 
 
-    projection = glm::ortho(0.0f, window->getWidth(), 0.0f, window->getHeight(), 0.1f, 100.0f); // Orthograpic
+    //projection = glm::ortho(0.0f, window->getWidth(), 0.0f, window->getHeight(), 0.1f, 100.0f); // Orthograpic
+    projection = glm::perspective(glm::radians(45.0f), (float)window->getWidth()/(float) window->getHeight(), 0.1f, 2000.0f);
 
     glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 1.0f);
     view = glm::lookAt(cameraPos, {0, 0, 0}, {0, 1, 0});
@@ -35,6 +36,8 @@ Renderer::Renderer(Window* window)
     shaderSprite = Shader::CreateShader(source2.vertexSource, source2.fragmentSource);
     
     glEnable(GL_BLEND); //Transparency
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS ); 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glUseProgram(shaderShape);
     glUseProgram(shaderSprite);
@@ -67,7 +70,8 @@ void Renderer::EndDrawing()
 void Renderer::BeginDrawing()
 {
     /* Render here */
-    glClear(mask);
+    //glClear(mask);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  
 }
 
 
