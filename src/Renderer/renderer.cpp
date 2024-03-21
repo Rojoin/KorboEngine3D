@@ -15,50 +15,7 @@ Renderer::Renderer(Window* window, GLbitfield mask)
     cout << "Renderer Created" << endl;
 }
 
-Renderer::Renderer(Window* window)
-{
-    this->GLFWW = window;
-    this->mask = GL_COLOR_BUFFER_BIT;
-    
-    projection = glm::perspective(glm::radians(45.0f), (float)window->getWidth() / (float)window->getHeight(), 0.1f,
-                                  2000.0f);
 
-    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 1.0f);
-    glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-    glm::vec3 cameraDirection = glm::normalize(cameraPos-cameraTarget);
-
-    glm::vec3 up = glm::vec3(0, 1, 0);
-    
-    glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
-    glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
-    
-    view = glm::lookAt(cameraPos, cameraPos + cameraFront, up);
-
-    
-    ShaderProgramSource source = Shader::ParseShader("../res/shaders/BasicShader.shader", ShaderUsed::Shapes);
-    shaderShape = Shader::CreateShader(source.vertexSource, source.fragmentSource);
-    ShaderProgramSource source2 = Shader::ParseShader("../res/shaders/TextureShader.shader", ShaderUsed::Sprites);
-    shaderSprite = Shader::CreateShader(source2.vertexSource, source2.fragmentSource);
-
-
-    
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
-    
-    glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
-    glEnable(GL_SAMPLE_ALPHA_TO_ONE);
-    
-    glEnable(GL_BLEND); //Transparency
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, 0.1f);
-    glUseProgram(shaderShape);
-    glUseProgram(shaderSprite);
-    cout << "Renderer Created" << endl;
-    
-}
 Renderer::Renderer(Window* window, Camera* camera)
 {
     this->GLFWW = window;
@@ -66,17 +23,6 @@ Renderer::Renderer(Window* window, Camera* camera)
     this->camera = camera;
     projection = glm::perspective(glm::radians(45.0f), (float)window->getWidth() / (float)window->getHeight(), 0.1f,
                                   2000.0f);
-
-    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 1.0f);
-    glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-    glm::vec3 cameraDirection = glm::normalize(cameraPos-cameraTarget);
-
-    glm::vec3 up = glm::vec3(0, 1, 0);
-    
-    glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
-    glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
-
     
     view = camera->getViewMatrix();
 

@@ -18,7 +18,6 @@ class EXPORT Renderer
 {
 public:
     glm::mat4x4 view;
-    Renderer(Window* window);
     Renderer(Window* window, Camera* mainCamera);
     Renderer(Window* window, GLbitfield mask);
     ~Renderer();
