@@ -5,19 +5,22 @@
 #include "Shape/Triangle.h"
 
 using namespace Korbo;
- Engine::Engine(int windowWidth,int windowHeight)
+
+Camera* newCamera;
+
+Engine::Engine(int windowWidth, int windowHeight)
 {
-    initGame(windowWidth,windowHeight);
+    initGame(windowWidth, windowHeight);
 }
 
- Engine::~Engine()
+Engine::~Engine()
 {
     endGame();
 }
 
 Renderer* Engine::getRenderer()
 {
-     return renderer;
+    return renderer;
 }
 
 void Engine::init()
@@ -32,7 +35,7 @@ void Engine::exit()
 {
 }
 
-void Engine::initGame(int windowWhidth,int windowHeight)
+void Engine::initGame(int windowWhidth, int windowHeight)
 {
     /* Initialize the library */
     if (!glfwInit())
@@ -45,8 +48,14 @@ void Engine::initGame(int windowWhidth,int windowHeight)
         glfwTerminate();
         return;
     }
-    renderer = new Renderer(window);
+
+    camera = new Camera();
+
+    newCamera = camera;
+    renderer = new Renderer(window, camera);
     input = new Input(window->getWindow());
+    glfwSetInputMode(window->getWindow(),GLFW_CURSOR,GLFW_CURSOR_HIDDEN);
+    glfwSetCursorPosCallback(window->getWindow(), mouse_callback);
 }
 
 void Engine::gameLoop()
@@ -55,6 +64,8 @@ void Engine::gameLoop()
     {
         Time::setTime();
         renderer->BeginDrawing();
+        camera->checkKeywoardMovement(window->getWindow());
+        renderer->view = camera->getViewMatrix();
         update();
         renderer->EndDrawing();
     }
@@ -64,5 +75,26 @@ void Engine::endGame()
 {
     delete window;
     delete renderer;
+    delete camera;
     glfwTerminate();
+}
+
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
+{
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
+
+    if (newCamera->firstMouse)
+    {
+        newCamera->lastX = xpos;
+        newCamera->lastY = ypos;
+        newCamera->firstMouse = false;
+    }
+
+    float xoffset = xpos - newCamera->lastX;
+    float yoffset = newCamera->lastY - ypos;
+
+    newCamera->lastX = xpos;
+    newCamera->lastY = ypos;
+    newCamera->checkMouseMovement(xoffset, yoffset);
 }
