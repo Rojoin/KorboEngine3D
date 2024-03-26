@@ -21,25 +21,23 @@ Renderer::Renderer(Window* window, Camera* camera)
     this->GLFWW = window;
     this->mask = GL_COLOR_BUFFER_BIT;
     this->camera = camera;
-    projection = glm::perspective(glm::radians(45.0f), (float)window->getWidth() / (float)window->getHeight(), 0.1f,
-                                  2000.0f);
-    
+    projection = camera->getProjectionMatrix(window->getWidth(), window->getHeight());
+
     view = camera->getViewMatrix();
 
-    
+
     ShaderProgramSource source = Shader::ParseShader("../res/shaders/BasicShader.shader", ShaderUsed::Shapes);
     shaderShape = Shader::CreateShader(source.vertexSource, source.fragmentSource);
     ShaderProgramSource source2 = Shader::ParseShader("../res/shaders/TextureShader.shader", ShaderUsed::Sprites);
     shaderSprite = Shader::CreateShader(source2.vertexSource, source2.fragmentSource);
 
 
-    
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
-    
+
     glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
     glEnable(GL_SAMPLE_ALPHA_TO_ONE);
-    
+
     glEnable(GL_BLEND); //Transparency
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     //glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
@@ -48,7 +46,6 @@ Renderer::Renderer(Window* window, Camera* camera)
     glUseProgram(shaderShape);
     glUseProgram(shaderSprite);
     cout << "Renderer Created" << endl;
-    
 }
 
 Renderer::~Renderer()
@@ -67,17 +64,12 @@ void Renderer::DeleteObjects(unsigned& VAO, unsigned& VBO, unsigned& EBO)
 
 void Renderer::EndDrawing()
 {
-    /* Swap front and back buffers */
     glfwSwapBuffers(GLFWW->getWindow());
-
-    /* Poll for and process events */
     glfwPollEvents();
 }
 
 void Renderer::BeginDrawing()
 {
-    /* Render here */
-    //glClear(mask);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

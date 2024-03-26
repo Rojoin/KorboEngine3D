@@ -17,6 +17,7 @@ using namespace std;
 class EXPORT Renderer
 {
 public:
+    glm::mat4x4 projection;
     glm::mat4x4 view;
     Renderer(Window* window, Camera* mainCamera);
     Renderer(Window* window, GLbitfield mask);
@@ -46,6 +47,5 @@ private:
     GLuint shaderShape;
     GLuint shaderSprite;
     glm::mat4x4 model;
-    glm::mat4x4 projection;
     Camera* camera;
 };

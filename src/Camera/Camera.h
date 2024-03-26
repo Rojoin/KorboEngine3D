@@ -40,6 +40,7 @@ public:
            float yaw = YAW, float pitch = PITCH);
     void checkKeywoardMovement(GLFWwindow* window);
     glm::mat4 getViewMatrix();
+    glm::mat4 getProjectionMatrix(float width, float height);
     void checkMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
     void checkMouseScroll(float yoffset);
 

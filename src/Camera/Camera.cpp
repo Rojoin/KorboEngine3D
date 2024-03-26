@@ -48,6 +48,11 @@ glm::mat4 Camera::getViewMatrix()
     return glm::lookAt(Position, Position + Front, Up);
 }
 
+glm::mat4 Camera::getProjectionMatrix(float width, float height)
+{
+    return glm::perspective(glm::radians(Zoom), width / height, NEAR_PLANE, FAR_PLANE);
+}
+
 void Camera::checkMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch)
 {
     xoffset *= MouseSensitivityX;
@@ -63,7 +68,7 @@ void Camera::checkMouseMovement(float xoffset, float yoffset, GLboolean constrai
         if (Pitch < -89.0f)
             Pitch = -89.0f;
     }
-    
+
     updateCameraVectors();
 }
 
