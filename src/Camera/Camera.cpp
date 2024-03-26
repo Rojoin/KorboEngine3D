@@ -1,7 +1,13 @@
 ﻿#include "Camera.h"
 
-Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch): Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED),
-                                                                          MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
+
+
+#include "Globals/Time.h"
+
+Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch): Front(glm::vec3(0.0f, 0.0f, -1.0f)),
+                                                                          MovementSpeed(SPEED),
+                                                                          MouseSensitivityX(SENSITIVITY_X),
+                                                                          MouseSensitivityY(SENSITIVITY_Y), Zoom(ZOOM)
 {
     Position = position;
     WorldUp = up;
@@ -26,15 +32,13 @@ void Camera::checkKeywoardMovement(GLFWwindow* window)
 
 void Camera::updateCameraVectors()
 {
-
     glm::vec3 front;
     front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
     front.y = sin(glm::radians(Pitch));
     front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
     Front = glm::normalize(front);
-  
-    Right = glm::normalize(glm::cross(Front, WorldUp));  
-    Up    = glm::normalize(glm::cross(Right, Front));
+    Right = glm::normalize(glm::cross(Front, WorldUp));
+    Up = glm::normalize(glm::cross(Right, Front));
 }
 
 glm::mat4 Camera::getViewMatrix()
@@ -44,13 +48,12 @@ glm::mat4 Camera::getViewMatrix()
 
 void Camera::checkMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch)
 {
-    
-    xoffset *= MouseSensitivity ;
-    yoffset *= MouseSensitivity ;
+    xoffset *= MouseSensitivityX;
+    yoffset *= MouseSensitivityY;
 
-    Yaw   += xoffset;
+    Yaw += xoffset;
     Pitch += yoffset;
-    
+
     if (constrainPitch)
     {
         if (Pitch > 89.0f)

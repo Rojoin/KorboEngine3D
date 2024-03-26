@@ -9,6 +9,8 @@ const float YAW = -90.0f;
 const float PITCH = 0.0f;
 const float SPEED = 100.5f;
 const float SENSITIVITY = 0.1f;
+const float SENSITIVITY_X = 0.2f;
+const float SENSITIVITY_Y = 0.1f;
 const float ZOOM = 45.0f;
 
 
@@ -26,6 +28,8 @@ public:
 
     float MovementSpeed;
     float MouseSensitivity;
+    float MouseSensitivityX;
+    float MouseSensitivityY;
     float Zoom;
 
     float lastX;
