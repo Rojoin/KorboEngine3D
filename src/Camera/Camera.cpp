@@ -10,6 +10,8 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch): Front(
     WorldUp = up;
     Yaw = yaw;
     Pitch = pitch;
+    firstMouse = true;
+    Zoom = ZOOM;
     updateCameraVectors();
 }
 
@@ -63,4 +65,13 @@ void Camera::checkMouseMovement(float xoffset, float yoffset, GLboolean constrai
     }
     
     updateCameraVectors();
+}
+
+void Camera::checkMouseScroll(float yoffset)
+{
+    Zoom -= yoffset;
+    if (Zoom < 1.0f)
+        Zoom = 1.0f;
+    if (Zoom > 45.0f)
+        Zoom = ZOOM;
 }
