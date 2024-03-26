@@ -1,6 +1,5 @@
 ﻿#pragma once
-
-
+#include "Window/window.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "Globals/Time.h"
 #include "Window/window.h"
@@ -8,7 +7,7 @@
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
 const float SPEED = 100.5f;
-const float SENSITIVITY = 0.1f;
+const float SPEED_BONUS = 2.0f;
 const float SENSITIVITY_X = 0.2f;
 const float SENSITIVITY_Y = 0.1f;
 const float ZOOM = 45.0f;
@@ -27,7 +26,7 @@ public:
     float Pitch;
 
     float MovementSpeed;
-    float MouseSensitivity;
+    float MovementSpeedBonus;
     float MouseSensitivityX;
     float MouseSensitivityY;
     float Zoom;

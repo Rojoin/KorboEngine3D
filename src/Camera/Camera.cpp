@@ -1,7 +1,4 @@
 ﻿#include "Camera.h"
-
-
-
 #include "Globals/Time.h"
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch): Front(glm::vec3(0.0f, 0.0f, -1.0f)),
@@ -19,14 +16,17 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch): Front(
 void Camera::checkKeywoardMovement(GLFWwindow* window)
 {
     float currentTime = Time::getDeltaTime();
+    MovementSpeedBonus = 1.0f;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        MovementSpeedBonus = SPEED_BONUS;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        Position += MovementSpeed * Front * currentTime;
+        Position += MovementSpeed * MovementSpeedBonus * Front * currentTime;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        Position -= MovementSpeed * Front * currentTime;
+        Position -= MovementSpeed * MovementSpeedBonus * Front * currentTime;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        Position -= glm::normalize(glm::cross(Front, Up)) * MovementSpeed * currentTime;
+        Position -= glm::normalize(glm::cross(Front, Up)) * MovementSpeedBonus * MovementSpeed * currentTime;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        Position += glm::normalize(glm::cross(Front, Up)) * MovementSpeed * currentTime;
+        Position += glm::normalize(glm::cross(Front, Up)) * MovementSpeedBonus * MovementSpeed * currentTime;
     Position.y = 0.0f;
 }
 
