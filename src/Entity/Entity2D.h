@@ -20,6 +20,7 @@ public:
     void SetRotationX(float angle);
     void SetRotationY(float angle);
     void SetRotationZ(float angle);
+    Vec3 GetRotation();
     void SetScale(Vec3 newScale);
     Vec3 GetScale();
     Vec3 GetPreviousPosition();

@@ -95,6 +95,32 @@ void Entity2D::SetRotationZ(float angle)
     UpdateMatrix();
 }
 
+Vec3 Entity2D::GetRotation()
+{
+    glm::mat3 rotationMatrix3x3 = glm::mat3(rotation);
+
+    // Extract Euler angles from the 3x3 rotation matrix
+    float pitch, yaw, roll;
+
+    // Extract pitch (X-axis rotation)
+    pitch = asin(rotationMatrix3x3[1][2]);
+    
+    // Check for gimbal lock
+    if (cos(pitch) != 0) {
+        // Extract yaw (Y-axis rotation)
+        yaw = atan2(-rotationMatrix3x3[0][2], rotationMatrix3x3[2][2]);
+
+        // Extract roll (Z-axis rotation)
+        roll = atan2(-rotationMatrix3x3[1][0], rotationMatrix3x3[1][1]);
+    } else {
+        // Gimbal lock case
+        yaw = 0; // You can set yaw to any value since roll will be zero
+        roll = atan2(rotationMatrix3x3[0][1], rotationMatrix3x3[0][0]);
+    }
+
+    return {glm::degrees(pitch), glm::degrees(yaw), glm::degrees(roll)};
+}
+
 void Entity2D::SetScale(Vec3 newScale)
 {
     scale = glm::mat4(1.0f);
