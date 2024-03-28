@@ -14,10 +14,12 @@ const float NEAR_PLANE = 0.1f;
 const float FAR_PLANE = 2000.0f;
 
 
-class Camera
+class EXPORT Camera
 {
 public:
     glm::vec3 Position;
+    glm::vec3 Target;
+    glm::vec3 PositionThirdPerson;
     glm::vec3 Front;
     glm::vec3 Up;
     glm::vec3 Right;
@@ -35,15 +37,18 @@ public:
     float lastX;
     float lastY;
     bool firstMouse = true;
+    bool thirdPerson = false;
 
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),
            float yaw = YAW, float pitch = PITCH);
     void checkKeywoardMovement(GLFWwindow* window);
     glm::mat4 getViewMatrix();
     glm::mat4 getProjectionMatrix(float width, float height);
+    void changeCameraObjetive(glm::vec3 target, glm::vec3 rotationEulerAngle);
     void checkMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
     void checkMouseScroll(float yoffset);
 
 private:
     void updateCameraVectors();
+    glm::vec3 previousTargetRotation;
 };

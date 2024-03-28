@@ -1,4 +1,7 @@
 ﻿#include "Camera.h"
+
+#include <iostream>
+
 #include "Globals/Time.h"
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch): Front(glm::vec3(0.0f, 0.0f, -1.0f)),
@@ -7,11 +10,14 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch): Front(
                                                                           MouseSensitivityY(SENSITIVITY_Y), Zoom(ZOOM)
 {
     Position = position;
+    PositionThirdPerson = glm::vec3(Position.x, Position.y + 2.0f,
+                                    Position.z - 5.0f);
     WorldUp = up;
     Yaw = yaw;
     Pitch = pitch;
     firstMouse = true;
     Zoom = ZOOM;
+    previousTargetRotation = glm::vec3(0.0f);
     updateCameraVectors();
 }
 
@@ -19,16 +25,28 @@ void Camera::checkKeywoardMovement(GLFWwindow* window)
 {
     float currentTime = Time::getDeltaTime();
     MovementSpeedBonus = 1.0f;
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-        MovementSpeedBonus = SPEED_BONUS;
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        Position += MovementSpeed * MovementSpeedBonus * Front * currentTime;
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        Position -= MovementSpeed * MovementSpeedBonus * Front * currentTime;
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        Position -= glm::normalize(glm::cross(Front, Up)) * MovementSpeedBonus * MovementSpeed * currentTime;
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        Position += glm::normalize(glm::cross(Front, Up)) * MovementSpeedBonus * MovementSpeed * currentTime;
+    if (!thirdPerson)
+    {
+        if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+            MovementSpeedBonus = SPEED_BONUS;
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        {
+            Position += MovementSpeed * MovementSpeedBonus * Front * currentTime;
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        {
+            Position -= MovementSpeed * MovementSpeedBonus * Front * currentTime;
+        }
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        {
+            Position -= glm::normalize(glm::cross(Front, Up)) * MovementSpeedBonus * MovementSpeed * currentTime;
+        }
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        {
+            Position += glm::normalize(glm::cross(Front, Up)) * MovementSpeedBonus * MovementSpeed * currentTime;
+        }
+    }
     Position.y = 0.0f;
 }
 
@@ -45,7 +63,7 @@ void Camera::updateCameraVectors()
 
 glm::mat4 Camera::getViewMatrix()
 {
-    return glm::lookAt(Position, Position + Front, Up);
+    return !thirdPerson ? glm::lookAt(Position, Position + Front, Up) : glm::lookAt(PositionThirdPerson, Target, Up);
 }
 
 glm::mat4 Camera::getProjectionMatrix(float width, float height)
@@ -53,10 +71,24 @@ glm::mat4 Camera::getProjectionMatrix(float width, float height)
     return glm::perspective(glm::radians(Zoom), width / height, NEAR_PLANE, FAR_PLANE);
 }
 
+void Camera::changeCameraObjetive(glm::vec3 target, glm::vec3 rotationEulerAngle)
+{
+    Target = target;
+    thirdPerson = true;
+    PositionThirdPerson = target + Front * 500.0f;
+
+    float newRotationY = previousTargetRotation.y - rotationEulerAngle.y;
+
+    Yaw += newRotationY;
+    previousTargetRotation = rotationEulerAngle;
+    updateCameraVectors();
+}
+
 void Camera::checkMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch)
 {
     xoffset *= MouseSensitivityX;
     yoffset *= MouseSensitivityY;
+
 
     Yaw += xoffset;
     Pitch += yoffset;
@@ -68,6 +100,7 @@ void Camera::checkMouseMovement(float xoffset, float yoffset, GLboolean constrai
         if (Pitch < -89.0f)
             Pitch = -89.0f;
     }
+
 
     updateCameraVectors();
 }
