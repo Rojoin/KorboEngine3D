@@ -11,7 +11,7 @@ class Game final : public Korbo::Engine
 private:
     Sprite* player1;
     Sprite* cartel;
-    Entity2D* obj1;
+    Sprite* obj1;
     Entity2D* obj2;
     map<string, Animation> Animator;
     int windowWidth = 800;

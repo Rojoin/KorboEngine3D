@@ -1,6 +1,6 @@
 ﻿#include "Game.h"
 
-#include "Globals/Time.h"
+
 #include "Input/Input.h"
 #include "Sprite/Sprite.h"
 
@@ -24,7 +24,9 @@ void Game::init()
     cartel = new Sprite(getRenderer(), {1, 1, 1, 1}, {150, 0, -400.0f}, {100, 100, 0},
                         playerPath,GL_NEAREST);
 
-
+    obj1 = new Sprite(getRenderer(), {1, 1, 1, 1}, {150, -100, -400.0f}, {5000, 5000, 0},
+                        "../res/images/parcialBackground.jpg",GL_NEAREST);
+    obj1->SetRotationX(90);
     Animation animationPlayerRight = Animation(19, 205, 3, 0.5f, 830, 465, 40, 33);
     Animation animationPlayerIdle = Animation(390, 98, 3, 1.2f, 830, 465, 33, 40);
     Animation animationCartel = Animation(132, 94, 5, 0.5f, 830, 465, 49, 48);
@@ -43,6 +45,33 @@ void Game::update()
 
 
     bool hasBeenPressed = false;
+
+    float MovementSpeed = 100.5f;
+    
+    if ((input->isKeyPressed(KeyKode::KEY_W)))
+    {
+        newPos.z -= MovementSpeed * getDeltaTime();
+        player1->SetPosition(newPos);
+    }
+
+    if ((input->isKeyPressed(KeyKode::KEY_S)))
+    {
+        newPos.z += MovementSpeed * getDeltaTime();
+        player1->SetPosition(newPos);
+    }
+    if ((input->isKeyPressed(KeyKode::KEY_A)))
+    {
+        newPos.x -= MovementSpeed * getDeltaTime();
+        player1->SetPosition(newPos);
+        
+    }
+    if ((input->isKeyPressed(KeyKode::KEY_D)))
+    {
+        newPos.x += MovementSpeed * getDeltaTime();
+        player1->SetPosition(newPos);
+    }
+    
+    camera->changeCameraObjetive(glm::vec3(newPos.x,newPos.y,newPos.z),glm::vec3(player1->GetRotation().x,player1->GetRotation().y,player1->GetRotation().z));
     if (input->isKeyPressed(KeyKode::KEY_LEFT))
     {
         newPos.x -= 1.0f * 2.0f;
@@ -84,27 +113,19 @@ void Game::update()
     }
     if (input->isKeyPressed(KeyKode::KEY_E))
     {
-        newPos.z += 1.0f * 2;
-        player1->SetPosition(newPos);
+    
         player1->ChangeAnimation(Animator["Right"]);
         hasBeenPressed = true;
 
-        if (player1->GetScale().x < 0)
-        {
-            player1->SetScale({player1->GetScale().x * -1, player1->GetScale().y, player1->GetScale().z});
-        }
+        player1->SetRotationY(1.0f);
     }
     if (input->isKeyPressed(KeyKode::KEY_Q))
     {
-        newPos.z -= 1.0f * 2;
-        player1->SetPosition(newPos);
+
         player1->ChangeAnimation(Animator["Right"]);
         hasBeenPressed = true;
 
-        if (player1->GetScale().x < 0)
-        {
-            player1->SetScale({player1->GetScale().x * -1, player1->GetScale().y, player1->GetScale().z});
-        }
+        player1->SetRotationY(-1.0f);
     }
 
     if (!hasBeenPressed)
@@ -116,6 +137,7 @@ void Game::update()
     cartel->UpdateAnimation();
     cartel->Draw();
     player1->Draw();
+    obj1->Draw();
 }
 
 void Game::exit()
