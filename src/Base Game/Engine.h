@@ -17,6 +17,7 @@ namespace Korbo
         Window* window;
         void initGame(int windowWhidth, int windowHeight);
         void endGame();
+        float DeltaTime;
 
     public:
         Engine(int windowWidth, int windowHeight);
@@ -27,6 +28,7 @@ namespace Korbo
         virtual void update();
         virtual void exit();
         void gameLoop();
+        float getDeltaTime();
 
     protected:
         Input* input;

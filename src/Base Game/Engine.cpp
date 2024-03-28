@@ -52,9 +52,10 @@ void Engine::initGame(int windowWhidth, int windowHeight)
     camera = new Camera();
 
     newCamera = camera;
+
     renderer = new Renderer(window, camera);
     input = new Input(window->getWindow());
-    glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
+    glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window->getWindow(), mouse_callback);
     glfwSetScrollCallback(window->getWindow(), scroll_callback);
 }
@@ -64,13 +65,19 @@ void Engine::gameLoop()
     while (!glfwWindowShouldClose(window->getWindow()))
     {
         Time::setTime();
+        DeltaTime = Time::getDeltaTime();
         renderer->BeginDrawing();
         camera->checkKeywoardMovement(window->getWindow());
-        renderer->projection = camera->getProjectionMatrix(window->getWidth(),window->getHeight());
+        renderer->projection = camera->getProjectionMatrix(window->getWidth(), window->getHeight());
         renderer->view = camera->getViewMatrix();
         update();
         renderer->EndDrawing();
     }
+}
+
+float Engine::getDeltaTime()
+{
+    return DeltaTime;
 }
 
 void Engine::endGame()
