@@ -6,6 +6,8 @@
 #include <glm/mat4x4.hpp>
 
 #include "Camera/Camera.h"
+
+
 #include "Globals/Vec4.h"
 #include "Window/window.h"
 
@@ -39,6 +41,7 @@ public:
                              GLint textureWrapping);
     void DrawEntity2D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4x4 model) const;
     void DrawSprite2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 model, unsigned int& texture) const;
+    void DrawEntity3D(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 model);
 
 private:
     Window* GLFWW;

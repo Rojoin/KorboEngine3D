@@ -4,7 +4,7 @@
 
 #include "Globals/Vec4.h"
 #include "Base Game/Engine.h"
-#include "Base Game/Engine.h"
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb/stb_image.h"
 
@@ -37,7 +37,7 @@ Renderer::Renderer(Window* window, Camera* camera)
 
     glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
     glEnable(GL_SAMPLE_ALPHA_TO_ONE);
-
+    glFrontFace(GL_CCW);
     glEnable(GL_BLEND); //Transparency
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     //glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
@@ -262,7 +262,7 @@ void Renderer::createTextureBinder(unsigned int& textureId, const char* imagePat
 
 void Renderer::DrawEntity2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 model) const
 {
-    glClearColor(0.2f, 0.4f, 1, 1); //TODO: pasar a otra funcion
+  
     glUseProgram(shaderShape);
     unsigned int transformLoc = glGetUniformLocation(shaderShape, "transform");
 
@@ -292,3 +292,23 @@ void Renderer::DrawSprite2D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
     glBindTexture(GL_TEXTURE_2D, texture);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(nullptr));
 }
+
+void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4x4 model)
+{
+    
+    glUseProgram(shaderShape);
+    unsigned int transformLoc = glGetUniformLocation(shaderShape, "transform");
+
+
+    glm::mat4 PVM = projection * view * model;
+
+    glUniformMatrix4fv(transformLoc, shaderShape, GL_FALSE, glm::value_ptr(PVM));
+
+
+    Shader::SetVec4("colorTint", color.x, color.y, color.z, color.w, shaderShape);
+    glBindVertexArray(VAO);
+    // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+    glDrawElements(GL_TRIANGLES, sizeIndices, GL_UNSIGNED_INT, 0);
+}
+
+
