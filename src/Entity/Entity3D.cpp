@@ -1,7 +1,6 @@
-#include "Entity2D.h"
+﻿#include "Entity3D.h"
 
-
-Entity2D::Entity2D(Renderer* renderer, Vec3 position, Vec3 newScale): Entity(renderer)
+Entity3D::Entity3D(Renderer* renderer, Vec3 position, Vec3 newScale): Entity(renderer)
 {
     model = glm::mat4(1.0f);
     scaleVector = glm::vec3(newScale.x,newScale.y,newScale.z);
@@ -20,19 +19,16 @@ Entity2D::Entity2D(Renderer* renderer, Vec3 position, Vec3 newScale): Entity(ren
     UpdateMatrix();
     SetScale(newScale);
     SetPosition(position);
-    
 }
 
-
-Entity2D::~Entity2D()
+Entity3D::~Entity3D()
 {
     renderer->DeleteObjects(VAO, VBO, EBO);
     delete vertexPositions;
     delete indices;
 }
 
-void Entity2D::Draw()
+void Entity3D::Draw() 
 {
     renderer->DrawEntity2D(VAO, indexSize, color, model);
 }
-
