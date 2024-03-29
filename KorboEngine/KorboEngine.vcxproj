@@ -26,10 +26,13 @@
     <ClCompile Include="..\src\Colitions\Colitions.cpp" />
     <ClCompile Include="..\src\Entity\Entity.cpp" />
     <ClCompile Include="..\src\Entity\Entity2D.cpp" />
+    <ClCompile Include="..\src\Entity\Entity3D.cpp" />
     <ClCompile Include="..\src\Globals\Time.cpp" />
     <ClCompile Include="..\src\Input\Input.cpp" />
     <ClCompile Include="..\src\Renderer\renderer.cpp" />
     <ClCompile Include="..\src\Shader\shader.cpp" />
+    <ClCompile Include="..\src\Shape\Cube.cpp" />
+    <ClCompile Include="..\src\Shape\Pyramid.cpp" />
     <ClCompile Include="..\src\Shape\Shape.cpp" />
     <ClCompile Include="..\src\Shape\Square.cpp" />
     <ClCompile Include="..\src\Shape\Triangle.cpp" />
@@ -44,6 +47,7 @@
     <ClInclude Include="..\src\Colitions\Colitions.h" />
     <ClInclude Include="..\src\Entity\Entity.h" />
     <ClInclude Include="..\src\Entity\Entity2D.h" />
+    <ClInclude Include="..\src\Entity\Entity3D.h" />
     <ClInclude Include="..\src\Globals\dllHeader.h" />
     <ClInclude Include="..\src\Globals\Time.h" />
     <ClInclude Include="..\src\Globals\Vec3.h" />
@@ -52,6 +56,8 @@
     <ClInclude Include="..\src\Input\KeyCode.h" />
     <ClInclude Include="..\src\Renderer\renderer.h" />
     <ClInclude Include="..\src\Shader\shader.h" />
+    <ClInclude Include="..\src\Shape\Cube.h" />
+    <ClInclude Include="..\src\Shape\Pyramid.h" />
     <ClInclude Include="..\src\Shape\Shape.h" />
     <ClInclude Include="..\src\Shape\Square.h" />
     <ClInclude Include="..\src\Shape\Triangle.h" />
