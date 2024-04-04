@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\res\shaders\BasicShader.shader" />
+    <Compile Include="..\res\shaders\LightningShader.shader" />
     <Compile Include="..\res\shaders\TextureShader.shader" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
