@@ -25,9 +25,9 @@ void Game::init()
                          playerPath,GL_NEAREST);
     cartel = new Sprite(getRenderer(), {1, 1, 1, 1}, {150, 0, -400.0f}, {100, 100, 0},
                         playerPath,GL_NEAREST);
-    obj1 = new Sprite(getRenderer(), {1, 1, 1, 1}, {150, -100, -400.0f}, {5000, 5000, 0},
+    obj1 = new Sprite(getRenderer(), {1, 0, 0, 1}, {150, -100, -400.0f}, {5000, 5000, 0},
                         "../res/images/parcialBackground.jpg",GL_NEAREST);
-    obj2 = new Pyramid(getRenderer(), {1, 1, 1}, {50, 50, 50});
+    obj2 = new Pyramid(getRenderer(), {1, 1, 1}, {50, 50, 50},{1,0,0,1});
     obj1->SetRotationX(90);
     Animation animationPlayerRight = Animation(19, 205, 3, 0.5f, 830, 465, 40, 33);
     Animation animationPlayerIdle = Animation(390, 98, 3, 1.2f, 830, 465, 33, 40);
