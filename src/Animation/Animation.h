@@ -18,7 +18,7 @@ public:
     bool operator==(const Animation& animation) const;
     Frame* currentFrame;
     std::vector<Frame*> totalFrames;
-    
+
 private:
     std::vector<Frame> framesInAnimation;
     int spriteWidth;
@@ -31,4 +31,6 @@ private:
     float currentTime;
     int initialX;
     int initialY;
+    int id;
+
 };

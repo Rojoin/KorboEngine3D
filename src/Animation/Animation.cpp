@@ -3,11 +3,13 @@
 #include <iostream>
 
 #include "Globals/Time.h"
+int AnimationIDCounter = 0;
 
-
-Animation::Animation(int initialX,int initialY,int maxFrames, float maxAnimationTime, int spriteWidth, int spriteHeight, int frameWidth,
+Animation::Animation(int initialX, int initialY, int maxFrames, float maxAnimationTime, int spriteWidth,
+                     int spriteHeight, int frameWidth,
                      int frameHeight)
 {
+    AnimationIDCounter++;
     this->initialX = initialX;
     this->initialY = initialY;
     this->maxFramesInAnimation = maxFrames;
@@ -16,10 +18,13 @@ Animation::Animation(int initialX,int initialY,int maxFrames, float maxAnimation
     this->spriteWidth = spriteWidth;
     this->frameHeight = frameHeight;
     this->frameWidth = frameWidth;
+    id = AnimationIDCounter;
     addFrames();
     currentTime = 0;
     currentFrame = totalFrames.front();
 }
+
+
 
 Animation::Animation()
 {
@@ -45,13 +50,13 @@ void Animation::addFrames()
     {
         glm::vec2 topRight = glm::vec2((initialX + (i * frameWidth) + frameWidth) / spriteWidthF,
                                        (initialY + frameHeight) / spriteHeightF);
-        
+
         glm::vec2 botRight = glm::vec2((initialX + (i * frameWidth) + frameWidth) / spriteWidthF,
-                                       initialY/spriteHeightF);
-        
+                                       initialY / spriteHeightF);
+
         glm::vec2 botLeft = glm::vec2((initialX + i * frameWidth) / spriteWidthF,
-                                      initialY/spriteHeightF);
-        
+                                      initialY / spriteHeightF);
+
         glm::vec2 topLeft = glm::vec2((initialX + i * frameWidth) / spriteWidthF,
                                       ((initialY + frameHeight) / spriteHeightF));
 
@@ -66,22 +71,22 @@ void Animation::update()
 
     while (currentTime > maxAnimationTime)
     {
-        currentTime-= maxAnimationTime;
+        currentTime -= maxAnimationTime;
     }
 
     float frameLengh = (maxAnimationTime / maxFramesInAnimation);
     currentFrameCounter = static_cast<int>(currentTime / frameLengh);
-   currentFrame = totalFrames[currentFrameCounter];
-    
-  //  std::cout << "Current Time : " << currentTime << std::endl;
+    currentFrame = totalFrames[currentFrameCounter];
+
+    //  std::cout << "Current Time : " << currentTime << std::endl;
 }
+
 
 bool Animation::operator==(const Animation& animation) const
 {
-    return this->maxFramesInAnimation == animation.maxFramesInAnimation &&
-            this->maxAnimationTime == maxAnimationTime &&
-            this->spriteHeight == spriteHeight &&
-            this->spriteWidth == spriteWidth &&
-            this->frameHeight == frameHeight &&
-            this->frameWidth == frameWidth;
+    return (id == animation.id);
+
 }
+
+
+
