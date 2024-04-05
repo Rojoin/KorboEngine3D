@@ -33,6 +33,6 @@ Entity2D::~Entity2D()
 
 void Entity2D::Draw()
 {
-    renderer->DrawEntity2D(VAO, indexSize, color, model);
+    renderer->DrawEntity(VAO, indexSize, color, model);
 }
 
