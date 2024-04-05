@@ -25,12 +25,9 @@ Renderer::Renderer(Window* window, Camera* camera)
 
     view = camera->getViewMatrix();
 
-
-    ShaderProgramSource source = Shader::ParseShader("../res/shaders/BasicShader.shader", ShaderUsed::Shapes);
-    shaderShape = Shader::CreateShader(source.vertexSource, source.fragmentSource);
-    ShaderProgramSource source2 = Shader::ParseShader("../res/shaders/TextureShader.shader", ShaderUsed::Sprites);
-    shaderSprite = Shader::CreateShader(source2.vertexSource, source2.fragmentSource);
-
+    shaderShape = new Shader("../res/shaders/BasicShader.shader");
+    shaderSprite = new Shader("../res/shaders/TextureShader.shader");
+    shaderLightning = new Shader("../res/shaders/LightningShader.shader");
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
@@ -43,16 +40,19 @@ Renderer::Renderer(Window* window, Camera* camera)
     //glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_ALPHA_TEST);
     glAlphaFunc(GL_GREATER, 0.1f);
-    glUseProgram(shaderShape);
-    glUseProgram(shaderSprite);
+
+    shaderShape->bind();
+    shaderSprite->bind();
+    shaderLightning->bind();
     cout << "Renderer Created" << endl;
 }
 
 Renderer::~Renderer()
 {
     cout << "Renderer Deleted" << endl;
-    glDeleteProgram(shaderShape);
-    glDeleteProgram(shaderSprite);
+    delete shaderShape;
+    delete shaderSprite;
+    delete shaderLightning;
 }
 
 void Renderer::DeleteObjects(unsigned& VAO, unsigned& VBO, unsigned& EBO)
@@ -260,33 +260,26 @@ void Renderer::createTextureBinder(unsigned int& textureId, const char* imagePat
     stbi_image_free(data);
 }
 
-void Renderer::DrawEntity2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 model) const
+void Renderer::DrawEntity(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 model) const
 {
-  
-    glUseProgram(shaderShape);
-    unsigned int transformLoc = glGetUniformLocation(shaderShape, "transform");
+    shaderShape->bind();
 
 
     glm::mat4 PVM = projection * view * model;
+    shaderShape->SetMat4("transform", PVM);
 
-    glUniformMatrix4fv(transformLoc, shaderShape, GL_FALSE, glm::value_ptr(PVM));
-
-
-    Shader::SetVec4("colorTint", color.x, color.y, color.z, color.w, shaderShape);
+    shaderShape->SetVec4("colorTint", glm::vec4(color.x, color.y, color.z, color.w));
     glBindVertexArray(VAO);
-    // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+
     glDrawElements(GL_TRIANGLES, sizeIndices, GL_UNSIGNED_INT, 0);
 }
 
 void Renderer::DrawSprite2D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4x4 model, unsigned& texture) const
 {
-    glUseProgram(shaderSprite);
-
-
-    unsigned int transformLoc = glGetUniformLocation(shaderSprite, "MVP");
+    shaderSprite->bind();
 
     glm::mat4 PVM = projection * view * model;
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(PVM));
+    shaderSprite->SetMat4("MVP", PVM);
 
     glBindVertexArray(VAO);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -295,20 +288,19 @@ void Renderer::DrawSprite2D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
 
 void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4x4 model)
 {
-    
-    glUseProgram(shaderShape);
-    unsigned int transformLoc = glGetUniformLocation(shaderShape, "transform");
+    shaderLightning->bind();
+    shaderLightning->SetMat4("model", model);
+    shaderLightning->SetMat4("view", view);
+    shaderLightning->SetMat4("projection", projection);
 
+    shaderLightning->SetVec3("lightPos",glm::vec3(1,1,1));
+    shaderLightning->SetVec3("viewPos",glm::vec3(1,1,1));
+    shaderLightning->SetVec3("lightColor",glm::vec3(0,1,0));
+    shaderLightning->SetVec3("objectColor",glm::vec3(color.x,color.y,color.z));
 
-    glm::mat4 PVM = projection * view * model;
-
-    glUniformMatrix4fv(transformLoc, shaderShape, GL_FALSE, glm::value_ptr(PVM));
-
-
-    Shader::SetVec4("colorTint", color.x, color.y, color.z, color.w, shaderShape);
+   
+   
     glBindVertexArray(VAO);
     // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
     glDrawElements(GL_TRIANGLES, sizeIndices, GL_UNSIGNED_INT, 0);
 }
-
-
