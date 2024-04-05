@@ -16,17 +16,24 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch): Front(
     Yaw = yaw;
     Pitch = pitch;
     firstMouse = true;
+    thirdPerson = false;
     Zoom = ZOOM;
     previousTargetRotation = glm::vec3(0.0f);
     updateCameraVectors();
 }
 
-void Camera::checkKeywoardMovement(GLFWwindow* window)
+void Camera::checkKeyboardMovement(GLFWwindow* window)
 {
     float currentTime = Time::getDeltaTime();
+
+   
+ 
+
+
     MovementSpeedBonus = 1.0f;
     if (!thirdPerson)
     {
+        
         if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
             MovementSpeedBonus = SPEED_BONUS;
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -73,8 +80,9 @@ glm::mat4 Camera::getProjectionMatrix(float width, float height)
 
 void Camera::changeCameraObjetive(glm::vec3 target, glm::vec3 rotationEulerAngle)
 {
+    if (!thirdPerson)
+        return;
     Target = target;
-    thirdPerson = true;
     PositionThirdPerson = target + Front * 500.0f;
 
     float newRotationY = previousTargetRotation.y - rotationEulerAngle.y;
@@ -112,4 +120,19 @@ void Camera::checkMouseScroll(float yoffset)
         Zoom = 1.0f;
     if (Zoom > 45.0f)
         Zoom = ZOOM;
+}
+
+void Camera::toggleCameraMode()
+{
+    thirdPerson = !thirdPerson;
+
+    if (thirdPerson)
+    {
+        PositionThirdPerson = glm::vec3(Position.x, Position.y + 2.0f,
+                                        Position.z - 5.0f);
+    }
+    else
+    {
+        Position = glm::vec3(PositionThirdPerson.x, PositionThirdPerson.y - 2.0f, PositionThirdPerson.z + 5.0f);
+    }
 }

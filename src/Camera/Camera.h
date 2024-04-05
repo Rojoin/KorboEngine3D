@@ -41,12 +41,13 @@ public:
 
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),
            float yaw = YAW, float pitch = PITCH);
-    void checkKeywoardMovement(GLFWwindow* window);
+    void checkKeyboardMovement(GLFWwindow* window);
     glm::mat4 getViewMatrix();
     glm::mat4 getProjectionMatrix(float width, float height);
     void changeCameraObjetive(glm::vec3 target, glm::vec3 rotationEulerAngle);
     void checkMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
     void checkMouseScroll(float yoffset);
+    void toggleCameraMode();
 
 private:
     void updateCameraVectors();
