@@ -104,6 +104,33 @@ void Renderer::CreateVecBuffer(float* positions, int* indices, int positionsSize
 
     glBindVertexArray(0);
 }
+void Renderer::CreateVecBuffer(float* positions, int* indices, int positionsSize, int indicesSize, int atribVertexSize,int atribNormalSize,
+                               unsigned int& VAO, unsigned int& VBO, unsigned int& EBO)
+{
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * positionsSize, positions, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * indicesSize, indices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, atribVertexSize, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    
+  
+    glVertexAttribPointer(1, atribNormalSize, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    glBindVertexArray(0);
+}
 
 void Renderer::CreateVecBuffer(float* positions, int* indices, int positionsSize, int indicesSize, int atribVertexSize,
                                unsigned int& VAO, unsigned int& VBO, unsigned int& EBO, int atribColorSize,
@@ -293,9 +320,9 @@ void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
     shaderLightning->SetMat4("view", view);
     shaderLightning->SetMat4("projection", projection);
 
-    shaderLightning->SetVec3("lightPos",glm::vec3(1,1,1));
-    shaderLightning->SetVec3("viewPos",glm::vec3(1,1,1));
-    shaderLightning->SetVec3("lightColor",glm::vec3(0,1,0));
+    shaderLightning->SetVec3("lightPos",glm::vec3(10,10,10));
+    shaderLightning->SetVec3("viewPos",camera->Position);
+    shaderLightning->SetVec3("lightColor",glm::vec3(1,1,1));
     shaderLightning->SetVec3("objectColor",glm::vec3(color.x,color.y,color.z));
 
    

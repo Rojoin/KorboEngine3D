@@ -33,6 +33,8 @@ public:
     void CreateVecBuffer(float* positions, int* indices, int positionsSize, int indicesSize, int atribVertexSize,
                          unsigned int& VAO,
                          unsigned int& VBO, unsigned int& EBO);
+    void CreateVecBuffer(float* positions, int* indices, int positionsSize, int atribNormalSize,
+                         int atribVertexSize, int indicesSize, unsigned& VAO, unsigned& VBO, unsigned& EBO);
     void CreateVecBuffer(float* positions, int* indices, int positionsSize, int indicesSize, int atribVertexSize,
                          unsigned& VAO, unsigned& VBO, unsigned& EBO, int atribColorSize, int atribUVSize);
     void createTextureBinder(unsigned& textureId, const char* imagePath);
