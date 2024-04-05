@@ -39,16 +39,16 @@ public:
     void createTextureBinder(unsigned& textureId, const char* imagePath, int& width, int& height);
     void createTextureBinder(unsigned& textureId, const char* imagePath, int& width, int& height,
                              GLint textureWrapping);
-    void DrawEntity2D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4x4 model) const;
+    void DrawEntity(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4x4 model) const;
     void DrawSprite2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 model, unsigned int& texture) const;
     void DrawEntity3D(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 model);
 
 private:
     Window* GLFWW;
     GLbitfield mask;
-    Shader shader;
-    GLuint shaderShape;
-    GLuint shaderSprite;
+    Shader* shaderShape;
+    Shader* shaderSprite;
+    Shader* shaderLightning;
     glm::mat4x4 model;
     Camera* camera;
 };
