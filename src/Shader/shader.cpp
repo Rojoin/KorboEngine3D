@@ -1,13 +1,25 @@
 #include "shader.h"
 
-Shader::Shader()
+Shader::Shader(const std::string& filePath) : m_filePath(filePath), m_RendererID(0)
 {
-    cout << "Shader Created" << endl;
+    ShaderProgramSource source = ParseShader();
+    m_RendererID = CreateShader(source.vertexSource, source.fragmentSource);
 }
 
 Shader::~Shader()
 {
+    glDeleteProgram(m_RendererID);
     cout << "Shader Deleted" << endl;
+}
+
+void Shader::bind()
+{
+    glUseProgram(m_RendererID);
+}
+
+void Shader::unBind()
+{
+    glUseProgram(0);
 }
 
 GLuint Shader::CompileShader(const GLuint type, const std::string& source)
@@ -39,6 +51,53 @@ GLuint Shader::CompileShader(const GLuint type, const std::string& source)
     return id;
 }
 
+void Shader::SetInt(const std::string& name, int value)
+{
+    glUniform1i(GetUniformLocation(name), value);
+}
+
+void Shader::SetFloat(const std::string& name, float value)
+{
+    glUniform1f(GetUniformLocation(name), value);
+}
+
+void Shader::SetVec2(const std::string& name, const glm::vec2& value)
+{
+    glUniform2f(GetUniformLocation(name), value.x, value.y);
+}
+
+void Shader::SetVec3(const std::string& name, const glm::vec3& value)
+{
+    glUniform3f(GetUniformLocation(name), value.x, value.y, value.z);
+}
+
+void Shader::SetVec4(const std::string& name, const glm::vec4& value)
+{
+    glUniform4f(GetUniformLocation(name), value.x, value.y, value.z, value.w);
+}
+
+void Shader::SetMat3(const std::string& name, const glm::mat3& value)
+{
+    glUniformMatrix3fv(GetUniformLocation(name), 1,GL_FALSE, &value[0][0]);
+}
+
+void Shader::SetMat4(const std::string& name, const glm::mat4& value)
+{
+    glUniformMatrix4fv(GetUniformLocation(name), 1,GL_FALSE, &value[0][0]);
+}
+
+
+GLint Shader::GetUniformLocation(const std::string& name)
+{
+    if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
+    {
+        return m_UniformLocationCache[name];
+    }
+    GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+    m_UniformLocationCache[name] = location;
+    return location;
+}
+
 
 int Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentshader)
 {
@@ -50,8 +109,6 @@ int Shader::CreateShader(const std::string& vertexShader, const std::string& fra
     glAttachShader(program, vertex_S);
     glAttachShader(program, fragment_S);
     glLinkProgram(program);
-
-
     glValidateProgram(program);
 
     //Deleted because they are already linked to the program
@@ -61,9 +118,9 @@ int Shader::CreateShader(const std::string& vertexShader, const std::string& fra
     return program;
 }
 
-ShaderProgramSource Shader::ParseShader(const string& filepath,ShaderUsed shaderUsed)
+ShaderProgramSource Shader::ParseShader()
 {
-    ifstream inputStream(filepath);
+    ifstream inputStream(m_filePath);
     enum class ShaderType
     {
         NONE = -1,
@@ -97,72 +154,10 @@ ShaderProgramSource Shader::ParseShader(const string& filepath,ShaderUsed shader
         {
             //
         }
-        
     }
     catch (ios::failure& exception)
     {
-        std::cout << endl << "Couldnt Load Shader, using default one." << endl;
-        if (shaderUsed == ShaderUsed::Shapes)
-        {
-            string vertexShader = R"(#version 330 core
-
-layout(location = 0) in vec4 position;
-
-uniform mat4 transform;
-
-void main()
-{
-	gl_Position = transform * position;
-};
-)";
-            string fragmentShader = R"(#version 330 core
-
-layout(location = 0) out vec4 color;
-uniform vec4 colorTint;
-
-void main()
-{
-   color = vec4(colorTint.x,colorTint.y,colorTint.z,colorTint.w);
-};)";
-
-            return {vertexShader, fragmentShader};
-        }
-        else if (shaderUsed == ShaderUsed::Sprites)
-        {
-            string vertexShader = R"(#version 330 core
-
-layout (location = 0) in vec3 position;
-layout (location = 1) in vec4 aColor;
-layout (location = 2) in vec2 aTexCoord;
-
-uniform mat4 MVP;
-
-out vec4 ourColor;
-out vec2 TexCoord;
-
-void main()
-{
-    gl_Position = MVP * position;
-    ourColor = aColor;
-    TexCoord = vec2(aTexCoord.x, aTexCoord.y);
-};
-)";
-            string fragmentShader = R"(#version 330 core
-
-out vec4 FragColor;
-
-in vec4 ourColor;
-in vec2 TexCoord;
-
-uniform sampler2D ourTexture;
-
-void main()
-{
-    FragColor = texture(ourTexture, TexCoord);
-})";
-
-            return {vertexShader, fragmentShader};
-        }
+        std::cout << endl << "Couldnt Load Shader." << endl;
     }
 
 

@@ -5,29 +5,44 @@
 #include <sstream>
 #include "GL/glew.h"
 
+#include <unordered_map>
+#include <glm/glm.hpp>
+
 using namespace std;
 
 struct ShaderProgramSource
 {
-	string vertexSource;
-	string fragmentSource;
+    string vertexSource;
+    string fragmentSource;
 };
+
 enum class ShaderUsed
 {
-	Shapes,
-	Sprites
+    Shapes,
+    Sprites
 };
+
 class Shader
 {
 public:
-	Shader();
-	~Shader();
-	static ShaderProgramSource ParseShader(const string& filepath,ShaderUsed shaderUsed);
-	static int CreateShader(const std::string& vertexShader, const std::string& fragmentshader);
-	static GLuint CompileShader(const GLuint type, const std::string& source);
-	static void SetVec2(const std::string& name, float x, float y,unsigned int ID)  { glUniform2f(glGetUniformLocation(ID, name.c_str()), x, y); }
-	static void SetVec3(const std::string& name, float x, float y, float z,unsigned int ID)  { glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z); }
-	static void SetVec4(const std::string& name, float x, float y, float z, float w,unsigned int ID)  { glUniform4f(glGetUniformLocation(ID, name.c_str()), x, y, z, w); }
-private:
+    Shader(const std::string& filePath);
+    ~Shader();
+    void bind();
+    void unBind();
+    ShaderProgramSource ParseShader();
+    int CreateShader(const std::string& vertexShader, const std::string& fragmentshader);
+    GLuint CompileShader(const GLuint type, const std::string& source);
+    void SetInt(const std::string& name, int value);
+    void SetFloat(const std::string& name, float value);
+    void SetVec2(const std::string& name, const glm::vec2& value);
+    void SetVec3(const std::string& name, const glm::vec3& value);
+    void SetVec4(const std::string& name, const glm::vec4& value);
+    void SetMat3(const std::string& name, const glm::mat3& value);
+    void SetMat4(const std::string& name, const glm::mat4& value);
 
+private:
+    std::string m_filePath;
+    unsigned int m_RendererID;
+    std::unordered_map<std::string, GLint> m_UniformLocationCache;
+    GLint GetUniformLocation(const std::string& name);
 };
