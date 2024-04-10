@@ -323,7 +323,7 @@ void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
     shaderLightning->SetMat4("view", view);
     shaderLightning->SetMat4("projection", projection);
 
-    shaderLightning->SetVec3("lightPos", glm::vec3(100, 10, 10));
+    shaderLightning->SetVec3("lightPos", lightPos);
     shaderLightning->SetVec3("viewPos", camera->Position);
     shaderLightning->SetVec3("lightColor", glm::vec3(1, 1, 1));
     shaderLightning->SetVec3("objectColor", glm::vec3(color.x, color.y, color.z));

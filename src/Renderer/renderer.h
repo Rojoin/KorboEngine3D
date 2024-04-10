@@ -21,6 +21,7 @@ class EXPORT Renderer
 public:
     glm::mat4x4 projection;
     glm::mat4x4 view;
+    glm::vec3 lightPos;
     Renderer(Window* window, Camera* mainCamera);
     Renderer(Window* window, GLbitfield mask);
     ~Renderer();
