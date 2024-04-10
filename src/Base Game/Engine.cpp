@@ -76,6 +76,11 @@ void Engine::gameLoop()
     }
 }
 
+void Engine::setLightPos(Vec3 position)
+{
+    renderer->lightPos = glm::vec3(position.x,position.y,position.z);
+}
+
 float Engine::getDeltaTime()
 {
     return DeltaTime;
