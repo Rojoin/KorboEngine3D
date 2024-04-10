@@ -58,6 +58,7 @@ void Engine::initGame(int windowWhidth, int windowHeight)
     glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window->getWindow(), mouse_callback);
     glfwSetScrollCallback(window->getWindow(), scroll_callback);
+    glfwSetKeyCallback(window->getWindow(), key_callback);
 }
 
 void Engine::gameLoop()
@@ -67,7 +68,7 @@ void Engine::gameLoop()
         Time::setTime();
         DeltaTime = Time::getDeltaTime();
         renderer->BeginDrawing();
-        camera->checkKeywoardMovement(window->getWindow());
+        camera->checkKeyboardMovement(window->getWindow());
         renderer->projection = camera->getProjectionMatrix(window->getWidth(), window->getHeight());
         renderer->view = camera->getViewMatrix();
         update();
@@ -111,4 +112,10 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 void scroll_callback(GLFWwindow* window, double xpos, double ypos)
 {
     newCamera->checkMouseScroll(static_cast<float>(ypos));
+}
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (key == GLFW_KEY_R && action == GLFW_PRESS)
+        newCamera->toggleCameraMode();
+    
 }
