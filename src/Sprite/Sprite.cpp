@@ -28,7 +28,7 @@ Sprite::Sprite(Renderer* renderer, Vec4 color, Vec3 position, Vec3 newScale, con
         1, 2, 3
     };
     this->color = color;
-    renderer->CreateVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO,
+    renderer->createVecBufferWithUV(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO,
                               atribColorSize, atribUVSize);
     renderer->createTextureBinder(textureId, imagePath, this->width, this->height);
     std::cout << "Sprite Created" << endl;
@@ -61,7 +61,7 @@ Sprite::Sprite(Renderer* renderer, Vec4 color, Vec3 position, Vec3 newScale, con
         1, 2, 3
     };
     this->color = color;
-    renderer->CreateVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO,
+    renderer->createVecBufferWithUV(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO,
                               atribColorSize, atribUVSize);
     renderer->createTextureBinder(textureId, imagePath, this->width, this->height, textureFilter);
     std::cout << "Sprite Created" << endl;
@@ -114,7 +114,7 @@ void Sprite::UpdateAnimation()
             ChangeUVCoord(strife + (i * row), animation.currentFrame->getUVCoord(i));
         }
         renderer->DeleteObjects(VAO, VBO, EBO);
-        renderer->CreateVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO,
+        renderer->createVecBufferWithUV(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO,
                                   atribColorSize, atribUVSize);
     }
 }

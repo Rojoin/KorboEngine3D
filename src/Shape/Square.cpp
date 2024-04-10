@@ -17,7 +17,7 @@ Square::Square(Renderer* renderer,Vec3 position,Vec3 newScale) : Shape(renderer,
         1, 2, 3
     };
     this->color = {1,1,1,1};
-    renderer->CreateVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO);
+    renderer->createVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO);
 }
 
 Square::Square(Renderer* renderer,Vec4 color,Vec3 position,Vec3 newScale): Shape(renderer,position,newScale)
@@ -37,5 +37,5 @@ Square::Square(Renderer* renderer,Vec4 color,Vec3 position,Vec3 newScale): Shape
         1, 2, 3
     };
     this->color = color;
-    renderer->CreateVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO);
+    renderer->createVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO);
 }
