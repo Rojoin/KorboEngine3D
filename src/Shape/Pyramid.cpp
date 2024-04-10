@@ -20,7 +20,7 @@ Pyramid::Pyramid(Renderer* renderer, Vec3 position, Vec3 newScale) : Entity3D(re
         4, 3, 1
     };
     this->color = {1, 1, 1, 1};
-    renderer->CreateVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO);;
+    renderer->createVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO);;
 }
 Pyramid::Pyramid(Renderer* renderer, Vec3 position, Vec3 newScale, Vec4 color) : Entity3D(renderer, position, newScale)
 {
@@ -42,5 +42,5 @@ Pyramid::Pyramid(Renderer* renderer, Vec3 position, Vec3 newScale, Vec4 color) :
         4, 3, 1
     };
     this->color = {color.x, color.y, color.z, color.w};
-    renderer->CreateVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO);;
+    renderer->createVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO);;
 }
