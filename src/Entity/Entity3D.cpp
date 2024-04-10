@@ -16,6 +16,7 @@ Entity3D::Entity3D(Renderer* renderer, Vec3 position, Vec3 newScale): Entity(ren
     atribPosSize = 3;
     atribColorSize = 4;
     atribUVSize = 2;
+    
     UpdateMatrix();
     SetScale(newScale);
     SetPosition(position);
@@ -30,5 +31,6 @@ Entity3D::~Entity3D()
 
 void Entity3D::Draw() 
 {
-    renderer->DrawEntity2D(VAO, indexSize, color, model);
+    //renderer->DrawEntity(VAO, indexSize, color, model);
+    renderer->DrawEntity3D(VAO, indexSize, color, model);
 }
