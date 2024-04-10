@@ -30,12 +30,12 @@ public:
     void SetWindow(Window* window);
     void Setbitfield(GLbitfield mask);
     GLbitfield Getbitfield();
-    void CreateVecBuffer(float* positions, int* indices, int positionsSize, int indicesSize, int atribVertexSize,
+    void createVecBuffer(float* positions, int* indices, int positionsSize, int indicesSize, int atribVertexSize,
                          unsigned int& VAO,
                          unsigned int& VBO, unsigned int& EBO);
-    void CreateVecBuffer(float* positions, int* indices, int positionsSize, int atribNormalSize,
+    void createVecBufferWithNormals(float* positions, int* indices, int positionsSize, int atribNormalSize,
                          int atribVertexSize, int indicesSize, unsigned& VAO, unsigned& VBO, unsigned& EBO);
-    void CreateVecBuffer(float* positions, int* indices, int positionsSize, int indicesSize, int atribVertexSize,
+    void createVecBufferWithUV(float* positions, int* indices, int positionsSize, int indicesSize, int atribVertexSize,
                          unsigned& VAO, unsigned& VBO, unsigned& EBO, int atribColorSize, int atribUVSize);
     void createTextureBinder(unsigned& textureId, const char* imagePath);
     void createTextureBinder(unsigned& textureId, const char* imagePath, int& width, int& height);
