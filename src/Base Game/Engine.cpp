@@ -81,6 +81,11 @@ void Engine::setLightPos(Vec3 position)
     renderer->lightPos = glm::vec3(position.x,position.y,position.z);
 }
 
+void Engine::setAmbientLightStrengh(float value)
+{
+    renderer->ambientStrengh = glm::clamp(value,0.0f,1.0f);
+}
+
 float Engine::getDeltaTime()
 {
     return DeltaTime;

@@ -12,6 +12,7 @@ Renderer::Renderer(Window* window, GLbitfield mask)
 {
     this->GLFWW = window;
     this->mask = mask;
+    ambientStrengh = 0.5f;
     cout << "Renderer Created" << endl;
 }
 
@@ -22,7 +23,7 @@ Renderer::Renderer(Window* window, Camera* camera)
     this->mask = GL_COLOR_BUFFER_BIT;
     this->camera = camera;
     projection = camera->getProjectionMatrix(window->getWidth(), window->getHeight());
-
+    ambientStrengh = 0.5f;
     view = camera->getViewMatrix();
 
     shaderShape = new Shader("../res/shaders/BasicShader.shader");
@@ -323,6 +324,7 @@ void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
     shaderLightning->SetMat4("view", view);
     shaderLightning->SetMat4("projection", projection);
 
+    shaderLightning->SetFloat("ambientLightStrength", ambientStrengh);
     shaderLightning->SetVec3("lightPos", lightPos);
     shaderLightning->SetVec3("viewPos", camera->Position);
     shaderLightning->SetVec3("lightColor", glm::vec3(1, 1, 1));

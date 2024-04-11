@@ -29,6 +29,7 @@ namespace Korbo
         virtual void exit();
         void gameLoop();
         void setLightPos(Vec3 position);
+        void setAmbientLightStrengh(float value);
         float getDeltaTime();
 
     protected:
