@@ -128,8 +128,14 @@ void Game::update()
         player1->SetRotationY(-1.0f);
     }
 #pragma endregion
-    camera->changeCameraObjetive(glm::vec3(newPos.x, newPos.y, newPos.z),glm::vec3(player1->GetRotation().x, player1->GetRotation().y,player1->GetRotation().z));
+    camera->changeCameraObjetive(glm::vec3(newPos.x, newPos.y, newPos.z),
+                                 glm::vec3(player1->GetRotation().x, player1->GetRotation().y,
+                                           player1->GetRotation().z));
 
+    if (!hasBeenPressed)
+    {
+       player1->ChangeAnimation(Animator["Idle"]);
+    }
     player1->SetPosition(newPos);
     setLightPos(newPos);
     player1->UpdateAnimation();
