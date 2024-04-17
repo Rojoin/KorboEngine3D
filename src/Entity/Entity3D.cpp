@@ -22,6 +22,12 @@ Entity3D::Entity3D(Renderer* renderer, Vec3 position, Vec3 newScale): Entity(ren
     SetPosition(position);
 }
 
+void Entity3D::setMaterial(Material material)
+{
+    m_material = material;
+    
+}
+
 Entity3D::~Entity3D()
 {
     renderer->DeleteObjects(VAO, VBO, EBO);
@@ -32,5 +38,5 @@ Entity3D::~Entity3D()
 void Entity3D::Draw() 
 {
     //renderer->DrawEntity(VAO, indexSize, color, model);
-    renderer->DrawEntity3D(VAO, indexSize, color, model);
+    renderer->DrawEntity3D(VAO, indexSize, color, model, m_material);
 }
