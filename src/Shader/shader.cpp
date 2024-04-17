@@ -90,6 +90,46 @@ void Shader::SetMat4(const std::string& name, const glm::mat4& value)
     glUniformMatrix4fv(GetUniformLocation(name), 1,GL_FALSE, &value[0][0]);
 }
 
+void Shader::SetMaterial(const std::string& name, Material material)
+{
+    SetVec3(name + ".ambient", material.ambient);
+    SetVec3(name + ".diffuse", material.diffuse);
+    SetVec3(name + ".specular", material.specular);
+    SetFloat(name + ".shininess", material.shininess);
+}
+
+void Shader::SetLight(const std::string& name, const Light value, glm::vec3& lightPos)
+{
+    SetVec3(name + ".ambient", value.ambient);
+    SetVec3(name + ".diffuse", value.diffuse);
+    SetVec3(name + ".specular", value.specular);
+    SetVec3(name + ".position", lightPos);
+}
+
+void Shader::SetLight(const std::string& name, const Light* value, glm::vec3& lightPos)
+{
+    SetVec3(name + ".ambient", value->ambient);
+    SetVec3(name + ".diffuse", value->diffuse);
+    SetVec3(name + ".specular", value->specular);
+    SetVec3(name + ".position", lightPos);
+}
+
+void Shader::SetLight(const std::string& name, const Light* value)
+{
+    SetVec3(name + ".ambient", value->ambient);
+    SetVec3(name + ".diffuse", value->diffuse);
+    SetVec3(name + ".specular", value->specular);
+    SetVec3(name + ".position", value->position);
+}
+
+void Shader::SetLight(const std::string& name, const Light value)
+{
+    SetVec3(name + ".ambient", value.ambient);
+    SetVec3(name + ".diffuse", value.diffuse);
+    SetVec3(name + ".specular", value.specular);
+    SetVec3(name + ".position", value.position);
+}
+
 
 GLint Shader::GetUniformLocation(const std::string& name)
 {

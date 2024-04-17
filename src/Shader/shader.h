@@ -8,6 +8,9 @@
 #include <unordered_map>
 #include <glm/glm.hpp>
 
+#include "Material.h"
+#include "Lightning/Light.h"
+
 using namespace std;
 
 struct ShaderProgramSource
@@ -41,6 +44,11 @@ public:
     void SetVec4(const std::string& name, const glm::vec4& value);
     void SetMat3(const std::string& name, const glm::mat3& value);
     void SetMat4(const std::string& name, const glm::mat4& value);
+    void SetMaterial(const std::string& name, Material material);
+    void SetLight(const std::string& name, const Light value, glm::vec3& lightPos);
+    void SetLight(const std::string& name, const Light* value, glm::vec3& lightPos);
+    void SetLight(const std::string& name, const Light* value);
+    void SetLight(const std::string& name, Light value);
 
 private:
     std::string m_filePath;
