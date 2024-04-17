@@ -22,6 +22,7 @@ enum class ShaderUsed
     Sprites
 };
 
+
 class Shader
 {
 public:
@@ -36,6 +37,7 @@ public:
     void SetFloat(const std::string& name, float value);
     void SetVec2(const std::string& name, const glm::vec2& value);
     void SetVec3(const std::string& name, const glm::vec3& value);
+    void SetVec3(const std::string& name, float x, float y, float z);
     void SetVec4(const std::string& name, const glm::vec4& value);
     void SetMat3(const std::string& name, const glm::mat3& value);
     void SetMat4(const std::string& name, const glm::mat4& value);
