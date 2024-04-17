@@ -21,6 +21,7 @@ class EXPORT Renderer
 {
 public:
     float ambientStrengh;
+    Light* light;
     glm::mat4x4 projection;
     glm::mat4x4 view;
     glm::vec3 lightPos;

@@ -27,6 +27,8 @@ Renderer::Renderer(Window* window, Camera* camera)
     this->camera = camera;
     projection = camera->getProjectionMatrix(window->getWidth(), window->getHeight());
     ambientStrengh = 0.5f;
+
+    light = new Light();
     view = camera->getViewMatrix();
 
     shaderShape = new Shader("../res/shaders/BasicShader.shader");
@@ -54,6 +56,7 @@ Renderer::Renderer(Window* window, Camera* camera)
 Renderer::~Renderer()
 {
     cout << "Renderer Deleted" << endl;
+    delete light;
     delete shaderShape;
     delete shaderSprite;
     delete shaderLightning;
@@ -329,17 +332,12 @@ void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
 
     //shaderLightning->SetFloat("ambientLightStrength", ambientStrengh);
     shaderLightning->SetVec3("viewPos", camera->Position);
-    
-    shaderLightning->SetVec3("light.position", lightPos);
-    shaderLightning->SetVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-    shaderLightning->SetVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-    shaderLightning->SetVec3("light.specular", 1.0f, 1.0f, 1.0f);
+
+    shaderLightning->SetLight("light", light, lightPos);
 
     // material properties
-    //shaderLightning->SetVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-    //shaderLightning->SetVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-    //shaderLightning->SetVec3("material.specular", 0.5f, 0.5f, 0.5f); 
-    //shaderLightning->SetFloat("material.shininess", 32.0f);
+
+    shaderLightning->SetMaterial("material", material);
 
     shaderLightning->SetVec3("material.ambient", material.ambient);
     shaderLightning->SetVec3("material.diffuse", material.diffuse);
