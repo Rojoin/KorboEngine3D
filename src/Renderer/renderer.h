@@ -9,6 +9,7 @@
 
 
 #include "Globals/Vec4.h"
+#include "Shader/Material.h"
 #include "Window/window.h"
 
 #include "Vertex/vertex.h"
@@ -45,7 +46,7 @@ public:
                              GLint textureWrapping);
     void DrawEntity(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4x4 model) const;
     void DrawSprite2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 model, unsigned int& texture) const;
-    void DrawEntity3D(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 model);
+    void DrawEntity3D(unsigned VAO, int sizeIndices, ::Vec4 color, glm::mat4x4 model, Material material);
 
 private:
     Window* GLFWW;

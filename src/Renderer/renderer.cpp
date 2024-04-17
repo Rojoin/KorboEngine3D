@@ -6,6 +6,9 @@
 #include "Base Game/Engine.h"
 
 #define STB_IMAGE_IMPLEMENTATION
+#include "Camera/Camera.h"
+#include "Camera/Camera.h"
+#include "Shader/Material.h"
 #include "stb/stb_image.h"
 
 Renderer::Renderer(Window* window, GLbitfield mask)
@@ -317,20 +320,31 @@ void Renderer::DrawSprite2D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(nullptr));
 }
 
-void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4x4 model)
+void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4x4 model, Material material)
 {
     shaderLightning->bind();
     shaderLightning->SetMat4("model", model);
     shaderLightning->SetMat4("view", view);
     shaderLightning->SetMat4("projection", projection);
 
-    shaderLightning->SetFloat("ambientLightStrength", ambientStrengh);
-    shaderLightning->SetVec3("lightPos", lightPos);
+    //shaderLightning->SetFloat("ambientLightStrength", ambientStrengh);
     shaderLightning->SetVec3("viewPos", camera->Position);
-    shaderLightning->SetVec3("lightColor", glm::vec3(1, 1, 1));
-    shaderLightning->SetVec3("objectColor", glm::vec3(color.x, color.y, color.z));
+    
+    shaderLightning->SetVec3("light.position", lightPos);
+    shaderLightning->SetVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+    shaderLightning->SetVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+    shaderLightning->SetVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
+    // material properties
+    //shaderLightning->SetVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+    //shaderLightning->SetVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+    //shaderLightning->SetVec3("material.specular", 0.5f, 0.5f, 0.5f); 
+    //shaderLightning->SetFloat("material.shininess", 32.0f);
 
+    shaderLightning->SetVec3("material.ambient", material.ambient);
+    shaderLightning->SetVec3("material.diffuse", material.diffuse);
+    shaderLightning->SetVec3("material.specular", material.specular); 
+    shaderLightning->SetFloat("material.shininess", material.shininess);
     glBindVertexArray(VAO);
     // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
     glDrawElements(GL_TRIANGLES, sizeIndices, GL_UNSIGNED_INT, 0);
