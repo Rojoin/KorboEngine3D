@@ -29,7 +29,9 @@
     <ClCompile Include="..\src\Entity\Entity3D.cpp" />
     <ClCompile Include="..\src\Globals\Time.cpp" />
     <ClCompile Include="..\src\Input\Input.cpp" />
+    <ClCompile Include="..\src\Lightning\Light.cpp" />
     <ClCompile Include="..\src\Renderer\renderer.cpp" />
+    <ClCompile Include="..\src\Shader\Material.cpp" />
     <ClCompile Include="..\src\Shader\shader.cpp" />
     <ClCompile Include="..\src\Shape\Cube.cpp" />
     <ClCompile Include="..\src\Shape\Pyramid.cpp" />
@@ -54,7 +56,9 @@
     <ClInclude Include="..\src\Globals\Vec4.h" />
     <ClInclude Include="..\src\Input\Input.h" />
     <ClInclude Include="..\src\Input\KeyCode.h" />
+    <ClInclude Include="..\src\Lightning\Light.h" />
     <ClInclude Include="..\src\Renderer\renderer.h" />
+    <ClInclude Include="..\src\Shader\Material.h" />
     <ClInclude Include="..\src\Shader\shader.h" />
     <ClInclude Include="..\src\Shape\Cube.h" />
     <ClInclude Include="..\src\Shape\Pyramid.h" />
