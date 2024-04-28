@@ -33,6 +33,7 @@ void Game::init()
     Animation animationPlayerIdle = Animation(390, 98, 3, 1.2f, 830, 465, 33, 40);
     Animation animationCartel = Animation(132, 94, 5, 0.5f, 830, 465, 49, 48);
 
+    obj2->setMaterial(BRONZE);
     Animator.insert_or_assign("Right", animationPlayerRight);
     Animator.insert_or_assign("Idle", animationPlayerIdle);
     Animator.insert_or_assign("cartel", animationCartel);
