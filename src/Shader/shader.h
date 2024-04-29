@@ -9,7 +9,8 @@
 #include <glm/glm.hpp>
 
 #include "Material.h"
-#include "Lightning/Light.h"
+#include "Lightning/DirectionLight.h"
+#include "Lightning/SpotLight.h"
 
 using namespace std;
 
@@ -45,10 +46,14 @@ public:
     void SetMat3(const std::string& name, const glm::mat3& value);
     void SetMat4(const std::string& name, const glm::mat4& value);
     void SetMaterial(const std::string& name, Material material);
-    void SetLight(const std::string& name, const Light value, glm::vec3& lightPos);
-    void SetLight(const std::string& name, const Light* value, glm::vec3& lightPos);
-    void SetLight(const std::string& name, const Light* value);
-    void SetLight(const std::string& name, Light value);
+    void SetLight(const std::string& name, const DirectionLight value, glm::vec3& lightPos);
+    void SetLight(const std::string& name, const DirectionLight* value, glm::vec3& lightPos);
+    void SetDirectionalLight(const std::string& name, const DirectionLight* value);
+    void SetSpotLight(const std::string& name, const SpotLight* value);
+    void SetSpotLight(const std::string& name, SpotLight value);
+    void SetDirectionalLight(const std::string& name, DirectionLight value);
+    void SetLight(const std::string& name, const DirectionLight* value);
+    void SetLight(const std::string& name, DirectionLight value);
 
 private:
     std::string m_filePath;

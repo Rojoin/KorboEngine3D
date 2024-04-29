@@ -1,5 +1,7 @@
 #include "shader.h"
 
+#include "Lightning/SpotLight.h"
+
 Shader::Shader(const std::string& filePath) : m_filePath(filePath), m_RendererID(0)
 {
     ShaderProgramSource source = ParseShader();
@@ -70,6 +72,7 @@ void Shader::SetVec3(const std::string& name, const glm::vec3& value)
 {
     glUniform3f(GetUniformLocation(name), value.x, value.y, value.z);
 }
+
 void Shader::SetVec3(const std::string& name, float x, float y, float z)
 {
     glUniform3f(GetUniformLocation(name), x, y, z);
@@ -98,7 +101,7 @@ void Shader::SetMaterial(const std::string& name, Material material)
     SetFloat(name + ".shininess", material.shininess);
 }
 
-void Shader::SetLight(const std::string& name, const Light value, glm::vec3& lightPos)
+void Shader::SetLight(const std::string& name, const DirectionLight value, glm::vec3& lightPos)
 {
     SetVec3(name + ".ambient", value.ambient);
     SetVec3(name + ".diffuse", value.diffuse);
@@ -106,7 +109,7 @@ void Shader::SetLight(const std::string& name, const Light value, glm::vec3& lig
     SetVec3(name + ".position", lightPos);
 }
 
-void Shader::SetLight(const std::string& name, const Light* value, glm::vec3& lightPos)
+void Shader::SetLight(const std::string& name, const DirectionLight* value, glm::vec3& lightPos)
 {
     SetVec3(name + ".ambient", value->ambient);
     SetVec3(name + ".diffuse", value->diffuse);
@@ -114,20 +117,63 @@ void Shader::SetLight(const std::string& name, const Light* value, glm::vec3& li
     SetVec3(name + ".position", lightPos);
 }
 
-void Shader::SetLight(const std::string& name, const Light* value)
+void Shader::SetLight(const std::string& name, const DirectionLight* value)
 {
     SetVec3(name + ".ambient", value->ambient);
     SetVec3(name + ".diffuse", value->diffuse);
     SetVec3(name + ".specular", value->specular);
+    SetVec3(name + ".position", value->direction);
+}
+
+void Shader::SetLight(const std::string& name, const DirectionLight value)
+{
+    SetVec3(name + ".ambient", value.ambient);
+    SetVec3(name + ".diffuse", value.diffuse);
+    SetVec3(name + ".specular", value.specular);
+    SetVec3(name + ".position", value.direction);
+}
+
+void Shader::SetDirectionalLight(const std::string& name, const DirectionLight* value)
+{
+    SetVec3(name + ".ambient", value->ambient);
+    SetVec3(name + ".diffuse", value->diffuse);
+    SetVec3(name + ".specular", value->specular);
+    SetVec3(name + ".direction", value->direction);
+}
+
+void Shader::SetSpotLight(const std::string& name, const SpotLight* value)
+{
     SetVec3(name + ".position", value->position);
+    SetVec3(name + ".direction", value->direction);
+    SetVec3(name + ".ambient", value->ambient);
+    SetVec3(name + ".diffuse", value->diffuse);
+    SetVec3(name + ".specular", value->specular);
+    SetFloat(name + ".constant", value->constant);
+    SetFloat(name + ".linear", value->linear);
+    SetFloat(name + ".quadratic", value->quadratic);
+    SetFloat(name + ".cutOff", value->cutOff);
+    SetFloat(name + ".outerCutOff", value->outerCutOff);
+}
+void Shader::SetSpotLight(const std::string& name, const SpotLight value)
+{
+    SetVec3(name + ".position", value.position);
+    SetVec3(name + ".direction", value.direction);
+    SetVec3(name + ".ambient", value.ambient);
+    SetVec3(name + ".diffuse", value.diffuse);
+    SetVec3(name + ".specular", value.specular);
+    SetFloat(name + ".constant", value.constant);
+    SetFloat(name + ".linear", value.linear);
+    SetFloat(name + ".quadratic", value.quadratic);
+    SetFloat(name + ".cutOff", value.cutOff);
+    SetFloat(name + ".outerCutOff", value.outerCutOff);
 }
 
-void Shader::SetLight(const std::string& name, const Light value)
+void Shader::SetDirectionalLight(const std::string& name, const DirectionLight value)
 {
     SetVec3(name + ".ambient", value.ambient);
     SetVec3(name + ".diffuse", value.diffuse);
     SetVec3(name + ".specular", value.specular);
-    SetVec3(name + ".position", value.position);
+    SetVec3(name + ".direction", value.direction);
 }
 
 
