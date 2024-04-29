@@ -35,7 +35,7 @@ Entity3D::~Entity3D()
     delete indices;
 }
 
-void Entity3D::Draw() 
+void Entity3D:: Draw() 
 {
     //renderer->DrawEntity(VAO, indexSize, color, model);
     renderer->DrawEntity3D(VAO, indexSize, color, model, m_material);
