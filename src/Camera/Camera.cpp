@@ -73,6 +73,11 @@ glm::mat4 Camera::getViewMatrix()
     return !thirdPerson ? glm::lookAt(Position, Position + Front, Up) : glm::lookAt(PositionThirdPerson, Target, Up);
 }
 
+glm::vec3 Camera::getCameraPosition()
+{
+    return thirdPerson ? PositionThirdPerson : Position;
+}
+
 glm::mat4 Camera::getProjectionMatrix(float width, float height)
 {
     return glm::perspective(glm::radians(Zoom), width / height, NEAR_PLANE, FAR_PLANE);

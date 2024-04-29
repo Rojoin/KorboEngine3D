@@ -43,6 +43,7 @@ public:
            float yaw = YAW, float pitch = PITCH);
     void checkKeyboardMovement(GLFWwindow* window);
     glm::mat4 getViewMatrix();
+    glm::vec3 getCameraPosition();
     glm::mat4 getProjectionMatrix(float width, float height);
     void changeCameraObjetive(glm::vec3 target, glm::vec3 rotationEulerAngle);
     void checkMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
