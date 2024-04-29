@@ -28,7 +28,12 @@ Renderer::Renderer(Window* window, Camera* camera)
     projection = camera->getProjectionMatrix(window->getWidth(), window->getHeight());
     ambientStrengh = 0.5f;
 
-    light = new Light();
+    globalLight = new DirectionLight(glm::vec3(-0.2f, -1.0f, -0.3f),
+                               glm::vec3(1.0f, 1.0f, 1.0f),
+                               glm::vec3(.4f, 0.4f, 0.4f),
+                               glm::vec3(0.5f, 0.5f, 0.5f));
+    flashLight = new SpotLight();
+
     view = camera->getViewMatrix();
 
     shaderShape = new Shader("../res/shaders/BasicShader.shader");
@@ -56,7 +61,8 @@ Renderer::Renderer(Window* window, Camera* camera)
 Renderer::~Renderer()
 {
     cout << "Renderer Deleted" << endl;
-    delete light;
+    delete globalLight;
+    delete flashLight;
     delete shaderShape;
     delete shaderSprite;
     delete shaderLightning;
@@ -333,7 +339,48 @@ void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
     //shaderLightning->SetFloat("ambientLightStrength", ambientStrengh);
     shaderLightning->SetVec3("viewPos", camera->Position);
 
-    shaderLightning->SetLight("light", light, lightPos);
+   // shaderLightning->SetLight("light", light, lightPos);
+
+    // directional light
+    shaderLightning->SetDirectionalLight("dirLight",globalLight);
+    // // point light 1
+    // shaderLightning->SetVec3("pointLights[0].position", glm::vec3( 0.7f,  0.2f,  2.0f));
+    // shaderLightning->SetVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
+    // shaderLightning->SetVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+    // shaderLightning->SetVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
+    // shaderLightning->SetFloat("pointLights[0].constant", 1.0f);
+    // shaderLightning->SetFloat("pointLights[0].linear", 0.09f);
+    // shaderLightning->SetFloat("pointLights[0].quadratic", 0.032f);
+    // // point light 2
+    // shaderLightning->SetVec3("pointLights[1].position", glm::vec3( 2.3f, -3.3f, -4.0f));
+    // shaderLightning->SetVec3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
+    // shaderLightning->SetVec3("pointLights[1].diffuse", 0.8f, 0.8f, 0.8f);
+    // shaderLightning->SetVec3("pointLights[1].specular", 1.0f, 1.0f, 1.0f);
+    // shaderLightning->SetFloat("pointLights[1].constant", 1.0f);
+    // shaderLightning->SetFloat("pointLights[1].linear", 0.09f);
+    // shaderLightning->SetFloat("pointLights[1].quadratic", 0.032f);
+    // // point light 3
+    // shaderLightning->SetVec3("pointLights[2].position", glm::vec3(-4.0f,  2.0f, -12.0f));
+    // shaderLightning->SetVec3("pointLights[2].ambient", 0.05f, 0.05f, 0.05f);
+    // shaderLightning->SetVec3("pointLights[2].diffuse", 0.8f, 0.8f, 0.8f);
+    // shaderLightning->SetVec3("pointLights[2].specular", 1.0f, 1.0f, 1.0f);
+    // shaderLightning->SetFloat("pointLights[2].constant", 1.0f);
+    // shaderLightning->SetFloat("pointLights[2].linear", 0.09f);
+    // shaderLightning->SetFloat("pointLights[2].quadratic", 0.032f);
+    // // point light 4
+    // shaderLightning->SetVec3("pointLights[3].position",  glm::vec3( 0.0f,  0.0f, -3.0f));
+    // shaderLightning->SetVec3("pointLights[3].ambient", 0.05f, 0.05f, 0.05f);
+    // shaderLightning->SetVec3("pointLights[3].diffuse", 0.8f, 0.8f, 0.8f);
+    // shaderLightning->SetVec3("pointLights[3].specular", 1.0f, 1.0f, 1.0f);
+    // shaderLightning->SetFloat("pointLights[3].constant", 1.0f);
+    // shaderLightning->SetFloat("pointLights[3].linear", 0.09f);
+    // shaderLightning->SetFloat("pointLights[3].quadratic", 0.032f);
+    
+    // spotLight
+    flashLight->setDirAndPos(camera->Front,camera->getCameraPosition());
+    shaderLightning->SetSpotLight("spotLight",flashLight);
+
+
 
     // material properties
 
@@ -341,7 +388,7 @@ void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
 
     shaderLightning->SetVec3("material.ambient", material.ambient);
     shaderLightning->SetVec3("material.diffuse", material.diffuse);
-    shaderLightning->SetVec3("material.specular", material.specular); 
+    shaderLightning->SetVec3("material.specular", material.specular);
     shaderLightning->SetFloat("material.shininess", material.shininess);
     glBindVertexArray(VAO);
     // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
