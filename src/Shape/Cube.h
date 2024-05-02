@@ -5,5 +5,5 @@
 {
 public:
     Cube(Renderer* renderer,Vec3 position, Vec3 newScale);
-    Cube(Renderer* renderer, Vec3 position, Vec3 newScale, Vec4 color);
+    Cube(Renderer* renderer, Vec3 position, Vec3 newScale, const char* textureLocation);
 };

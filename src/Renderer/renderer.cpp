@@ -8,6 +8,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "Camera/Camera.h"
 #include "Camera/Camera.h"
+#include "Camera/Camera.h"
+#include "Camera/Camera.h"
+#include "Mesh/BasicMesh.h"
 #include "Shader/Material.h"
 #include "stb/stb_image.h"
 
@@ -29,9 +32,9 @@ Renderer::Renderer(Window* window, Camera* camera)
     ambientStrengh = 0.5f;
 
     globalLight = new DirectionLight(glm::vec3(-0.2f, -1.0f, -0.3f),
-                               glm::vec3(1.0f, 1.0f, 1.0f),
-                               glm::vec3(.4f, 0.4f, 0.4f),
-                               glm::vec3(0.5f, 0.5f, 0.5f));
+                                     glm::vec3(1.0f, 1.0f, 1.0f),
+                                     glm::vec3(.4f, 0.4f, 0.4f),
+                                     glm::vec3(0.5f, 0.5f, 0.5f));
     flashLight = new SpotLight();
 
     view = camera->getViewMatrix();
@@ -39,6 +42,8 @@ Renderer::Renderer(Window* window, Camera* camera)
     shaderShape = new Shader("../res/shaders/BasicShader.shader");
     shaderSprite = new Shader("../res/shaders/TextureShader.shader");
     shaderLightning = new Shader("../res/shaders/LightningShader.shader");
+    shaderBasicModel = new Shader("../res/shaders/ModelLoading.shader");
+    createTextureBinder(textureDefault, "../res/images/DefaultSprite.png");
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
@@ -66,6 +71,7 @@ Renderer::~Renderer()
     delete shaderShape;
     delete shaderSprite;
     delete shaderLightning;
+    delete shaderBasicModel;
 }
 
 void Renderer::DeleteObjects(unsigned& VAO, unsigned& VBO, unsigned& EBO)
@@ -140,6 +146,39 @@ void Renderer::createVecBufferWithNormals(float* positions, int* indices, int po
 
     glVertexAttribPointer(1, atribNormalSize, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    glBindVertexArray(0);
+}
+
+void Renderer::createVecBufferWithNormalsUV(float* positions, int* indices, int positionsSize, int atribNormalSize,
+                                            int atribVertexSize, int indicesSize, int atribUVSize, unsigned& VAO,
+                                            unsigned& VBO,
+                                            unsigned& EBO)
+{
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * positionsSize, positions, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * indicesSize, indices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, atribVertexSize, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+
+    glVertexAttribPointer(1, atribNormalSize, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    glVertexAttribPointer(2, atribUVSize, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -329,28 +368,32 @@ void Renderer::DrawSprite2D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(nullptr));
 }
 
-void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4x4 model, Material material)
+void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4x4 model, Material material,
+                            unsigned& texture, bool isUsingTexture)
 {
     shaderLightning->bind();
     shaderLightning->SetMat4("model", model);
     shaderLightning->SetMat4("view", view);
     shaderLightning->SetMat4("projection", projection);
 
-    //shaderLightning->SetFloat("ambientLightStrength", ambientStrengh);
+
     shaderLightning->SetVec3("viewPos", camera->Position);
 
-   // shaderLightning->SetLight("light", light, lightPos);
+    if (isUsingTexture)
+    {
+    }
+
 
     // directional light
-    shaderLightning->SetDirectionalLight("dirLight",globalLight);
-    // // point light 1
-    // shaderLightning->SetVec3("pointLights[0].position", glm::vec3( 0.7f,  0.2f,  2.0f));
-    // shaderLightning->SetVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
-    // shaderLightning->SetVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
-    // shaderLightning->SetVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
-    // shaderLightning->SetFloat("pointLights[0].constant", 1.0f);
-    // shaderLightning->SetFloat("pointLights[0].linear", 0.09f);
-    // shaderLightning->SetFloat("pointLights[0].quadratic", 0.032f);
+    shaderLightning->SetDirectionalLight("dirLight", globalLight);
+    // point light 1
+    shaderLightning->SetVec3("pointLights[0].position", lightPos);
+    shaderLightning->SetVec3("pointLights[0].ambient", 0.5f, 0.5f, 0.5f);
+    shaderLightning->SetVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+    shaderLightning->SetVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
+    shaderLightning->SetFloat("pointLights[0].constant", 1.0f);
+    shaderLightning->SetFloat("pointLights[0].linear", 0.09f);
+    shaderLightning->SetFloat("pointLights[0].quadratic", 0.032f);
     // // point light 2
     // shaderLightning->SetVec3("pointLights[1].position", glm::vec3( 2.3f, -3.3f, -4.0f));
     // shaderLightning->SetVec3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
@@ -375,11 +418,10 @@ void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
     // shaderLightning->SetFloat("pointLights[3].constant", 1.0f);
     // shaderLightning->SetFloat("pointLights[3].linear", 0.09f);
     // shaderLightning->SetFloat("pointLights[3].quadratic", 0.032f);
-    
-    // spotLight
-    flashLight->setDirAndPos(camera->Front,camera->getCameraPosition());
-    shaderLightning->SetSpotLight("spotLight",flashLight);
 
+    // spotLight
+    flashLight->setDirAndPos(camera->Front, camera->getCameraPosition());
+    shaderLightning->SetSpotLight("spotLight", flashLight);
 
 
     // material properties
@@ -391,6 +433,40 @@ void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
     shaderLightning->SetVec3("material.specular", material.specular);
     shaderLightning->SetFloat("material.shininess", material.shininess);
     glBindVertexArray(VAO);
+    glBindTexture(GL_TEXTURE_2D, isUsingTexture ? texture : textureDefault);
     // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
     glDrawElements(GL_TRIANGLES, sizeIndices, GL_UNSIGNED_INT, 0);
+}
+
+void Renderer::DrawModel3D(Shader* shader, glm::mat4x4 model, unsigned VAO, std::vector<unsigned int> indices,
+                           std::vector<Texture> textures)
+{
+    unsigned int diffuseNr = 1;
+    unsigned int specularNr = 1;
+
+    shader->bind();
+    shader->SetMat4("model", model);
+    shader->SetMat4("view", view);
+    shader->SetMat4("projection", projection);
+
+    for (unsigned int i = 0; i < textures.size(); i++)
+    {
+        glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
+        // retrieve texture number (the N in diffuse_textureN)
+        string number;
+        string name = textures[i].type;
+        if (name == "texture_diffuse")
+            number = std::to_string(diffuseNr++);
+        else if (name == "texture_specular")
+            number = std::to_string(specularNr++);
+
+        shader->SetInt(("material." + name + number).c_str(), i);
+        glBindTexture(GL_TEXTURE_2D, textures[i].id);
+    }
+    glActiveTexture(GL_TEXTURE0);
+
+    // draw mesh
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
 }

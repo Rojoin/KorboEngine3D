@@ -3,13 +3,17 @@
 
 layout (location = 0) in vec4 position;
 layout (location = 1) in vec3 aNormal;
+layout (location = 2) in vec2 aTexCoord;
 
 out vec3 FragPos;
 out vec3 Normal;
-
+out vec2 TexCoords;
+out int isUsingTexture;
+        
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform int useTexture; 
 
 
 void main()
@@ -17,6 +21,10 @@ void main()
 FragPos = vec3(model * position);
 Normal = mat3(transpose(inverse(model))) * aNormal;
 gl_Position = projection * view * vec4(FragPos, 1.0);
+isUsingTexture = useTexture;
+
+  TexCoords = vec2(aTexCoord.x, aTexCoord.y);
+
 };
 
 #shader fragment
@@ -26,12 +34,15 @@ gl_Position = projection * view * vec4(FragPos, 1.0);
 
 in vec3 Normal;
 in vec3 FragPos;
-
+in vec2 TexCoords;
+in int isUsingTexture;
+        
 uniform float ambientLightStrength;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform vec3 lightColor;
 uniform vec3 objectColor;
+uniform sampler2D ourTexture;
 
 struct DirLight {
     vec3 direction;
@@ -98,12 +109,13 @@ void main()
 
     vec3 result = CalcDirLight(dirLight, norm, viewDir);
 
-    //for(int i = 0; i < NR_POINT_LIGHTS; i++)
-    //result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
+    for(int i = 0; i < 1; i++)
+    result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
 
     result += CalcSpotLight(spotLight, norm, FragPos, viewDir);
+        
+    FragColor = vec4(result, 1.0) * texture(ourTexture,TexCoords);
 
-    FragColor = vec4(result, 1.0);
 } ;
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)

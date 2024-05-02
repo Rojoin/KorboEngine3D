@@ -31,6 +31,9 @@
     <ClCompile Include="..\src\Input\Input.cpp" />
     <ClCompile Include="..\src\Lightning\DirectionLight.cpp" />
     <ClCompile Include="..\src\Lightning\SpotLight.cpp" />
+    <ClCompile Include="..\src\Mesh\Importer3D.cpp" />
+    <ClCompile Include="..\src\Mesh\BasicMesh.cpp" />
+    <ClCompile Include="..\src\Mesh\Model.cpp" />
     <ClCompile Include="..\src\Renderer\renderer.cpp" />
     <ClCompile Include="..\src\Shader\Material.cpp" />
     <ClCompile Include="..\src\Shader\shader.cpp" />
@@ -39,6 +42,7 @@
     <ClCompile Include="..\src\Shape\Shape.cpp" />
     <ClCompile Include="..\src\Shape\Square.cpp" />
     <ClCompile Include="..\src\Shape\Triangle.cpp" />
+    <ClCompile Include="..\src\Sprite\Importer2D.cpp" />
     <ClCompile Include="..\src\Sprite\Sprite.cpp" />
     <ClCompile Include="..\src\Window\window.cpp" />
   </ItemGroup>
@@ -59,6 +63,9 @@
     <ClInclude Include="..\src\Input\KeyCode.h" />
     <ClInclude Include="..\src\Lightning\DirectionLight.h" />
     <ClInclude Include="..\src\Lightning\SpotLight.h" />
+    <ClInclude Include="..\src\Mesh\Importer3D.h" />
+    <ClInclude Include="..\src\Mesh\BasicMesh.h" />
+    <ClInclude Include="..\src\Mesh\Model.h" />
     <ClInclude Include="..\src\Renderer\renderer.h" />
     <ClInclude Include="..\src\Shader\Material.h" />
     <ClInclude Include="..\src\Shader\shader.h" />
@@ -67,6 +74,7 @@
     <ClInclude Include="..\src\Shape\Shape.h" />
     <ClInclude Include="..\src\Shape\Square.h" />
     <ClInclude Include="..\src\Shape\Triangle.h" />
+    <ClInclude Include="..\src\Sprite\Importer2D.h" />
     <ClInclude Include="..\src\Sprite\Sprite.h" />
     <ClInclude Include="..\src\Vertex\vertex.h" />
     <ClInclude Include="..\src\Window\window.h" />
@@ -74,6 +82,7 @@
   <ItemGroup>
     <Compile Include="..\res\shaders\BasicShader.shader" />
     <Compile Include="..\res\shaders\LightningShader.shader" />
+    <Compile Include="..\res\shaders\ModelLoading.shader" />
     <Compile Include="..\res\shaders\TextureShader.shader" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -87,7 +96,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -157,7 +166,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -181,7 +190,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>

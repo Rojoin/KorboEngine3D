@@ -2,52 +2,52 @@
 
 Cube::Cube(Renderer* renderer, Vec3 position, Vec3 newScale) : Entity3D(renderer, position, newScale)
 {
-    vertexSize = 216;
+    
+    vertexSize = 288;
 
     vertexPositions = new float[vertexSize]{
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-    0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-    0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-    0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-   -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-   -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
 
-   -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-    0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-    0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-    0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-   -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-   -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
 
-   -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-   -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-   -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-   -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-   -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-   -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 
-    0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-    0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-    0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-    0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-    0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-    0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 
-   -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-    0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-    0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-    0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-   -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-   -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
 
-   -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-    0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-    0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-    0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-   -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-   -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f
     };
-
     indexSize = 36;
     indices = new int[indexSize]{
         0, 1, 2,
@@ -65,86 +65,59 @@ Cube::Cube(Renderer* renderer, Vec3 position, Vec3 newScale) : Entity3D(renderer
     };
     int atribNormalSize = 3;
     this->color = {1, 1, 1, 1};
-    renderer->createVecBufferWithNormals(vertexPositions, indices, vertexSize, indexSize, atribPosSize, atribNormalSize,
-                                         VAO, VBO,
-                                         EBO);
+    m_isUsingTexture = false;
+    renderer->createVecBufferWithNormalsUV(vertexPositions, indices, vertexSize, atribNormalSize, atribPosSize,indexSize,atribUVSize,
+                                            VAO, VBO, EBO);
 }
 
-Cube::Cube(Renderer* renderer, Vec3 position, Vec3 newScale, Vec4 color) : Entity3D(renderer, position, newScale)
+Cube::Cube(Renderer* renderer, Vec3 position, Vec3 newScale,const char* textureLocation) : Entity3D(renderer, position, newScale)
 {
-    vertexSize = 48;
 
-
-    //vertexPositions = new float[vertexSize]{
-    //    0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, // top right
-    //    0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, // bottom right
-    //    -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, // bottom left
-    //    -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, // top Left
-    //    0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-    //    0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-    //    -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-    //    -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
-    //};
-    //indexSize = 36;
-    //indices = new int[indexSize]{
-    //    0, 1, 3,
-    //    1, 2, 3,
-    //    4, 5, 7,
-    //    5, 6, 7,
-    //    0, 3, 4,
-    //    3, 4, 7,
-    //    1, 2, 5,
-    //    2, 6, 5,
-    //    1, 0, 5,
-    //    0, 4, 5,
-    //    3, 2, 6,
-    //    3, 7, 6
-    //};
-
-    vertexSize = 216;
+    
+    vertexSize = 288;
 
     vertexPositions = new float[vertexSize]{
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-    0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-    0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-    0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-   -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-   -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
 
-   -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-    0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-    0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-    0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-   -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-   -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
 
-   -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-   -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-   -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-   -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-   -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-   -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 
-    0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-    0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-    0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-    0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-    0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-    0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 
-   -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-    0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-    0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-    0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-   -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-   -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
 
-   -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-    0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-    0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-    0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-   -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-   -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f
     };
     indexSize = 36;
     indices = new int[indexSize]{
@@ -161,8 +134,10 @@ Cube::Cube(Renderer* renderer, Vec3 position, Vec3 newScale, Vec4 color) : Entit
         30, 31, 32,
         33, 34, 35
     };
+    m_isUsingTexture = true;
+    renderer->createTextureBinder(textureId,textureLocation);
     int atribNormalSize = 3;
     this->color = {color.x, color.y, color.z, color.w};
-    renderer->createVecBufferWithNormals(vertexPositions, indices, vertexSize, atribNormalSize, atribPosSize, indexSize,VAO, VBO,EBO);
+    renderer->createVecBufferWithNormalsUV(vertexPositions, indices, vertexSize, atribNormalSize, atribPosSize,indexSize,atribUVSize,
+                                         VAO, VBO, EBO);
 }
-

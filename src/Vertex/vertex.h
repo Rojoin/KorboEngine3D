@@ -94,36 +94,3 @@ struct Color
 	}
 };
 
-struct Vertex
-{
-	Position pos;
-	UV uv;
-	Color color;
-
-	Vertex(Position pos, UV uv,Color color)
-	{
-		this->pos = pos;
-		this->uv = uv;
-		this->color = color;
-	}
-
-	Vertex(Position pos, UV uv)
-	{
-		this->pos = pos;
-		this->uv = uv;
-		color = Color::Color();
-	}
-
-	Vertex(Position pos)
-	{
-		this->pos = pos;
-		this->uv = UV::UV();
-		color = Color::Color();
-	}
-	Vertex()
-	{
-		this->pos = Position::Position();
-		this->uv = UV::UV();
-		color = Color::Color();
-	}
-};

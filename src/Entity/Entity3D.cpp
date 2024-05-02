@@ -38,5 +38,5 @@ Entity3D::~Entity3D()
 void Entity3D:: Draw() 
 {
     //renderer->DrawEntity(VAO, indexSize, color, model);
-    renderer->DrawEntity3D(VAO, indexSize, color, model, m_material);
+    renderer->DrawEntity3D(VAO, indexSize, color, model, m_material, textureId, m_isUsingTexture);
 }

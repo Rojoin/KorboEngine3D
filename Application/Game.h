@@ -2,7 +2,7 @@
 #include <map>
 
 #include "Base Game/Engine.h"
-#include "Entity/Entity3D.h"
+#include "Mesh/Model.h"
 #include "Shape/Triangle.h"
 #include "Shape/Square.h"
 #include "Sprite/Sprite.h"
@@ -14,6 +14,7 @@ private:
     Sprite* cartel;
     Sprite* obj1;
     Entity3D* obj2;
+    Model* basicModel;
     map<string, Animation> Animator;
     int windowWidth = 800;
     int windowHeight = 400;

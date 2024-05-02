@@ -1,9 +1,8 @@
 ﻿#include "Game.h"
 
-
+#include "Mesh/Model.h"
 #include "Input/Input.h"
 #include "Shape/Cube.h"
-#include "Shape/Pyramid.h"
 #include "Sprite/Sprite.h"
 
 Game::Game(int windowWidth, int windowHeight) : Engine(windowWidth, windowHeight)
@@ -23,24 +22,32 @@ void Game::init()
     const char* playerPath = "../res/images/Sonic_Mania_Sprite_Sheet.png";
     player1 = new Sprite(getRenderer(), {1, 1, 1, 1}, {0, 0, -100.0f}, {100, 100, 0},
                          playerPath,GL_NEAREST);
-    cartel = new Sprite(getRenderer(), {1, 1, 1, 1}, {150, 0, -400.0f}, {100, 100, 0},
-                        playerPath,GL_NEAREST);
+
     obj1 = new Sprite(getRenderer(), {1, 0, 0, 1}, {150, -100, -400.0f}, {5000, 5000, 0},
                       "../res/images/parcialBackground.jpg",GL_NEAREST);
-    obj2 = new Cube(getRenderer(), {30, 1, 30}, {50, 50, 50}, {1, 0, 0, 1});
     obj1->SetRotationX(90);
     Animation animationPlayerRight = Animation(19, 205, 3, 0.5f, 830, 465, 40, 33);
     Animation animationPlayerIdle = Animation(390, 98, 3, 1.2f, 830, 465, 33, 40);
     Animation animationCartel = Animation(132, 94, 5, 0.5f, 830, 465, 49, 48);
-
-    obj2->setMaterial(BRONZE);
+    cartel = new Sprite(getRenderer(), {1, 1, 1, 1}, {150, 0, -400.0f}, {100, 100, 0},
+                        playerPath,GL_NEAREST);
+    obj2 = new Cube(getRenderer(), {30, 1, 30}, {50, 50, 50}, "../res/models/diffuse.png");
+    // obj2->setMaterial(BRONZE);
     Animator.insert_or_assign("Right", animationPlayerRight);
     Animator.insert_or_assign("Idle", animationPlayerIdle);
     Animator.insert_or_assign("cartel", animationCartel);
     cartel->ChangeAnimation(Animator["cartel"]);
     player1->ChangeAnimation(Animator["Idle"]);
-}
 
+
+    string resModelParcialbackgroundJpg = "../res/models/MasterSwordByIgnacioArrastua.fbx";
+    basicModel = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {0, 0, -100.0f}, {10, 10, 10});
+    basicModel->SetRotationX(90);
+}
+//Todo: Cuando cargo texturas para modelos flippearlas.
+//Todo: Fijarse que se repite la ultima textura
+//Todo: Hacer codigo más lindo
+//Todo: Agregar luces al modelo
 void Game::update()
 {
     Vec3 newPos = {player1->GetPosition().x, player1->GetPosition().y, player1->GetPosition().z};
@@ -135,16 +142,17 @@ void Game::update()
 
     if (!hasBeenPressed)
     {
-       player1->ChangeAnimation(Animator["Idle"]);
+        player1->ChangeAnimation(Animator["Idle"]);
     }
     player1->SetPosition(newPos);
     setLightPos(newPos);
-    player1->UpdateAnimation();
-    cartel->UpdateAnimation();
-    cartel->Draw();
-    player1->Draw();
-    obj1->Draw();
-    obj2->Draw();
+    //player1->UpdateAnimation();
+    //cartel->UpdateAnimation();
+    //cartel->Draw();
+    //player1->Draw();
+    //obj1->Draw();
+    //    obj2->Draw();
+    basicModel->draw(getRenderer()->shaderBasicModel);
 }
 
 void Game::exit()
@@ -155,6 +163,7 @@ void Game::exit()
 
     delete player1;
     delete obj1;
-    delete obj2;
+    // delete obj2;
     delete cartel;
+    delete basicModel;
 }
