@@ -43,11 +43,12 @@ void Game::init()
     string resModelParcialbackgroundJpg = "../res/models/EspadaMaestra_EscudoHyliano_ModelCombinedMeshFinal.fbx";
     basicModel = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {0, 0, -100.0f}, {10, 10, 10});
     basicModel->SetRotationX(90);
+    basicModel->SetRotationY(90);
 }
-//Todo: Cuando cargo texturas para modelos flippearlas.
-//Todo: Fijarse que se repite la ultima textura
+
+
 //Todo: Hacer codigo más lindo
-//Todo: Agregar luces al modelo
+
 void Game::update()
 {
     Vec3 newPos = {player1->GetPosition().x, player1->GetPosition().y, player1->GetPosition().z};
@@ -127,6 +128,7 @@ void Game::update()
         player1->ChangeAnimation(Animator["Right"]);
         hasBeenPressed = true;
         player1->SetRotationY(1.0f);
+  
     }
     if (input->isKeyPressed(KeyKode::KEY_Q))
     {
@@ -134,12 +136,36 @@ void Game::update()
         hasBeenPressed = true;
 
         player1->SetRotationY(-1.0f);
+    
     }
 #pragma endregion
     camera->changeCameraObjetive(glm::vec3(newPos.x, newPos.y, newPos.z),
                                  glm::vec3(player1->GetRotation().x, player1->GetRotation().y,
                                            player1->GetRotation().z));
 
+#pragma region Movement3DObject
+    if (input->isKeyPressed(KEY_NUMPAD_1))
+    {
+        basicModel->SetRotationZ(1.0f);
+    }  if (input->isKeyPressed(KEY_NUMPAD_3))
+    {
+        basicModel->SetRotationZ(-1.0f);
+    } if (input->isKeyPressed(KEY_NUMPAD_7))
+    {
+        basicModel->SetRotationX(1.0f);
+    }  if (input->isKeyPressed(KEY_NUMPAD_9))
+    {
+        basicModel->SetRotationX(-1.0f);
+    }
+    if (input->isKeyPressed(KEY_NUMPAD_4))
+    {
+        basicModel->SetRotationY(1.0f);
+    }  if (input->isKeyPressed(KEY_NUMPAD_6))
+    {
+        basicModel->SetRotationY(-1.0f);
+    }
+
+#pragma  endregion
     if (!hasBeenPressed)
     {
         player1->ChangeAnimation(Animator["Idle"]);

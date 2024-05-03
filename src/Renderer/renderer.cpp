@@ -443,6 +443,7 @@ void Renderer::DrawModel3D(Shader* shader, glm::mat4x4 model, unsigned VAO, std:
     unsigned int heightNr = 1;
     unsigned int baseColorNr = 1;
     unsigned int metalnessNr = 1;
+    unsigned int roughnessNR = 1;
 
     shader->bind();
     shader->SetMat4("model", model);
@@ -467,6 +468,8 @@ void Renderer::DrawModel3D(Shader* shader, glm::mat4x4 model, unsigned VAO, std:
             number = std::to_string(heightNr++);
         else if (name == "texture_metalness")
             number = std::to_string(metalnessNr++);
+        else if (name == "texture_roughness")
+            number = std::to_string(roughnessNR++);
 
         shader->SetInt(("material." + name + number).c_str(), i);
         glBindTexture(GL_TEXTURE_2D, textures[i].id);

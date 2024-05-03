@@ -116,21 +116,27 @@ void main()
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 {
-    vec3 lightDir = normalize(-light.direction);
-    // diffuse shading
-    float diff = max(dot(normal, lightDir), 0.0);
-    // specular shading
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    // combine results
-
-
+vec3 lightDir = normalize(-light.direction);
+// Diffuse shading
+float diff = max(dot(normal, lightDir), 0.0);
+// Specular shading
+float specular = 0.0;
+if (material.metalness < 0.5) {
+// Dielectric material
+vec3 halfwayDir = normalize(lightDir + viewDir);
+float NdotH = max(dot(normal, halfwayDir), 0.0);
+specular = pow(NdotH, material.shininess);
+} else {
+// Metallic material
+vec3 reflectDir = reflect(-lightDir, normal);
+specular = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+}
+// Combine results
 vec3 ambient  = light.ambient  * texture(material.texture_baseColor1, TexCoords).rgb;
-    vec3 diffuse  = light.diffuse  * diff * texture(material.texture_diffuse1, TexCoords).rgb;
-    vec3 specular = light.specular * spec * texture(material.texture_specular1, TexCoords).rgb;
-    vec3 metalnessColor = texture(material.texture_metalness1, TexCoords).rgb;
-    vec3 finalColor = mix(diffuse, metalnessColor, material.metalness);
-    return (ambient + finalColor + specular);
+vec3 diffuse  = light.diffuse  * diff * texture(material.texture_diffuse1, TexCoords).rgb;
+vec3 specularColor = light.specular * specular * texture(material.texture_specular1, TexCoords).rgb;
+        
+return (ambient + diffuse + specularColor);
 }
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
