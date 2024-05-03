@@ -7,7 +7,8 @@
 #include "assimp/postprocess.h"
 
 string Importer3D::currentDirectory = "";
-vector<Texture> Importer3D::texturesLoaded; 
+vector<Texture> Importer3D::texturesLoaded;
+
 void Importer3D::loadModel(const string& path, string& directory, vector<BasicMesh>& meshes)
 {
     Assimp::Importer importer;
@@ -80,14 +81,24 @@ BasicMesh Importer3D::processMesh(aiMesh* mesh, const aiScene* scene)
     if (mesh->mMaterialIndex >= 0)
     {
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-        vector<Texture> diffuseMaps = loadMaterialTextures(material,
-                                                           aiTextureType_DIFFUSE, "texture_diffuse");
+        vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
         textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-        vector<Texture> specularMaps = loadMaterialTextures(material,
-                                                            aiTextureType_SPECULAR, "texture_specular");
+        
+        vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
         textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+
+        vector<Texture> baseColorMaps = loadMaterialTextures(material, aiTextureType_BASE_COLOR, "texture_baseColor");
+        textures.insert(textures.end(), baseColorMaps.begin(), baseColorMaps.end());
+        
+        vector<Texture> normalsMaps = loadMaterialTextures(material, aiTextureType_NORMALS, "texture_normals");
+        textures.insert(textures.end(), normalsMaps.begin(), normalsMaps.end());
+        
+        std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+        textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
     }
-    texturesLoaded.clear();
+    if (scene->HasMaterials())
+    {
+    }
     return BasicMesh(vertices, indices, textures);
 }
 

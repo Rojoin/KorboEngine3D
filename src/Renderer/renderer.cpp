@@ -443,6 +443,9 @@ void Renderer::DrawModel3D(Shader* shader, glm::mat4x4 model, unsigned VAO, std:
 {
     unsigned int diffuseNr = 1;
     unsigned int specularNr = 1;
+    unsigned int normalsNr = 1;
+    unsigned int heightNr = 1;
+    unsigned int baseColorNr = 1;
 
     shader->bind();
     shader->SetMat4("model", model);
@@ -459,14 +462,20 @@ void Renderer::DrawModel3D(Shader* shader, glm::mat4x4 model, unsigned VAO, std:
             number = std::to_string(diffuseNr++);
         else if (name == "texture_specular")
             number = std::to_string(specularNr++);
+        else if (name == "texture_baseColor")
+            number = std::to_string(baseColorNr++);
+        else if (name == "texture_normal")
+            number = std::to_string(normalsNr++);
+        else if (name == "texture_height")
+            number = std::to_string(heightNr++);
 
         shader->SetInt(("material." + name + number).c_str(), i);
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
     }
-    glActiveTexture(GL_TEXTURE0);
 
     // draw mesh
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+    glActiveTexture(GL_TEXTURE0);
 }

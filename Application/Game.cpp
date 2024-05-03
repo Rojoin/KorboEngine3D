@@ -31,7 +31,7 @@ void Game::init()
     Animation animationCartel = Animation(132, 94, 5, 0.5f, 830, 465, 49, 48);
     cartel = new Sprite(getRenderer(), {1, 1, 1, 1}, {150, 0, -400.0f}, {100, 100, 0},
                         playerPath,GL_NEAREST);
-    obj2 = new Cube(getRenderer(), {30, 1, 30}, {50, 50, 50}, "../res/models/diffuse.png");
+    obj2 = new Cube(getRenderer(), {30, 1, 30}, {50, 50, 50}, "../res/models/Persona.png");
     // obj2->setMaterial(BRONZE);
     Animator.insert_or_assign("Right", animationPlayerRight);
     Animator.insert_or_assign("Idle", animationPlayerIdle);
@@ -40,7 +40,7 @@ void Game::init()
     player1->ChangeAnimation(Animator["Idle"]);
 
 
-    string resModelParcialbackgroundJpg = "../res/models/MasterSwordByIgnacioArrastua.fbx";
+    string resModelParcialbackgroundJpg = "../res/models/EspadaMaestra_EscudoHyliano_ModelCombinedMeshFinal.fbx";
     basicModel = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {0, 0, -100.0f}, {10, 10, 10});
     basicModel->SetRotationX(90);
 }

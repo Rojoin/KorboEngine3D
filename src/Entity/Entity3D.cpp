@@ -20,6 +20,8 @@ Entity3D::Entity3D(Renderer* renderer, Vec3 position, Vec3 newScale): Entity(ren
     UpdateMatrix();
     SetScale(newScale);
     SetPosition(position);
+    vertexPositions = nullptr;
+    indices = nullptr;
 }
 
 void Entity3D::setMaterial(Material material)
