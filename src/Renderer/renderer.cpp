@@ -379,10 +379,6 @@ void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
 
     shaderLightning->SetVec3("viewPos", camera->Position);
 
-    if (isUsingTexture)
-    {
-    }
-
 
     // directional light
     shaderLightning->SetDirectionalLight("dirLight", globalLight);
@@ -446,6 +442,7 @@ void Renderer::DrawModel3D(Shader* shader, glm::mat4x4 model, unsigned VAO, std:
     unsigned int normalsNr = 1;
     unsigned int heightNr = 1;
     unsigned int baseColorNr = 1;
+    unsigned int metalnessNr = 1;
 
     shader->bind();
     shader->SetMat4("model", model);
@@ -464,15 +461,39 @@ void Renderer::DrawModel3D(Shader* shader, glm::mat4x4 model, unsigned VAO, std:
             number = std::to_string(specularNr++);
         else if (name == "texture_baseColor")
             number = std::to_string(baseColorNr++);
-        else if (name == "texture_normal")
+        else if (name == "texture_normals")
             number = std::to_string(normalsNr++);
         else if (name == "texture_height")
             number = std::to_string(heightNr++);
+        else if (name == "texture_metalness")
+            number = std::to_string(metalnessNr++);
 
         shader->SetInt(("material." + name + number).c_str(), i);
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
     }
+    shader->SetVec3("viewPos", camera->Position);
 
+
+    // directional light
+    shader->SetDirectionalLight("dirLight", globalLight);
+    // point light 1
+    shader->SetVec3("pointLights[0].position", lightPos);
+    shader->SetVec3("pointLights[0].ambient", 0.5f, 0.5f, 0.5f);
+    shader->SetVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+    shader->SetVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
+    shader->SetFloat("pointLights[0].constant", 1.0f);
+    shader->SetFloat("pointLights[0].linear", 0.09f);
+    shader->SetFloat("pointLights[0].quadratic", 0.032f);
+     flashLight->setDirAndPos(camera->Front, camera->getCameraPosition());
+    shader->SetSpotLight("spotLight", flashLight);
+
+
+    // material properties
+
+   // shader->SetMaterial("material", RUBY);
+
+    shader->SetFloat("material.shininess", BRONZE.shininess);
+    shader->SetFloat("material.metalness", BRONZE.shininess);
     // draw mesh
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
