@@ -3,10 +3,13 @@
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoords;
+layout (location = 3) in vec3 aTangent;
+layout (location = 4) in vec3 aBitangent;
 
 out vec3 FragPos;
 out vec3 Normal;
 out vec2 TexCoords;
+
 
 uniform mat4 model;
 uniform mat4 view;
@@ -30,7 +33,9 @@ FragPos = vec3(model * vec4(aPos, 1.0));
 in vec3 Normal;
 in vec3 FragPos;
 in vec2 TexCoords;
-
+in vec3 Tangent;
+in vec3 Bitangent;
+        
 uniform sampler2D texture_diffuse1;
 uniform sampler2D texture_normal1;
 uniform sampler2D texture_baseColor1;
@@ -135,8 +140,9 @@ specular = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 vec3 ambient  = light.ambient  * texture(material.texture_baseColor1, TexCoords).rgb;
 vec3 diffuse  = light.diffuse  * diff * texture(material.texture_diffuse1, TexCoords).rgb;
 vec3 specularColor = light.specular * specular * texture(material.texture_specular1, TexCoords).rgb;
-        
-return (ambient + diffuse + specularColor);
+float metalnessColor = texture(material.texture_metalness1, TexCoords).r;
+vec3 finalColor = diffuse*metalnessColor* material.metalness;
+return (ambient + finalColor + specular);
 }
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
@@ -157,8 +163,8 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     ambient *= attenuation;
     diffuse *= attenuation;
     specular *= attenuation;
-vec3 metalnessColor = texture(material.texture_metalness1, TexCoords).rgb;
-vec3 finalColor = mix(diffuse, metalnessColor, material.metalness);
+float metalnessColor = texture(material.texture_metalness1, TexCoords).r;
+vec3 finalColor = diffuse*metalnessColor* material.metalness;
     return (ambient + finalColor + specular);
 }
 // calculates the color when using a spot light.
@@ -184,8 +190,8 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     ambient *= attenuation * intensity;
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;
-vec3 metalnessColor = texture(material.texture_metalness1, TexCoords).rgb;
-vec3 finalColor = mix(diffuse, metalnessColor, material.metalness);
-    return (ambient + finalColor + specular);
+float metalnessColor = texture(material.texture_metalness1, TexCoords).r;
+vec3 finalColor = diffuse*metalnessColor* material.metalness;
+return (ambient + finalColor + specular);
 }
 

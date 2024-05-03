@@ -39,3 +39,4 @@ const Material BLACK_PLASTIC = {glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.01, 0.01, 
 const Material CYAN_PLASTIC = {glm::vec3(0.0, 0.1, 0.06), glm::vec3(0.0, 0.50980392, 0.50980392), glm::vec3(0.50196078, 0.50196078, 0.50196078), 0.25};
 const Material GREEN_PLASTIC = {glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.1, 0.35, 0.1), glm::vec3(0.45, 0.55, 0.45), 0.25};
 const Material RED_PLASTIC = {glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.5, 0.0, 0.0), glm::vec3(0.7, 0.6, 0.6), 0.25};
+const Material DEFAULT_MATERIAL = {glm::vec3(0.0, 0.0, 0.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0), 1.0};

@@ -32,7 +32,7 @@ Renderer::Renderer(Window* window, Camera* camera)
     ambientStrengh = 0.5f;
 
     globalLight = new DirectionLight(glm::vec3(-0.2f, -1.0f, -0.3f),
-                                     glm::vec3(1.0f, 1.0f, 1.0f),
+                                     glm::vec3(.4f, .4f, .4f),
                                      glm::vec3(.4f, 0.4f, 0.4f),
                                      glm::vec3(0.5f, 0.5f, 0.5f));
     flashLight = new SpotLight();
@@ -384,8 +384,8 @@ void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
     shaderLightning->SetDirectionalLight("dirLight", globalLight);
     // point light 1
     shaderLightning->SetVec3("pointLights[0].position", lightPos);
-    shaderLightning->SetVec3("pointLights[0].ambient", 0.5f, 0.5f, 0.5f);
-    shaderLightning->SetVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+    shaderLightning->SetVec3("pointLights[0].ambient", 1.0f, 1.0f, 1.0f);
+    shaderLightning->SetVec3("pointLights[0].diffuse", 1.0f, 1.0f, 1.0f);
     shaderLightning->SetVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
     shaderLightning->SetFloat("pointLights[0].constant", 1.0f);
     shaderLightning->SetFloat("pointLights[0].linear", 0.09f);
@@ -481,13 +481,13 @@ void Renderer::DrawModel3D(Shader* shader, glm::mat4x4 model, unsigned VAO, std:
     shader->SetDirectionalLight("dirLight", globalLight);
     // point light 1
     shader->SetVec3("pointLights[0].position", lightPos);
-    shader->SetVec3("pointLights[0].ambient", 0.5f, 0.5f, 0.5f);
-    shader->SetVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+    shader->SetVec3("pointLights[0].ambient", 1.0f, 1.0f, 1.0f);
+    shader->SetVec3("pointLights[0].diffuse", 1000.0f, 1000.0f, 1000.0f);
     shader->SetVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
     shader->SetFloat("pointLights[0].constant", 1.0f);
     shader->SetFloat("pointLights[0].linear", 0.09f);
     shader->SetFloat("pointLights[0].quadratic", 0.032f);
-     flashLight->setDirAndPos(camera->Front, camera->getCameraPosition());
+    flashLight->setDirAndPos(camera->Front, camera->getCameraPosition());
     shader->SetSpotLight("spotLight", flashLight);
 
 
