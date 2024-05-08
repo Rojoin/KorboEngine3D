@@ -1,8 +1,8 @@
 ﻿#include "Model.h"
 
-Model::Model(const char* path, Renderer* renderer, Vec3 position, Vec3 newScale): Entity3D(renderer, position, newScale)
+Model::Model(const char* path, Renderer* renderer, Vec3 position, Vec3 newScale,bool shouldInvertUVs): Entity3D(renderer, position, newScale)
 {
-    Importer3D::loadModel(path, directory, meshes);
+    Importer3D::loadModel(path, directory, meshes, shouldInvertUVs);
 }
 
 
