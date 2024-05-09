@@ -24,6 +24,7 @@ public:
     float ambientStrengh;
     unsigned textureDefault;
     DirectionLight* globalLight;
+    PointLight* pointLight;
     SpotLight* flashLight;
     glm::mat4x4 projection;
     glm::mat4x4 view;

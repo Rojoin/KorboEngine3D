@@ -36,7 +36,7 @@ Renderer::Renderer(Window* window, Camera* camera)
                                      glm::vec3(.4f, 0.4f, 0.4f),
                                      glm::vec3(0.5f, 0.5f, 0.5f));
     flashLight = new SpotLight();
-
+    pointLight = new PointLight();
     view = camera->getViewMatrix();
 
     shaderShape = new Shader("../res/shaders/BasicShader.shader");
@@ -67,6 +67,7 @@ Renderer::~Renderer()
 {
     cout << "Renderer Deleted" << endl;
     delete globalLight;
+    delete pointLight;
     delete flashLight;
     delete shaderShape;
     delete shaderSprite;
@@ -383,37 +384,7 @@ void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
     // directional light
     shaderLightning->SetDirectionalLight("dirLight", globalLight);
     // point light 1
-    shaderLightning->SetVec3("pointLights[0].position", lightPos);
-    shaderLightning->SetVec3("pointLights[0].ambient", 1.0f, 1.0f, 1.0f);
-    shaderLightning->SetVec3("pointLights[0].diffuse", 1.0f, 1.0f, 1.0f);
-    shaderLightning->SetVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
-    shaderLightning->SetFloat("pointLights[0].constant", 1.0f);
-    shaderLightning->SetFloat("pointLights[0].linear", 0.09f);
-    shaderLightning->SetFloat("pointLights[0].quadratic", 0.032f);
-    // // point light 2
-    // shaderLightning->SetVec3("pointLights[1].position", glm::vec3( 2.3f, -3.3f, -4.0f));
-    // shaderLightning->SetVec3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
-    // shaderLightning->SetVec3("pointLights[1].diffuse", 0.8f, 0.8f, 0.8f);
-    // shaderLightning->SetVec3("pointLights[1].specular", 1.0f, 1.0f, 1.0f);
-    // shaderLightning->SetFloat("pointLights[1].constant", 1.0f);
-    // shaderLightning->SetFloat("pointLights[1].linear", 0.09f);
-    // shaderLightning->SetFloat("pointLights[1].quadratic", 0.032f);
-    // // point light 3
-    // shaderLightning->SetVec3("pointLights[2].position", glm::vec3(-4.0f,  2.0f, -12.0f));
-    // shaderLightning->SetVec3("pointLights[2].ambient", 0.05f, 0.05f, 0.05f);
-    // shaderLightning->SetVec3("pointLights[2].diffuse", 0.8f, 0.8f, 0.8f);
-    // shaderLightning->SetVec3("pointLights[2].specular", 1.0f, 1.0f, 1.0f);
-    // shaderLightning->SetFloat("pointLights[2].constant", 1.0f);
-    // shaderLightning->SetFloat("pointLights[2].linear", 0.09f);
-    // shaderLightning->SetFloat("pointLights[2].quadratic", 0.032f);
-    // // point light 4
-    // shaderLightning->SetVec3("pointLights[3].position",  glm::vec3( 0.0f,  0.0f, -3.0f));
-    // shaderLightning->SetVec3("pointLights[3].ambient", 0.05f, 0.05f, 0.05f);
-    // shaderLightning->SetVec3("pointLights[3].diffuse", 0.8f, 0.8f, 0.8f);
-    // shaderLightning->SetVec3("pointLights[3].specular", 1.0f, 1.0f, 1.0f);
-    // shaderLightning->SetFloat("pointLights[3].constant", 1.0f);
-    // shaderLightning->SetFloat("pointLights[3].linear", 0.09f);
-    // shaderLightning->SetFloat("pointLights[3].quadratic", 0.032f);
+    shaderLightning->SetPointLight("pointLights[0]", pointLight);
 
     // spotLight
     flashLight->setDirAndPos(camera->Front, camera->getCameraPosition());
@@ -421,7 +392,6 @@ void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
 
 
     // material properties
-
     shaderLightning->SetMaterial("material", material);
 
     shaderLightning->SetVec3("material.ambient", material.ambient);
@@ -476,24 +446,18 @@ void Renderer::DrawModel3D(Shader* shader, glm::mat4x4 model, unsigned VAO, std:
     }
     shader->SetVec3("viewPos", camera->Position);
 
-
     // directional light
     shader->SetDirectionalLight("dirLight", globalLight);
     // point light 1
-    shader->SetVec3("pointLights[0].position", lightPos);
-    shader->SetVec3("pointLights[0].ambient", 1.0f, 1.0f, 1.0f);
-    shader->SetVec3("pointLights[0].diffuse", 1000.0f, 1000.0f, 1000.0f);
-    shader->SetVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
-    shader->SetFloat("pointLights[0].constant", 1.0f);
-    shader->SetFloat("pointLights[0].linear", 0.09f);
-    shader->SetFloat("pointLights[0].quadratic", 0.032f);
+    shader->SetPointLight("pointLights[0]", pointLight);
+
     flashLight->setDirAndPos(camera->Front, camera->getCameraPosition());
     shader->SetSpotLight("spotLight", flashLight);
 
 
     // material properties
 
-   // shader->SetMaterial("material", RUBY);
+    // shader->SetMaterial("material", RUBY);
 
     shader->SetFloat("material.shininess", BRONZE.shininess);
     shader->SetFloat("material.metalness", BRONZE.shininess);
