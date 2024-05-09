@@ -22,12 +22,7 @@ bool Colitions::CheckCollitions(Entity2D a, Entity2D b)
     bool collisionX = aRight >= bLeftSide &&
         bRightSide >= aLeftSide;
 
-    cout << "Position A:" << "X:" << a.GetPosition().x << " Y:" << a.GetPosition().y << " Z:" << a.GetPosition().z <<
-        endl;
-    cout << "Scale A:" << "X:" << a.GetScale().x / 2 << " Y:" << a.GetScale().y / 2 << endl;
-    cout << "Position B:" << "X:" << b.GetPosition().x << " Y:" << b.GetPosition().y << " Z:" << b.GetPosition().z <<
-        endl;
-    cout << "Scale B:" << "X:" << b.GetScale().x / 2 << " Y:" << b.GetScale().y / 2 << endl;
+
     float aUpSide = a.GetPosition().y + abs(a.GetScale().y) / 2;
     float bDownSide = b.GetPosition().y - abs(b.GetScale().y) / 2;
     float bUpSide = b.GetPosition().y + abs(b.GetScale().y) / 2;
@@ -50,12 +45,7 @@ bool Colitions::CheckCollitions(Entity2D* a, Entity2D* b)
     bool collisionX = aRight >= bLeftSide &&
         bRightSide >= aLeftSide;
 
-    cout << "Position A:" << "X:" << a->GetPosition().x << " Y:" << a->GetPosition().y << " Z:" << a->GetPosition().z <<
-        endl;
-    cout << "Scale A:" << "X:" << a->GetScale().x / 2 << " Y:" << a->GetScale().y / 2 << endl;
-    cout << "Position B:" << "X:" << b->GetPosition().x << " Y:" << b->GetPosition().y << " Z:" << b->GetPosition().z <<
-        endl;
-    cout << "Scale B:" << "X:" << b->GetScale().x / 2 << " Y:" << b->GetScale().y / 2 << endl;
+
     float aUpSide = a->GetPosition().y + abs(a->GetScale().y) / 2;
     float bDownSide = b->GetPosition().y - abs(b->GetScale().y) / 2;
     float bUpSide = b->GetPosition().y + abs(b->GetScale().y) / 2;
