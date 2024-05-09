@@ -40,13 +40,17 @@ void Game::init()
     player1->ChangeAnimation(Animator["Idle"]);
 
 
-    string resModelParcialbackgroundJpg = "../res/models/EspadaMaestra_EscudoHyliano_ModelCombinedMeshFinal.fbx";
-    basicModel = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {0, 0, -100.0f}, {10, 10, 10});
-    basicModel->SetRotationX(90);
-    basicModel->SetRotationY(90);
+    string resModelParcialbackgroundJpg = "../res/models/Esp.fbx";
+    swordAndShield = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {400, 0, -100.0f}, {10, 10, 10});
+    resModelParcialbackgroundJpg = "../res/models/Casa_v6.fbx";
+    house = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {-400, -100, -400.0f}, {50, 50, 50});
+    resModelParcialbackgroundJpg = "../res/models/backpack.obj";
+    backPack = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {100, 0, -100.0f}, {10, 10, 10},true);
+    swordAndShield->SetRotationX(90);
+    swordAndShield->SetRotationY(90);
 }
 
-
+//Todo: ver temas de luces
 //Todo: Hacer codigo más lindo
 
 void Game::update()
@@ -90,7 +94,7 @@ void Game::update()
         player1->SetPosition(newPos);
 
         player1->ChangeAnimation(Animator["Right"]);
-        std::cout << player1->GetScale().z << endl;
+       
         if (player1->GetScale().x > 0)
         {
             player1->SetScale({player1->GetScale().x * -1, player1->GetScale().y, player1->GetScale().z});
@@ -146,23 +150,23 @@ void Game::update()
 #pragma region Movement3DObject
     if (input->isKeyPressed(KEY_NUMPAD_1))
     {
-        basicModel->SetRotationZ(1.0f);
+        swordAndShield->SetRotationZ(1.0f);
     }  if (input->isKeyPressed(KEY_NUMPAD_3))
     {
-        basicModel->SetRotationZ(-1.0f);
+        swordAndShield->SetRotationZ(-1.0f);
     } if (input->isKeyPressed(KEY_NUMPAD_7))
     {
-        basicModel->SetRotationX(1.0f);
+        swordAndShield->SetRotationX(1.0f);
     }  if (input->isKeyPressed(KEY_NUMPAD_9))
     {
-        basicModel->SetRotationX(-1.0f);
+        swordAndShield->SetRotationX(-1.0f);
     }
     if (input->isKeyPressed(KEY_NUMPAD_4))
     {
-        basicModel->SetRotationY(1.0f);
+        swordAndShield->SetRotationY(1.0f);
     }  if (input->isKeyPressed(KEY_NUMPAD_6))
     {
-        basicModel->SetRotationY(-1.0f);
+        swordAndShield->SetRotationY(-1.0f);
     }
 
 #pragma  endregion
@@ -178,7 +182,9 @@ void Game::update()
     player1->Draw();
     obj1->Draw();
     obj2->Draw();
-    basicModel->draw(getRenderer()->shaderBasicModel);
+    swordAndShield->draw(getRenderer()->shaderBasicModel);
+    house->draw(getRenderer()->shaderBasicModel);
+    backPack->draw(getRenderer()->shaderBasicModel);
 }
 
 void Game::exit()
@@ -189,7 +195,9 @@ void Game::exit()
 
     delete player1;
     delete obj1;
-    // delete obj2;
+     delete obj2;
     delete cartel;
-    delete basicModel;
+    delete swordAndShield;
+    delete house;
+    delete backPack;
 }

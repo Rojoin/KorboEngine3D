@@ -14,7 +14,9 @@ private:
     Sprite* cartel;
     Sprite* obj1;
     Entity3D* obj2;
-    Model* basicModel;
+    Model* swordAndShield;
+    Model* house;
+    Model* backPack;
     map<string, Animation> Animator;
     int windowWidth = 800;
     int windowHeight = 400;
