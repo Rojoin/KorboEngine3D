@@ -30,6 +30,7 @@
     <ClCompile Include="..\src\Globals\Time.cpp" />
     <ClCompile Include="..\src\Input\Input.cpp" />
     <ClCompile Include="..\src\Lightning\DirectionLight.cpp" />
+    <ClCompile Include="..\src\Lightning\PointLight.cpp" />
     <ClCompile Include="..\src\Lightning\SpotLight.cpp" />
     <ClCompile Include="..\src\Mesh\Importer3D.cpp" />
     <ClCompile Include="..\src\Mesh\BasicMesh.cpp" />
@@ -62,6 +63,7 @@
     <ClInclude Include="..\src\Input\Input.h" />
     <ClInclude Include="..\src\Input\KeyCode.h" />
     <ClInclude Include="..\src\Lightning\DirectionLight.h" />
+    <ClInclude Include="..\src\Lightning\PointLight.h" />
     <ClInclude Include="..\src\Lightning\SpotLight.h" />
     <ClInclude Include="..\src\Mesh\Importer3D.h" />
     <ClInclude Include="..\src\Mesh\BasicMesh.h" />
