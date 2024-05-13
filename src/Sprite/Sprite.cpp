@@ -1,7 +1,7 @@
 ﻿#include "Sprite.h"
 
 #include "Animation/Animation.h"
-#include "Animation/Animation.h"
+
 
 Sprite::Sprite(Renderer* renderer, Vec4 color, Vec3 position, Vec3 newScale, const char* imagePath): Entity2D(
     renderer, position, newScale)

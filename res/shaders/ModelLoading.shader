@@ -33,8 +33,7 @@ FragPos = vec3(model * vec4(aPos, 1.0));
 in vec3 Normal;
 in vec3 FragPos;
 in vec2 TexCoords;
-in vec3 Tangent;
-in vec3 Bitangent;
+
         
 uniform sampler2D texture_diffuse1;
 uniform sampler2D texture_normal1;

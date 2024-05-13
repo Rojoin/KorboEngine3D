@@ -50,14 +50,11 @@ void Game::init()
     swordAndShield->SetRotationY(90);
 }
 
-//Todo: ver temas de luces
-//Todo: Hacer codigo más lindo
 
 void Game::update()
 {
     Vec3 newPos = {player1->GetPosition().x, player1->GetPosition().y, player1->GetPosition().z};
     Vec3 scale = {player1->GetScale().x, player1->GetScale().y, player1->GetScale().z};
-
 
     bool hasBeenPressed = false;
 
@@ -170,6 +167,8 @@ void Game::update()
     }
 
 #pragma  endregion
+
+#pragma region Draw
     if (!hasBeenPressed)
     {
         player1->ChangeAnimation(Animator["Idle"]);
@@ -185,6 +184,7 @@ void Game::update()
     swordAndShield->draw(getRenderer()->shaderBasicModel);
     house->draw(getRenderer()->shaderBasicModel);
     backPack->draw(getRenderer()->shaderBasicModel);
+#pragma endregion 
 }
 
 void Game::exit()
@@ -195,7 +195,7 @@ void Game::exit()
 
     delete player1;
     delete obj1;
-     delete obj2;
+    delete obj2;
     delete cartel;
     delete swordAndShield;
     delete house;
