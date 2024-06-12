@@ -9,5 +9,5 @@ public :
     explicit Component(Entity* entity);
 
 protected:
-    Entity* entity = nullptr;
+    Entity* entity;
 };

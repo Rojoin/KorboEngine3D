@@ -2,6 +2,8 @@
 
 #include <glm/ext/matrix_transform.hpp>
 
+#include "Entity.h"
+
 void Transform::SetPosition(Vec3 newPosition)
 {
     glm::vec3 aux = glm::vec3(newPosition.x, newPosition.y, newPosition.z);
