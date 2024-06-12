@@ -1,8 +1,7 @@
 #pragma once
-#include "Globals/Vec4.h"
+#include "Transform.h"
 #include "Renderer/renderer.h"
 #include "Globals/dllHeader.h"
-#include "Globals/Vec3.h"
 
 
 class EXPORT Entity
@@ -35,16 +34,4 @@ protected:
     unsigned int EBO;
     int indexSize;
     int* indices;
-    //Transform Matrix
-    glm::mat4x4 model;
-    glm::mat4 tranlate;
-    glm::mat4 rotation;
-    glm::mat4 scale;
-    //Transform Vectors
-    glm::vec3 position;
-    Vec3 scaleVector;
-    glm::vec3 previousPos;
-
-
-    void UpdateMatrix();
 };

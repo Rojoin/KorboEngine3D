@@ -1,38 +1,22 @@
 #include "Entity2D.h"
 
+#include <algorithm>
+
 
 Entity2D::Entity2D(Renderer* renderer, Vec3 position, Vec3 newScale): Entity(renderer)
 {
-    model = glm::mat4(1.0f);
-    scaleVector = glm::vec3(newScale.x,newScale.y,newScale.z);
-    tranlate = glm::mat4(1.0f);
-    scale = glm::mat4(1.0f);
-    rotation = glm::mat4(1.0f);
-    glm::vec3 newPos(position.x, position.y, position.z);
-    position = {newPos.x,newPos.y, newPos.z};
-    previousPos =  glm::vec3(position.x, position.y, position.z);
-    tranlate = glm::translate(tranlate, newPos);
-    rotation = glm::rotate(rotation, glm::radians(0.0f), glm::vec3(0.0, 0.0, 1.0));
-
     atribPosSize = 3;
     atribColorSize = 4;
     atribUVSize = 2;
-    UpdateMatrix();
-    SetScale(newScale);
-    SetPosition(position);
-    
 }
 
 
 Entity2D::~Entity2D()
 {
-    renderer->DeleteObjects(VAO, VBO, EBO);
-    delete vertexPositions;
-    delete indices;
 }
 
+//Todo: Change methods to be in graphics renderer
 void Entity2D::Draw()
 {
-    renderer->DrawEntity(VAO, indexSize, color, model);
+    renderer->DrawEntity(VAO, indexSize, color, this->tranform->model);
 }
-
