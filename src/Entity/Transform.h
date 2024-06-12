@@ -5,6 +5,7 @@
 
 #include "Component.h"
 #include "Globals/Vec3.h"
+#include "Globals/dllHeader.h"
 
 class EXPORT Transform : public Component
 {

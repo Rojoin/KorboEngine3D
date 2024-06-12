@@ -13,6 +13,22 @@ public:
     virtual ~Entity() = 0;
     virtual void Draw() =0;
     Transform* tranform;
+
+    void SetPosition(Vec3 newPosition);
+    void SetPosition(glm::vec3 newPosition);
+    void SetPreviousPosition();
+    void MovePosition(Vec3 newPosition);
+    void MovePosition(glm::vec3 newPosition);
+    Vec3 GetPosition();
+    void SetRotationX(float angle);
+    void SetRotationY(float angle);
+    void SetRotationZ(float angle);
+    Vec3 GetRotation();
+    void SetScale(Vec3 newScale);
+    Vec3 GetScale();
+    Vec3 GetPreviousPosition();
+
+    
 protected:
     Renderer* renderer;
     Vec4 color;
