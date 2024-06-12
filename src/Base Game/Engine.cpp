@@ -7,6 +7,7 @@
 using namespace Korbo;
 
 Camera* newCamera;
+Window* currentWindow;
 
 Engine::Engine(int windowWidth, int windowHeight)
 {
@@ -52,13 +53,14 @@ void Engine::initGame(int windowWhidth, int windowHeight)
     camera = new Camera();
 
     newCamera = camera;
-
+    currentWindow = window;
     renderer = new Renderer(window, camera);
     input = new Input(window->getWindow());
     glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window->getWindow(), mouse_callback);
     glfwSetScrollCallback(window->getWindow(), scroll_callback);
     glfwSetKeyCallback(window->getWindow(), key_callback);
+    glfwSetFramebufferSizeCallback(window->getWindow(), framebuffer_size_callback);
 }
 
 void Engine::gameLoop()
@@ -78,12 +80,12 @@ void Engine::gameLoop()
 
 void Engine::setLightPos(Vec3 position)
 {
-    renderer->pointLight->position = glm::vec3(position.x,position.y,position.z);
+    renderer->pointLight->position = glm::vec3(position.x, position.y, position.z);
 }
 
 void Engine::setAmbientLightStrengh(float value)
 {
-    renderer->ambientStrengh = glm::clamp(value,0.0f,1.0f);
+    renderer->ambientStrengh = glm::clamp(value, 0.0f, 1.0f);
 }
 
 float Engine::getDeltaTime()
@@ -123,9 +125,16 @@ void scroll_callback(GLFWwindow* window, double xpos, double ypos)
 {
     newCamera->checkMouseScroll(static_cast<float>(ypos));
 }
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    currentWindow->SetWindowWidth(width);
+    currentWindow->SetWindowHeight(height);
+    glViewport(0, 0, width, height);
+}
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_R && action == GLFW_PRESS)
         newCamera->toggleCameraMode();
-    
 }

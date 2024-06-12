@@ -43,6 +43,16 @@ int Window::GetWindowWidth() { return width; }
 
 int Window::GetWindowHeight() { return height; }
 
+void Window::SetWindowWidth(int width)
+{
+    this->width = width;
+}
+
+void Window::SetWindowHeight(int height)
+{
+    this->height = height;
+}
+
 
 void Window::initWindow()
 {

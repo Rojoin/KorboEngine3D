@@ -21,6 +21,8 @@ public:
 	void destroyWindow();
 	int GetWindowWidth();
 	int GetWindowHeight();
+	void SetWindowWidth(int width);
+	void SetWindowHeight(int height);
 	GLFWwindow* getWindow();
 	float getHeight();
 	float getWidth();
