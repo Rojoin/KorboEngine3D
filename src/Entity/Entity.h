@@ -9,20 +9,11 @@ class EXPORT Entity
 {
 public:
     Entity(Renderer* renderer);
+    Entity(glm::vec3 position);
+    Entity();
     virtual ~Entity() = 0;
     virtual void Draw() =0;
-    void SetPosition(Vec3 newPosition);
-    void SetPosition(glm::vec3 newPosition);
-    void SetPreviousPosition();
-    void MovePosition(Vec3 newPosition);
-    Vec3 GetPosition();
-    void SetRotationX(float angle);
-    void SetRotationY(float angle);
-    void SetRotationZ(float angle);
-    Vec3 GetRotation();
-    void SetScale(Vec3 newScale);
-    Vec3 GetScale();
-    Vec3 GetPreviousPosition();
+    Transform* tranform;
 protected:
     Renderer* renderer;
     Vec4 color;
