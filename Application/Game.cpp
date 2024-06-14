@@ -178,12 +178,12 @@ void Game::update()
     player1->UpdateAnimation();
     cartel->UpdateAnimation();
     cartel->Draw();
-    //player1->Draw();
-   // obj1->Draw();
-   // obj2->Draw();
-   // swordAndShield->draw(getRenderer()->shaderBasicModel);
-   // house->draw(getRenderer()->shaderBasicModel);
-//    backPack->draw(getRenderer()->shaderBasicModel);
+player1->Draw();
+ obj1->Draw();
+ obj2->Draw();
+ swordAndShield->draw(getRenderer()->shaderBasicModel);
+ house->draw(getRenderer()->shaderBasicModel);
+ backPack->draw(getRenderer()->shaderBasicModel);
 #pragma endregion 
 }
 

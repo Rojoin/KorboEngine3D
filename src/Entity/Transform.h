@@ -11,8 +11,8 @@ class EXPORT Transform : public Component
 {
 public:
     explicit Transform(Entity* newEntity);
-    Transform(Entity* newEntity, glm::vec3 pos);
-    ~Transform();
+    Transform(Entity* newEntity, glm::vec3 pos,glm::vec3 rot,glm::vec3 scale);
+    ~Transform() override;
 
     
     void SetPosition(Vec3 newPosition);
@@ -26,6 +26,7 @@ public:
     void SetRotationZ(float angle);
     Vec3 GetRotation();
     void SetScale(Vec3 newScale);
+    void SetScale(glm::vec3 newScale);
     Vec3 GetScale();
     Vec3 GetPreviousPosition();
 

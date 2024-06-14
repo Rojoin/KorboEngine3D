@@ -7,10 +7,10 @@
 class EXPORT Entity
 {
 public:
-    Entity(Renderer* renderer);
+    Entity(Renderer* renderer, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale);
     Entity(glm::vec3 position);
     Entity();
-    virtual ~Entity() = 0;
+    virtual ~Entity() =0;
     virtual void Draw() =0;
     Transform* tranform;
 
@@ -28,7 +28,7 @@ public:
     Vec3 GetScale();
     Vec3 GetPreviousPosition();
 
-    
+
 protected:
     Renderer* renderer;
     Vec4 color;
@@ -45,9 +45,10 @@ protected:
     unsigned int textureId;
     int uvSize;
     int atribUVSize = 2;
-    
+
     //Elements buffer Object
     unsigned int EBO;
     int indexSize;
     int* indices;
+private:
 };

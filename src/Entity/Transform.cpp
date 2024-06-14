@@ -3,6 +3,8 @@
 #include <glm/ext/matrix_transform.hpp>
 
 #include "Entity.h"
+#include "Mesh/BasicMesh.h"
+
 
 void Transform::SetPosition(Vec3 newPosition)
 {
@@ -61,6 +63,7 @@ Vec3 Transform::GetPosition()
     //= {model[0][3], model[1][3], model[2][3]};
     return (tempPos);
 }
+
 //Todo: Make rotations.
 void Transform::SetRotationX(float angle)
 {
@@ -108,13 +111,20 @@ Vec3 Transform::GetRotation()
 
     return {glm::degrees(pitch), glm::degrees(yaw), glm::degrees(roll)};
 }
+
 //Todo: Set Scales for childs
-void Transform::SetScale(Vec3 newScale)
+void Transform::SetScale(glm::vec3 newScale)
 {
     scale = glm::mat4(1.0f);
     scaleVector = glm::vec3(newScale.x, newScale.y, newScale.z);
     scale = glm::scale(scale, glm::vec3(newScale.x, newScale.y, newScale.z));
     UpdateMatrix();
+}
+
+void Transform::SetScale(Vec3 newScale)
+{
+    glm::vec3 aux = {newScale.x, newScale.y, newScale.z};
+    SetScale(aux);
 }
 
 Vec3 Transform::GetScale()
@@ -145,19 +155,31 @@ Transform::Transform(Entity* newEntity) : Component(newEntity)
     SetPosition(position);
 }
 
-Transform::Transform(Entity* newEntity, glm::vec3 pos) : Component(newEntity)
+//Todo: Rotation
+Transform::Transform(Entity* newEntity, glm::vec3 pos, glm::vec3 rot, glm::vec3 newScale) : Component(newEntity)
 {
-    //Todo: create position logic
+    model = glm::mat4(1.0f);
+    scaleVector = glm::vec3(1, 1, 1);
+    tranlate = glm::mat4(1.0f);
+    scale = glm::mat4(1.0f);
+    rotation = glm::mat4(1.0f);
+    glm::vec3 newPos(0, 0, 0);
+    position = pos;
+    previousPos = glm::vec3(position.x, position.y, position.z);
+    tranlate = glm::translate(tranlate, newPos);
+    rotation = glm::rotate(rotation, glm::radians(0.0f), glm::vec3(0.0, 0.0, 1.0));
+
+
+    UpdateMatrix();
+    SetPosition(position);
+    SetScale(newScale);
 }
 
-Transform::~Transform()
+Transform::~Transform() 
 {
-    if (entity != nullptr)
-    {
-        delete entity;
-        entity = nullptr;
-    }
-    for (auto element : childs)
+    cout << " Deleting Transform";
+  
+    for (Transform* element : childs)
     {
         delete element;
     }

@@ -4,3 +4,7 @@ Component::Component(Entity* entity)
 {
     this->entity = entity;
 }
+
+Component::~Component()
+{
+}

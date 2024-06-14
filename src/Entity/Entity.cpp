@@ -2,26 +2,31 @@
 
 
 //Todo: Add Entity with vector3
-Entity::Entity(Renderer* renderer)
+Entity::Entity(Renderer* renderer,glm::vec3 position,glm::vec3 rotation,glm::vec3 scale)
 {
     cout << "Init Entity";
-    tranform = new Transform(this);
+    tranform = new Transform(this,position,rotation,scale);
+    this->renderer = renderer;
+
 }
 
 Entity::Entity()
 {
     tranform = new Transform(this);
+
 }
 
 Entity::Entity(glm::vec3 position)
 {
-    tranform = new Transform(this, position);
+    tranform = new Transform(this);
+
 }
 
 Entity::~Entity()
 {
+
     delete this->tranform;
-    //  delete graphicsRenderer;
+    cout << "Deleting Entity";
 }
 
 void Entity::SetPosition(Vec3 newPosition)
