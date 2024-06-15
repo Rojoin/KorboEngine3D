@@ -25,7 +25,7 @@ void Game::init()
 
     obj1 = new Sprite(getRenderer(), {1, 0, 0, 1}, {150, -100, -400.0f}, {5000, 5000, 0},
                       "../res/images/parcialBackground.jpg",GL_NEAREST);
-    obj1->SetRotationX(90);
+     obj1->tranform->setRotationX(90);
     Animation animationPlayerRight = Animation(19, 205, 3, 0.5f, 830, 465, 40, 33);
     Animation animationPlayerIdle = Animation(390, 98, 3, 1.2f, 830, 465, 33, 40);
     Animation animationCartel = Animation(132, 94, 5, 0.5f, 830, 465, 49, 48);
@@ -41,13 +41,17 @@ void Game::init()
 
 
     string resModelParcialbackgroundJpg = "../res/models/Esp.fbx";
-    swordAndShield = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {400, 0, -100.0f}, {10, 10, 10});
+    swordAndShield = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {400, 0, -100.0f}, {90, 90, 0},
+                               {10, 10, 10});
     resModelParcialbackgroundJpg = "../res/models/Casa_v6.fbx";
-    house = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {-400, -100, -400.0f}, {50, 50, 50});
+    house = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {-400, -100, -400.0f}, {0, 0, 0},
+                      {50, 50, 50});
     resModelParcialbackgroundJpg = "../res/models/backpack.obj";
-    backPack = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {100, 0, -100.0f}, {10, 10, 10},true);
-    swordAndShield->SetRotationX(90);
-    swordAndShield->SetRotationY(90);
+    backPack = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {100, 0, -100.0f}, {0, 0, 0},
+                         {10, 10, 10}, true);
+   // swordAndShield->SetRotationY(90);
+   // swordAndShield->SetRotationX(90);
+    backPack->SetParent(swordAndShield);
 }
 
 
@@ -57,9 +61,13 @@ void Game::update()
     Vec3 scale = {player1->GetScale().x, player1->GetScale().y, player1->GetScale().z};
 
     bool hasBeenPressed = false;
-
+    system("cls");
     float MovementSpeed = 100.5f;
-
+    cout << "Global Sonic pos:" << player1->tranform->getGlobalPosition().toString() << endl;
+    cout << "Local Sonic pos:" << player1->tranform->getLocalPosition().toString() << endl;
+    cout << "Local Sonic Scale:" << player1->tranform->getScale().toString() << endl;
+    cout << "Global Sonic Scale:" << player1->tranform->getGlobalScaleVec3().toString() << endl;
+    cout << "Sonic Rotation:" << player1->tranform->getRotation().toString() << endl;
 #pragma region Movement with WASD
     // if ((input->isKeyPressed(KeyKode::KEY_W)))
     // {
@@ -91,11 +99,8 @@ void Game::update()
         player1->SetPosition(newPos);
 
         player1->ChangeAnimation(Animator["Right"]);
+
        
-        if (player1->GetScale().x > 0)
-        {
-            player1->SetScale({player1->GetScale().x * -1, player1->GetScale().y, player1->GetScale().z});
-        }
         hasBeenPressed = true;
     }
     if (input->isKeyPressed(KeyKode::KEY_UP))
@@ -119,17 +124,13 @@ void Game::update()
         player1->ChangeAnimation(Animator["Right"]);
         hasBeenPressed = true;
 
-        if (player1->GetScale().x < 0)
-        {
-            player1->SetScale({player1->GetScale().x * -1, player1->GetScale().y, player1->GetScale().z});
-        }
+        
     }
     if (input->isKeyPressed(KeyKode::KEY_E))
     {
         player1->ChangeAnimation(Animator["Right"]);
         hasBeenPressed = true;
         player1->SetRotationY(1.0f);
-  
     }
     if (input->isKeyPressed(KeyKode::KEY_Q))
     {
@@ -137,7 +138,6 @@ void Game::update()
         hasBeenPressed = true;
 
         player1->SetRotationY(-1.0f);
-    
     }
 #pragma endregion
     camera->changeCameraObjetive(glm::vec3(newPos.x, newPos.y, newPos.z),
@@ -148,20 +148,24 @@ void Game::update()
     if (input->isKeyPressed(KEY_NUMPAD_1))
     {
         swordAndShield->SetRotationZ(1.0f);
-    }  if (input->isKeyPressed(KEY_NUMPAD_3))
+    }
+    if (input->isKeyPressed(KEY_NUMPAD_3))
     {
         swordAndShield->SetRotationZ(-1.0f);
-    } if (input->isKeyPressed(KEY_NUMPAD_7))
+    }
+    if (input->isKeyPressed(KEY_NUMPAD_7))
     {
         swordAndShield->SetRotationX(1.0f);
-    }  if (input->isKeyPressed(KEY_NUMPAD_9))
+    }
+    if (input->isKeyPressed(KEY_NUMPAD_9))
     {
         swordAndShield->SetRotationX(-1.0f);
     }
     if (input->isKeyPressed(KEY_NUMPAD_4))
     {
         swordAndShield->SetRotationY(1.0f);
-    }  if (input->isKeyPressed(KEY_NUMPAD_6))
+    }
+    if (input->isKeyPressed(KEY_NUMPAD_6))
     {
         swordAndShield->SetRotationY(-1.0f);
     }
@@ -178,26 +182,22 @@ void Game::update()
     player1->UpdateAnimation();
     cartel->UpdateAnimation();
     cartel->Draw();
-player1->Draw();
- obj1->Draw();
- obj2->Draw();
- swordAndShield->draw(getRenderer()->shaderBasicModel);
- house->draw(getRenderer()->shaderBasicModel);
- backPack->draw(getRenderer()->shaderBasicModel);
-#pragma endregion 
+    player1->Draw();
+    obj1->Draw();
+    obj2->Draw();
+    swordAndShield->draw(getRenderer()->shaderBasicModel);
+    house->draw(getRenderer()->shaderBasicModel);
+    backPack->draw(getRenderer()->shaderBasicModel);
+#pragma endregion
 }
 
 void Game::exit()
 {
-    //Animator["Right"].deleteAnimation();
-    //Animator["cartel"].deleteAnimation();
-    //Animator["Idle"].deleteAnimation();
-
     delete player1;
     delete obj1;
     delete obj2;
     delete cartel;
-    delete swordAndShield;
     delete house;
+    delete swordAndShield;
     delete backPack;
 }

@@ -3,7 +3,7 @@
 #include "Animation/Animation.h"
 
 
-Sprite::Sprite(Renderer* renderer, Vec4 color, Vec3 position, Vec3 newScale, const char* imagePath): Entity2D(
+Sprite::Sprite(Renderer* renderer, Vec4 color, Vec3 position,Vec3 newScale, const char* imagePath): Entity2D(
     renderer, position, newScale)
 {
     vertexSize = 36;
@@ -17,10 +17,6 @@ Sprite::Sprite(Renderer* renderer, Vec4 color, Vec3 position, Vec3 newScale, con
         -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, // bottom left
         -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f // top left 
     };
-    //Crear clase Animation
-    //En sprite tengo un puntero a animation, sino esta null
-    //A animation le paso el vertexPositions para que toque los uvs
-    //Crear animator? 
 
     indexSize = 6;
     indices = new int[indexSize]{
@@ -37,7 +33,7 @@ Sprite::Sprite(Renderer* renderer, Vec4 color, Vec3 position, Vec3 newScale, con
 
 Sprite::Sprite(Renderer* renderer, Vec4 color, Vec3 position, Vec3 newScale, const char* imagePath,
                GLint textureFilter): Entity2D(
-    renderer, position, newScale)
+    renderer, position, {0,0,0},newScale)
 {
     vertexSize = 36;
     //Reads clockwise
@@ -50,10 +46,7 @@ Sprite::Sprite(Renderer* renderer, Vec4 color, Vec3 position, Vec3 newScale, con
         -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, // bottom left
         -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f // top left 
     };
-    //Crear clase Animation
-    //En sprite tengo un puntero a animation, sino esta null
-    //A animation le paso el vertexPositions para que toque los uvs
-    //Crear animator? 
+
 
     indexSize = 6;
     indices = new int[indexSize]{

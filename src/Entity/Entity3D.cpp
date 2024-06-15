@@ -1,7 +1,16 @@
 ﻿#include "Entity3D.h"
 
+Entity3D::Entity3D(Renderer* renderer, Vec3 position,Vec3 rotation, Vec3 newScale): Entity(
+    renderer, glm::vec3(position.x, position.y, position.z), glm::vec3(rotation.x, rotation.y, rotation.z), glm::vec3(newScale.x,newScale.y,newScale.z))
+{
+    atribPosSize = 3;
+    atribColorSize = 4;
+    atribUVSize = 2;
+    vertexPositions = nullptr;
+    indices = nullptr;
+}
 Entity3D::Entity3D(Renderer* renderer, Vec3 position, Vec3 newScale): Entity(
-    renderer, glm::vec3(position.x, position.y, position.z), glm::vec3(0, 0, 1), glm::vec3(newScale.x,newScale.y,newScale.z))
+    renderer, glm::vec3(position.x, position.y, position.z), glm::vec3(1), glm::vec3(newScale.x,newScale.y,newScale.z))
 {
     atribPosSize = 3;
     atribColorSize = 4;

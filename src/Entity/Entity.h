@@ -14,6 +14,7 @@ public:
     virtual void Draw() =0;
     Transform* tranform;
 
+    
     void SetPosition(Vec3 newPosition);
     void SetPosition(glm::vec3 newPosition);
     void SetPreviousPosition();
@@ -27,6 +28,7 @@ public:
     void SetScale(Vec3 newScale);
     Vec3 GetScale();
     Vec3 GetPreviousPosition();
+    void SetParent(Entity* newParent = nullptr);
 
 
 protected:

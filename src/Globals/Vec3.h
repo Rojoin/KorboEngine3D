@@ -1,3 +1,6 @@
+#include <iostream>
+#include <sstream>
+
 struct Vec3
 {
 public:
@@ -40,5 +43,12 @@ public:
         z = newVec.z;
     }
 
+    std::string toString() const
+    {
+        std::ostringstream oss;
+        oss << "X: " << x << ", Y: " << y << ", Z: " << z;
+        std::string result = oss.str();
+        return result;
+    }
     
 };

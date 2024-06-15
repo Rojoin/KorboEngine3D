@@ -1,6 +1,6 @@
 ﻿#include "Pyramid.h"
 
-Pyramid::Pyramid(Renderer* renderer, Vec3 position, Vec3 newScale) : Entity3D(renderer, position, newScale)
+Pyramid::Pyramid(Renderer* renderer, Vec3 position, Vec3 newScale) : Entity3D(renderer, position,{0,0,0}, newScale)
 {
     vertexSize = 15;
     vertexPositions = new float[vertexSize]{
@@ -22,7 +22,7 @@ Pyramid::Pyramid(Renderer* renderer, Vec3 position, Vec3 newScale) : Entity3D(re
     this->color = {1, 1, 1, 1};
     renderer->createVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO);;
 }
-Pyramid::Pyramid(Renderer* renderer, Vec3 position, Vec3 newScale, Vec4 color) : Entity3D(renderer, position, newScale)
+Pyramid::Pyramid(Renderer* renderer, Vec3 position, Vec3 newScale, Vec4 color) : Entity3D(renderer, position,{0,0,0} ,newScale)
 {
     vertexSize = 15;
     vertexPositions = new float[vertexSize]{
