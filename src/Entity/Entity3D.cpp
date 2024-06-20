@@ -26,11 +26,12 @@ void Entity3D::setMaterial(Material material)
 
 Entity3D::~Entity3D()
 {
+    std::cout << "Deleting entity3d";
 }
 
 //Todo: Renderer class must have all draws for all types of objects
 void Entity3D::Draw()
 {
-    renderer->DrawEntity(VAO, indexSize, color, this->tranform->model);
+    renderer->DrawEntity(VAO, indexSize, color, this->tranform->modelWorld);
     // graphicsRenderer-> renderer->DrawEntity3D(graphicsRenderer->VAO, graphicsRenderer->indexSize, graphicsRenderer->color, this->tranform->model, m_material, graphicsRenderer->textureId, m_isUsingTexture);
 }

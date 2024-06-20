@@ -73,7 +73,7 @@ int Sprite::getHeight()
 
 void Sprite::Draw()
 {
-    renderer->DrawSprite2D(VAO, indexSize, color, this->tranform->model, textureId);
+    renderer->DrawSprite2D(VAO, indexSize, color, this->tranform->modelWorld, textureId);
 }
 
 Sprite::~Sprite()

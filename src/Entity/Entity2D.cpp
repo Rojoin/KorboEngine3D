@@ -26,5 +26,5 @@ Entity2D::~Entity2D()
 //Todo: Change methods to be in graphics renderer
 void Entity2D::Draw()
 {
-    renderer->DrawEntity(VAO, indexSize, color, this->tranform->model);
+    renderer->DrawEntity(VAO, indexSize, color, this->tranform->modelWorld);
 }

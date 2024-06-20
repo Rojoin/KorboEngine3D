@@ -1,7 +1,7 @@
 #include "Entity.h"
 
 
-//Todo: Add Entity with vector3
+
 Entity::Entity(Renderer* renderer, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
 {
     cout << "Init Entity";
@@ -85,7 +85,7 @@ void Entity::SetScale(Vec3 newScale)
 Vec3 Entity::GetScale()
 {
     return {
-        tranform->getScale().x, tranform->getScale().x, tranform->getScale().z
+        tranform->getLocalPosition().x, tranform->getLocalPosition().x, tranform->getLocalPosition().z
     };
 }
 

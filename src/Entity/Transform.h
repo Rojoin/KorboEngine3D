@@ -31,7 +31,6 @@ public:
     void setLocalScale(Vec3 newScale);
     void setLocalScale(glm::vec3 newScale);
     void setParent(Transform* newTransform = nullptr);
-    Vec3 getScale();
     Vec3 getPreviousPosition();
     glm::vec3 getGlobalScale();
     Vec3 getGlobalScaleVec3();
@@ -43,18 +42,24 @@ public:
 
     Transform* parent;
     std::vector<Transform*> childs;
-    glm::mat4x4 model;
-    glm::mat4x4 globalModel;
-    glm::mat4 tranlate;
-
+//Global
+    glm::mat4x4 modelWorld;
+    glm::mat4x4 modelLocal;
+    glm::vec3 globalPosition;
+    glm::vec3 globalRotation;
+    glm::vec3 globalScale;
+    
+//Local
+    glm::mat4 tranlateMatrix;
+    glm::mat4 rotationMatrix;
     glm::mat4 scaleMatrix;
+    
+    glm::vec3 localPosition;
+    glm::vec3 localRotation;
+    glm::vec3 localScale;
+    
     //Transform Vectors
-    glm::mat4 rotation;
-    Vec3 scaleVector;
     glm::vec3 previousPos;
-    glm::vec3 position;
-    glm::vec3 eulerRot;
-    glm::vec3 scale;
     void UpdateMatrix();
     void UpdateMatrixReverse();
 

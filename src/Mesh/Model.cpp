@@ -10,10 +10,11 @@ void Model::draw(Shader* shader)
 {
     for (int i = 0; i < meshes.size(); ++i)
     {
-       renderer->DrawModel3D(shader,this->tranform->model,meshes[i].VAO,meshes[i].indices,meshes[i].textures);
+       renderer->DrawModel3D(shader,this->tranform->modelWorld,meshes[i].VAO,meshes[i].indices,meshes[i].textures);
     }
 }
 
 Model::~Model()
 {
+    std::cout << "Deleting model";
 }
