@@ -57,7 +57,8 @@ public:
     void DrawSprite2D(unsigned int VAO, int sizeIndices, Vec4 color, glm::mat4x4 model, unsigned int& texture) const;
     void DrawEntity3D(unsigned VAO, int sizeIndices, ::Vec4 color, glm::mat4x4 model, Material material, unsigned& texture, bool
                       isUsingTexture);
-    void DrawModel3D(Shader* shader, glm::mat4x4 model, unsigned VAO, std::vector<unsigned int> indices,std::vector<Texture> textures);
+    void DrawModel3D( glm::mat4x4 model, unsigned VAO, std::vector<unsigned int> indices,
+                     std::vector<Texture> textures);
     Shader* shaderBasicModel;
 
 private:

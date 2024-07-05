@@ -404,7 +404,7 @@ void Renderer::DrawEntity3D(unsigned VAO, int sizeIndices, Vec4 color, glm::mat4
     glDrawElements(GL_TRIANGLES, sizeIndices, GL_UNSIGNED_INT, 0);
 }
 
-void Renderer::DrawModel3D(Shader* shader, glm::mat4x4 model, unsigned VAO, std::vector<unsigned int> indices,
+void Renderer::DrawModel3D( glm::mat4x4 model, unsigned VAO, std::vector<unsigned int> indices,
                            std::vector<Texture> textures)
 {
     unsigned int diffuseNr = 1;
@@ -415,10 +415,10 @@ void Renderer::DrawModel3D(Shader* shader, glm::mat4x4 model, unsigned VAO, std:
     unsigned int metalnessNr = 1;
     unsigned int roughnessNR = 1;
 
-    shader->bind();
-    shader->SetMat4("model", model);
-    shader->SetMat4("view", view);
-    shader->SetMat4("projection", projection);
+    shaderBasicModel->bind();
+    shaderBasicModel->SetMat4("model", model);
+    shaderBasicModel->SetMat4("view", view);
+    shaderBasicModel->SetMat4("projection", projection);
 
     for (unsigned int i = 0; i < textures.size(); i++)
     {
@@ -441,26 +441,26 @@ void Renderer::DrawModel3D(Shader* shader, glm::mat4x4 model, unsigned VAO, std:
         else if (name == "texture_roughness")
             number = std::to_string(roughnessNR++);
 
-        shader->SetInt(("material." + name + number).c_str(), i);
+        shaderBasicModel->SetInt(("material." + name + number).c_str(), i);
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
     }
-    shader->SetVec3("viewPos", camera->Position);
+    shaderBasicModel->SetVec3("viewPos", camera->Position);
 
     // directional light
-    shader->SetDirectionalLight("dirLight", globalLight);
+    shaderBasicModel->SetDirectionalLight("dirLight", globalLight);
     // point light 1
-    shader->SetPointLight("pointLights[0]", pointLight);
+    shaderBasicModel->SetPointLight("pointLights[0]", pointLight);
 
     flashLight->setDirAndPos(camera->Front, camera->getCameraPosition());
-    shader->SetSpotLight("spotLight", flashLight);
+    shaderBasicModel->SetSpotLight("spotLight", flashLight);
 
 
     // material properties
 
     // shader->SetMaterial("material", RUBY);
 
-    shader->SetFloat("material.shininess", BRONZE.shininess);
-    shader->SetFloat("material.metalness", BRONZE.shininess);
+    shaderBasicModel->SetFloat("material.shininess", BRONZE.shininess);
+    shaderBasicModel->SetFloat("material.metalness", BRONZE.shininess);
     // draw mesh
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);

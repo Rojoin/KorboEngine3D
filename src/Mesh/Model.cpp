@@ -6,11 +6,11 @@ Model::Model(const char* path, Renderer* renderer, Vec3 position,Vec3 rotation, 
 }
 
 
-void Model::draw(Shader* shader)
+void Model::Draw()
 {
     for (int i = 0; i < meshes.size(); ++i)
     {
-       renderer->DrawModel3D(shader,this->tranform->modelWorld,meshes[i].VAO,meshes[i].indices,meshes[i].textures);
+        renderer->DrawModel3D(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices, meshes[i].textures);
     }
 }
 
