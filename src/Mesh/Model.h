@@ -5,6 +5,8 @@
 #include "assimp/mesh.h"
 #include "Entity/Entity3D.h"
 
+struct AABB;
+
 class EXPORT Model : public Entity3D
 {
 public:
@@ -13,9 +15,10 @@ public:
     void Draw() override;
     unique_ptr<AABB> boundingVolume;
     ~Model() override;
+    vector<BasicMesh> meshes;
+    AABB getGlobalAABB();
 
 private:
     // model data
-    vector<BasicMesh> meshes;
     string directory;
 };

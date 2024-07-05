@@ -1,9 +1,9 @@
 ﻿#pragma once
-
+#include "Globals/dllHeader.h"
 
 class Entity;
 
-class Component
+class EXPORT Component
 {
 public :
     explicit Component(Entity* entity);

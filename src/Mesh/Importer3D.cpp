@@ -9,7 +9,7 @@
 string Importer3D::currentDirectory = "";
 vector<Texture> Importer3D::texturesLoaded;
 
-void Importer3D::loadModel(const string& path, string& directory, vector<BasicMesh>& meshes, bool shouldInvertUVs)
+void Importer3D::loadModel(const string& path, string& directory, vector<BasicMesh>& meshes, bool shouldInvertUVs, Transform* transform)
 {
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
@@ -19,12 +19,14 @@ void Importer3D::loadModel(const string& path, string& directory, vector<BasicMe
         std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
         return;
     }
-    processNode(meshes, scene->mRootNode, scene, shouldInvertUVs);
+    
+    processNode(meshes, scene->mRootNode, scene, shouldInvertUVs, transform);
 }
 
 
-void Importer3D::processNode(vector<BasicMesh>& meshes, aiNode* node, const aiScene* scene, bool shouldInvertUVs)
+void Importer3D::processNode(vector<BasicMesh>& meshes, aiNode* node, const aiScene* scene, bool shouldInvertUVs, Transform* transform)
 {
+    Transform* newTransform = new Transform(nullptr,transform);
     // process all the node's meshes (if any)
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
@@ -34,7 +36,7 @@ void Importer3D::processNode(vector<BasicMesh>& meshes, aiNode* node, const aiSc
     // then do the same for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
-        processNode(meshes, node->mChildren[i], scene, shouldInvertUVs);
+        processNode(meshes, node->mChildren[i], scene, shouldInvertUVs, newTransform);
     }
 }
 

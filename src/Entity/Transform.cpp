@@ -184,6 +184,25 @@ Transform::Transform(Entity* newEntity) : Component(newEntity)
     setLocalPosition(localPosition);
 }
 
+Transform::Transform(Entity* newEntity, Transform* parent) : Component(newEntity)
+{
+    modelWorld = glm::mat4(1.0f);
+    tranlateMatrix = glm::mat4(1.0f);
+    scaleMatrix = glm::mat4(1.0f);
+    rotationMatrix = glm::mat4(1.0f);
+    glm::vec3 newPos(0, 0, 0);
+    localPosition = {newPos.x, newPos.y, newPos.z};
+    previousPos = glm::vec3(localPosition.x, localPosition.y, localPosition.z);
+    tranlateMatrix = glm::translate(tranlateMatrix, newPos);
+    rotationMatrix = glm::rotate(rotationMatrix, glm::radians(0.0f), glm::vec3(0.0, 0.0, 1.0));
+
+    this->parent = parent;
+    parent->childs.push_back(this);
+
+    UpdateMatrix();
+    setLocalPosition(localPosition);
+}
+
 void Transform::setLocalRotation(glm::vec3 angle)
 {
     const glm::mat4 transformX = glm::rotate(glm::mat4(1.0f), glm::radians(angle.x), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -304,7 +323,26 @@ glm::mat4 Transform::getLocalModelMatrix()
     //return tranlate* rotation* scaleMatrix;
 }
 
+glm::mat4 Transform::getLocalModelMatrixConst() const
+{
+    const glm::mat4 transformX = glm::rotate(glm::mat4(1.0f), glm::radians(localRotation.x),
+                                         glm::vec3(1.0f, 0.0f, 0.0f));
+    const glm::mat4 transformY = glm::rotate(glm::mat4(1.0f), glm::radians(localRotation.y),
+                                             glm::vec3(0.0f, 1.0f, 0.0f));
+    const glm::mat4 transformZ = glm::rotate(glm::mat4(1.0f), glm::radians(localRotation.z),
+                                             glm::vec3(0.0f, 0.0f, 1.0f));
+
+    
+    // Y * X * Z
+    return (glm::translate(glm::mat4(1.0f), localPosition)) * (transformY * transformX * transformZ) * glm::scale(glm::mat4(1.0f), localScale);
+}
+
 glm::vec3 Transform::getRight()
+{
+    return modelWorld[0];
+}
+
+glm::vec3 Transform::getRightConst() const
 {
     return modelWorld[0];
 }
@@ -315,12 +353,27 @@ glm::vec3 Transform::getUp()
     return modelWorld[1];
 }
 
+glm::vec3 Transform::getUpConst() const
+{
+    return modelWorld[1];
+}
+
 glm::vec3 Transform::getBackward()
 {
     return modelWorld[2];
 }
 
+glm::vec3 Transform::getBackwardConst() const
+{
+    return modelWorld[2];
+}
+
 glm::vec3 Transform::getForward()
+{
+    return -modelWorld[2];
+}
+
+glm::vec3 Transform::getForwardConst() const
 {
     return -modelWorld[2];
 }

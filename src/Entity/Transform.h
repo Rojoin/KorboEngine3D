@@ -6,12 +6,13 @@
 
 #include "Component.h"
 #include "Globals/Vec3.h"
-#include "Globals/dllHeader.h"
+
 
 class EXPORT Transform : public Component
 {
 public:
     explicit Transform(Entity* newEntity);
+    Transform(Entity* newEntity, Transform* parent);
     Transform(Entity* newEntity, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale);
     ~Transform() override;
 
@@ -35,9 +36,15 @@ public:
     glm::vec3 getGlobalScale();
     Vec3 getGlobalScaleVec3();
     glm::vec3 getForward();
+    glm::vec3 getForwardConst() const;
     glm::vec3 getBackward();
+    glm::vec3 getBackwardConst() const;
     glm::vec3 getUp();
+    glm::vec3 getUpConst() const;
     glm::vec3 getRight();
+    glm::vec3 getRightConst() const;
+    glm::mat4 getLocalModelMatrix();
+    glm::mat4 getLocalModelMatrixConst() const;
 
 
     Transform* parent;
@@ -65,7 +72,6 @@ public:
 
 protected:
     //Transform Matrix
-    glm::mat4 getLocalModelMatrix();
     void computeModelMatrix();
     void computeModelMatrix(const glm::mat4& parentGlobalModelMatrix);
 };
