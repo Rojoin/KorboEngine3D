@@ -41,8 +41,8 @@ void Game::init()
 
 
     string resModelParcialbackgroundJpg = "../res/models/CH_Dummy_HurtV2.fbx";
-    swordAndShield = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {400, 0, -100.0f}, {90, 0, 0},
-                               {10, 10, 10});
+    dummy = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {400, 0, -100.0f}, {90, 0, 0},
+                               {1, 1, 1});
     resModelParcialbackgroundJpg = "../res/models/Casa_v6.fbx";
     house = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {-400, -100, -400.0f}, {0, 0, 0},
                       {50, 50, 50});
@@ -54,15 +54,15 @@ void Game::init()
     cout << "Global backPack pos:" << backPack->tranform->getGlobalPosition().toString() << endl;
     cout << "Global backPack scale:" << backPack->tranform->getGlobalScaleVec3().toString() << endl;
     cout << "Global backPack rot:" << backPack->tranform->getRotation().toString() << endl;
-    cout << "Global sword pos:" << swordAndShield->tranform->getGlobalPosition().toString() << endl;
-    cout << "Global sword scale:" << swordAndShield->tranform->getGlobalScaleVec3().toString() << endl;
-    cout << "Global sword rot:" << swordAndShield->tranform->getRotation().toString() << endl;
-   swordAndShield->SetParent(player1);
-    backPack->SetParent(swordAndShield);
+    cout << "Global sword pos:" << dummy->tranform->getGlobalPosition().toString() << endl;
+    cout << "Global sword scale:" << dummy->tranform->getGlobalScaleVec3().toString() << endl;
+    cout << "Global sword rot:" << dummy->tranform->getRotation().toString() << endl;
+   dummy->SetParent(player1);
+    backPack->SetParent(dummy);
     cout << "Global backPack scale:" << backPack->tranform->getGlobalScaleVec3().toString() << endl;
-    cout << "Global sword pos:" << swordAndShield->tranform->getLocalPosition().toString() << endl;
-    cout << "Global sword rot:" << swordAndShield->tranform->getRotation().toString() << endl;
-    cout << "Global sword scale:" << swordAndShield->tranform->getGlobalScaleVec3().toString() << endl;
+    cout << "Global sword pos:" << dummy->tranform->getLocalPosition().toString() << endl;
+    cout << "Global sword rot:" << dummy->tranform->getRotation().toString() << endl;
+    cout << "Global sword scale:" << dummy->tranform->getGlobalScaleVec3().toString() << endl;
     cout << "Global sonic pos:" << player1->tranform->getGlobalPosition().toString() << endl;
     cout << "Global sonic scale:" << player1->tranform->getGlobalScaleVec3().toString() << endl;
     cout << "Global sonic rot:" << player1->tranform->getRotation().toString() << endl;
@@ -162,27 +162,27 @@ void Game::update()
 #pragma region Movement3DObject
     if (input->isKeyPressed(KEY_NUMPAD_1))
     {
-        swordAndShield->SetRotationZ(1.0f);
+        dummy->SetRotationZ(1.0f);
     }
     if (input->isKeyPressed(KEY_NUMPAD_3))
     {
-        swordAndShield->SetRotationZ(-1.0f);
+        dummy->SetRotationZ(-1.0f);
     }
     if (input->isKeyPressed(KEY_NUMPAD_7))
     {
-        swordAndShield->SetRotationX(1.0f);
+        dummy->SetRotationX(1.0f);
     }
     if (input->isKeyPressed(KEY_NUMPAD_9))
     {
-        swordAndShield->SetRotationX(-1.0f);
+        dummy->SetRotationX(-1.0f);
     }
     if (input->isKeyPressed(KEY_NUMPAD_4))
     {
-        swordAndShield->SetRotationY(1.0f);
+        dummy->SetRotationY(1.0f);
     }
     if (input->isKeyPressed(KEY_NUMPAD_6))
     {
-        swordAndShield->SetRotationY(-1.0f);
+        dummy->SetRotationY(-1.0f);
     }
 
 #pragma  endregion
@@ -200,9 +200,9 @@ void Game::update()
     player1->Draw();
     obj1->Draw();
     obj2->Draw();
-    swordAndShield->draw(getRenderer()->shaderBasicModel);
-    house->draw(getRenderer()->shaderBasicModel);
-    backPack->draw(getRenderer()->shaderBasicModel);
+    dummy->Draw();
+    house->Draw();
+    backPack->Draw();
 #pragma endregion
 }
 
@@ -218,9 +218,9 @@ void Game::exit()
         delete backPack;
         backPack = nullptr;
     }
-    if (swordAndShield != nullptr)
+    if (dummy != nullptr)
     {
-        delete swordAndShield;
-        swordAndShield = nullptr;
+        delete dummy;
+        dummy = nullptr;
     }
 }

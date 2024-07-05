@@ -14,7 +14,7 @@ private:
     Sprite* cartel;
     Sprite* obj1;
     Entity3D* obj2;
-    Model* swordAndShield;
+    Model* dummy;
     Model* house;
     Model* backPack;
     map<string, Animation> Animator;
