@@ -16,7 +16,7 @@ public:
     Transform(Entity* newEntity, Transform* parent);
     Transform(Entity* newEntity, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale);
     ~Transform() override;
-
+    std::string name;
 
     void setPosition(Vec3 newPosition);
     void setLocalPosition(glm::vec3 newPosition);

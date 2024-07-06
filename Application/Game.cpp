@@ -43,37 +43,18 @@ void Game::init()
 
 
     string resModelParcialbackgroundJpg = "../res/models/CH_Dummy_HurtV2.fbx";
-    dummy = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {400, 0, -100.0f}, {90, 0, 0},
-                      {1, 1, 1});
+    dummy = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {400, 0, -100.0f}, {90, 0, 0},{1, 1, 1},false,root);
     resModelParcialbackgroundJpg = "../res/models/SM_Doors_V2.fbx";
-    house = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {-400, -100, -400.0f}, {0, 0, 0},
-                      {50, 50, 50});
+    house = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {-400, -100, -400.0f}, {0, 0, 0},{50, 50, 50},false,root);
     resModelParcialbackgroundJpg = "../res/models/TanqueDePrueba.fbx";
-    backPack = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {100, 0, -100.0f}, {90, 90, 90},
-                         {10, 10, 10}, true);
+    backPack = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {100, 0, -100.0f}, {90, 90, 90},{10, 10, 10}, true,root);
     house->setNewTextures("../res/models","T_Doors_BC.png",false,"texture_baseColor");
     // swordAndShield->SetRotationY(90);
     // swordAndShield->SetRotationX(90);
-    cout << "Global backPack pos:" << backPack->tranform->getGlobalPosition().toString() << endl;
-    cout << "Global backPack scale:" << backPack->tranform->getGlobalScaleVec3().toString() << endl;
-    cout << "Global backPack rot:" << backPack->tranform->getRotation().toString() << endl;
-    cout << "Global sword pos:" << dummy->tranform->getGlobalPosition().toString() << endl;
-    cout << "Global sword scale:" << dummy->tranform->getGlobalScaleVec3().toString() << endl;
-    cout << "Global sword rot:" << dummy->tranform->getRotation().toString() << endl;
+
    // dummy->SetParent(player1);
    // backPack->SetParent(dummy);
-    cout << "Global backPack scale:" << backPack->tranform->getGlobalScaleVec3().toString() << endl;
-    cout << "Global sword pos:" << dummy->tranform->getLocalPosition().toString() << endl;
-    cout << "Global sword rot:" << dummy->tranform->getRotation().toString() << endl;
-    cout << "Global sword scale:" << dummy->tranform->getGlobalScaleVec3().toString() << endl;
-    cout << "Global sonic pos:" << player1->tranform->getGlobalPosition().toString() << endl;
-    cout << "Global sonic scale:" << player1->tranform->getGlobalScaleVec3().toString() << endl;
-    cout << "Global sonic rot:" << player1->tranform->getRotation().toString() << endl;
-    // swordAndShield->tranform->setLocalScale(glm::vec3(10,10,10));
-    cout << "Global backPack pos:" << backPack->tranform->getGlobalPosition().toString() << endl;
-    cout << "Global backPack scale:" << backPack->tranform->getGlobalScaleVec3().toString() << endl;
-    cout << "Global backPack rot:" << backPack->tranform->getRotation().toString() << endl;
-testTransform = house->tranform;
+//testTransform = house->tranform;
 }
 
 
@@ -117,7 +98,7 @@ void Game::update()
     if (input->isKeyPressed(KeyKode::KEY_LEFT))
     {
         newPos.x -= 1.0f * 2.0f;
-        player1->SetPosition(newPos);
+        house->tranform->childs[0]->setPosition(newPos);
 
         player1->ChangeAnimation(Animator["Right"]);
 
@@ -141,7 +122,7 @@ void Game::update()
     if (input->isKeyPressed(KeyKode::KEY_RIGHT))
     {
         newPos.x += 1.0f * 2;
-        player1->SetPosition(newPos);
+        house->tranform->childs[0]->setPosition(newPos);
         player1->ChangeAnimation(Animator["Right"]);
         hasBeenPressed = true;
     }
@@ -217,15 +198,15 @@ void Game::exit()
     delete obj1;
     delete obj2;
     delete cartel;
-    delete house;
-    if (backPack != nullptr)
-    {
-        delete backPack;
-        backPack = nullptr;
-    }
-    if (dummy != nullptr)
-    {
-        delete dummy;
-        dummy = nullptr;
-    }
+    //delete house;
+    // if (backPack != nullptr)
+    // {
+    //     delete backPack;
+    //     backPack = nullptr;
+    // }
+    // if (dummy != nullptr)
+    // {
+    //     delete dummy;
+    //     dummy = nullptr;
+    // }
 }

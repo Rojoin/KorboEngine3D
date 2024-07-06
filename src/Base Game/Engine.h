@@ -25,12 +25,14 @@ namespace Korbo
         virtual ~Engine();
         Renderer* getRenderer(); //TODO CAMBIAR POR Factory
         Camera* camera;
+        Transform* root;
         virtual void init();
         virtual void update();
         virtual void exit();
         void gameLoop();
         void setLightPos(Vec3 position);
         void setAmbientLightStrengh(float value);
+        void drawScene();
         float getDeltaTime();
 Transform* testTransform;
     protected:

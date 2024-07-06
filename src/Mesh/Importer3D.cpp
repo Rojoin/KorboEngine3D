@@ -1,6 +1,7 @@
 ﻿#include "Importer3D.h"
 
 #include <iostream>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "Model.h"
 #include "Sprite/Importer2D.h"
@@ -31,19 +32,25 @@ void Importer3D::processNode(vector<BasicMesh>& meshes, aiNode* node, const aiSc
                              Model* model)
 {
     // process all the node's meshes (if any)
-
+    aiMatrix4x4 aiTransform = node->mTransformation;
+    glm::mat4 nodeTransform = glm::transpose(glm::make_mat4(&aiTransform.a1));
+   glm::vec3 posAux = nodeTransform[3];
+    Vec3 pos = {posAux.x,posAux.y,posAux.z};
     Model* modelToUse = model;
-  
+    std::cout << "Node Name: " << node->mName.C_Str() << "\n";
+    std::cout << "Pos: " << pos.toString() << "\n";
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        modelToUse = new Model(model->GetRenderer(), model->tranform);
+        modelToUse = new Model(model->GetRenderer(), model->tranform,pos,Vec3Zero,Vec3One);
+        modelToUse->tranform->name = node->mName.C_Str();
         modelToUse->meshes.push_back(processMesh(mesh, scene, shouldInvertUVs));
     }
     // then do the same for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
         processNode(modelToUse->meshes, node->mChildren[i], scene, shouldInvertUVs, modelToUse);
+        
     }
 }
 

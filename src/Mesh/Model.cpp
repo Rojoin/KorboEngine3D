@@ -3,13 +3,21 @@
 
 
 Model::Model(const char* path, Renderer* renderer, Vec3 position, Vec3 rotation, Vec3 newScale,
-             bool shouldInvertUVs): Entity3D(renderer, position, rotation, newScale)
+             bool shouldInvertUVs, Transform* parent): Entity3D(renderer, position, rotation, newScale)
 {
+    tranform->name = path;
     Importer3D::loadModel(path, directory, meshes, shouldInvertUVs, this);
     boundingVolume = make_unique<AABB>(generateAABB(*this));
+    if (parent != nullptr)
+    {
+        tranform->parent = parent;
+        parent->childs.push_back(this->tranform);
+    }
+
 }
 
-Model::Model(Renderer* renderer, Transform* parent) : Entity3D(renderer,Vec3Zero,Vec3Zero, Vec3One)
+
+Model::Model(Renderer* renderer, Transform* parent,Vec3 position, Vec3 rotation, Vec3 newScale) : Entity3D(renderer,position,rotation, newScale)
 {
     boundingVolume = make_unique<AABB>(generateAABB(*this));
     tranform->parent = parent;

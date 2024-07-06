@@ -54,7 +54,8 @@ void Engine::initGame(int windowWhidth, int windowHeight)
     }
 
     camera = new Camera();
-
+    root = new Transform(nullptr,glm::vec3(0),glm::vec3(0),glm::vec3(1));
+    root->name = "Root";
     newCamera = camera;
     currentWindow = window;
     renderer = new Renderer(window, camera);
@@ -89,10 +90,9 @@ void Engine::gameLoop()
         camera->checkKeyboardMovement(window->getWindow());
         renderer->projection = camera->getProjectionMatrix(window->getWidth(), window->getHeight());
         renderer->view = camera->getViewMatrix();
-        if (testTransform != nullptr)
-        {
-            Interface::ShowTransformEditor(testTransform);
-        }
+
+        Interface::ShowTransformEditor(root);
+        drawScene();
         ImGui::Render();
         update();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -110,6 +110,17 @@ void Engine::setAmbientLightStrengh(float value)
     renderer->ambientStrengh = glm::clamp(value, 0.0f, 1.0f);
 }
 
+void Engine::drawScene()
+{
+    for (auto child : root->childs)
+    {
+        if (child->entity != nullptr)
+        {
+            child->entity->Draw();
+        }
+    }
+}
+
 float Engine::getDeltaTime()
 {
     return DeltaTime;
@@ -123,6 +134,7 @@ void Engine::endGame()
     delete window;
     delete renderer;
     delete camera;
+    delete root;
     glfwTerminate();
 }
 

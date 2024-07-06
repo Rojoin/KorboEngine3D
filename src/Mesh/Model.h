@@ -12,7 +12,9 @@ class EXPORT Model : public Entity3D
 public:
     Model(const char* path, Renderer* renderer, Vec3 position, Vec3 rotation, Vec3 newScale,
           bool shouldInvertUVs = false);
-    Model(Renderer* renderer, Transform* parent);
+    Model(const char* path, Renderer* renderer, Vec3 position, Vec3 rotation, Vec3 newScale, bool shouldInvertUVs = false,
+          Transform* parent = nullptr);
+    Model(Renderer* renderer, Transform* parent, Vec3 position, Vec3 rotation, Vec3 newScale);
     void Draw() override;
     void setNewTextures(string currentDirectory, string fileName, bool shouldInvertUVs, string type);
     unique_ptr<AABB> boundingVolume;
