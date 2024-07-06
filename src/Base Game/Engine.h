@@ -7,6 +7,7 @@
 #include "Window/window.h"
 #include "Input/Input.h"
 #include "Colitions/Colitions.h"
+#include "Interface/Interface.h"
 
 
 namespace Korbo
@@ -19,7 +20,7 @@ namespace Korbo
         void initGame(int windowWhidth, int windowHeight);
         void endGame();
         float DeltaTime;
-
+Interface interface;
     public:
         Engine(int windowWidth, int windowHeight);
         virtual ~Engine();

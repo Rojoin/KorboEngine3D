@@ -49,12 +49,7 @@ void Game::init()
     resModelParcialbackgroundJpg = "../res/models/TanqueDePrueba.fbx";
     backPack = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {100, 0, -100.0f}, {90, 90, 90},{10, 10, 10}, true,root);
     house->setNewTextures("../res/models","T_Doors_BC.png",false,"texture_baseColor");
-    // swordAndShield->SetRotationY(90);
-    // swordAndShield->SetRotationX(90);
-
-   // dummy->SetParent(player1);
-   // backPack->SetParent(dummy);
-//testTransform = house->tranform;
+  
 }
 
 

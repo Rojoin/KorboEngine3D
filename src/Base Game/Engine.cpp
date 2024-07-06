@@ -54,7 +54,7 @@ void Engine::initGame(int windowWhidth, int windowHeight)
     }
 
     camera = new Camera();
-    root = new Transform(nullptr,glm::vec3(0),glm::vec3(0),glm::vec3(1));
+    root = new Transform(nullptr, glm::vec3(0), glm::vec3(0), glm::vec3(1));
     root->name = "Root";
     newCamera = camera;
     currentWindow = window;
@@ -91,7 +91,7 @@ void Engine::gameLoop()
         renderer->projection = camera->getProjectionMatrix(window->getWidth(), window->getHeight());
         renderer->view = camera->getViewMatrix();
 
-        Interface::ShowTransformEditor(root);
+        interface.ShowTransformEditor(root);
         drawScene();
         ImGui::Render();
         update();
