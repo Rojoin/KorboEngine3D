@@ -12,6 +12,7 @@ class EXPORT Model : public Entity3D
 public:
     Model(const char* path, Renderer* renderer, Vec3 position, Vec3 rotation, Vec3 newScale,
           bool shouldInvertUVs = false);
+    Model(Renderer* renderer, Transform* parent);
     void Draw() override;
     unique_ptr<AABB> boundingVolume;
     ~Model() override;

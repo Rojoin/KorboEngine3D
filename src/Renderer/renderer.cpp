@@ -3,12 +3,9 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Globals/Vec4.h"
-#include "Base Game/Engine.h"
+
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "Camera/Camera.h"
-#include "Camera/Camera.h"
-#include "Camera/Camera.h"
 #include "Camera/Camera.h"
 #include "Mesh/BasicMesh.h"
 #include "Shader/Material.h"
@@ -61,6 +58,9 @@ Renderer::Renderer(Window* window, Camera* camera)
     shaderSprite->bind();
     shaderLightning->bind();
     cout << "Renderer Created" << endl;
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
 }
 
 Renderer::~Renderer()

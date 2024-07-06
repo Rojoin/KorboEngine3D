@@ -8,6 +8,12 @@ Entity::Entity(Renderer* renderer, glm::vec3 position, glm::vec3 rotation, glm::
     tranform = new Transform(this, position, rotation, scale);
     this->renderer = renderer;
 }
+Entity::Entity(Renderer* renderer, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale,Transform* parent)
+{
+    cout << "Init Entity";
+    tranform = new Transform(this,parent);
+    this->renderer = renderer;
+}
 
 Entity::Entity()
 {
@@ -99,4 +105,9 @@ Vec3 Entity::GetPreviousPosition()
 void Entity::SetParent(Entity* newParent)
 {
     tranform->setParent(newParent->tranform);
+}
+
+Renderer* Entity::GetRenderer()
+{
+    return renderer;
 }

@@ -4,3 +4,4 @@
 #else
 #  define EXPORT __declspec(dllimport)
 #endif
+#define IMGUI_DEFINE_MATH_OPERATORS

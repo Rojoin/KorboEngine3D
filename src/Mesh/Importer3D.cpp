@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "Model.h"
 #include "Sprite/Importer2D.h"
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
@@ -9,38 +10,46 @@
 string Importer3D::currentDirectory = "";
 vector<Texture> Importer3D::texturesLoaded;
 
-void Importer3D::loadModel(const string& path, string& directory, vector<BasicMesh>& meshes, bool shouldInvertUVs, Transform* transform)
+void Importer3D::loadModel(const string& path, string& directory, vector<BasicMesh>& meshes, bool shouldInvertUVs,
+                           Model* model)
 {
     Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+    const aiScene* scene = importer.ReadFile(
+        path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
     currentDirectory = path.substr(0, path.find_last_of('/'));
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
         std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
         return;
     }
-    
-    processNode(meshes, scene->mRootNode, scene, shouldInvertUVs, transform);
+
+    processNode(model->meshes, scene->mRootNode, scene, shouldInvertUVs, model);
 }
 
 
-void Importer3D::processNode(vector<BasicMesh>& meshes, aiNode* node, const aiScene* scene, bool shouldInvertUVs, Transform* transform)
+void Importer3D::processNode(vector<BasicMesh>& meshes, aiNode* node, const aiScene* scene, bool shouldInvertUVs,
+                             Model* model)
 {
-    Transform* newTransform = new Transform(nullptr,transform);
     // process all the node's meshes (if any)
+
+    Model* modelToUse = model;
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
         meshes.push_back(processMesh(mesh, scene, shouldInvertUVs));
     }
+    if (node->mNumMeshes > 0)
+    {
+        modelToUse = new Model(model->GetRenderer(), model->tranform);
+    }
     // then do the same for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
-        processNode(meshes, node->mChildren[i], scene, shouldInvertUVs, newTransform);
+        processNode(modelToUse->meshes, node->mChildren[i], scene, shouldInvertUVs, modelToUse);
     }
 }
 
-BasicMesh Importer3D::processMesh(aiMesh* mesh, const aiScene* scene ,bool shouldInvertUVs)
+BasicMesh Importer3D::processMesh(aiMesh* mesh, const aiScene* scene, bool shouldInvertUVs)
 {
     vector<Vertex> vertices;
     vector<unsigned int> indices;
@@ -93,25 +102,32 @@ BasicMesh Importer3D::processMesh(aiMesh* mesh, const aiScene* scene ,bool shoul
     if (mesh->mMaterialIndex >= 0)
     {
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-        vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse", shouldInvertUVs);
+        vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse",
+                                                           shouldInvertUVs);
         textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-        vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular", shouldInvertUVs);
+        vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular",
+                                                            shouldInvertUVs);
         textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 
-        vector<Texture> baseColorMaps = loadMaterialTextures(material, aiTextureType_BASE_COLOR, "texture_baseColor",  shouldInvertUVs);
+        vector<Texture> baseColorMaps = loadMaterialTextures(material, aiTextureType_BASE_COLOR, "texture_baseColor",
+                                                             shouldInvertUVs);
         textures.insert(textures.end(), baseColorMaps.begin(), baseColorMaps.end());
 
-        vector<Texture> normalsMaps = loadMaterialTextures(material, aiTextureType_NORMALS, "texture_normals", shouldInvertUVs);
+        vector<Texture> normalsMaps = loadMaterialTextures(material, aiTextureType_NORMALS, "texture_normals",
+                                                           shouldInvertUVs);
         textures.insert(textures.end(), normalsMaps.begin(), normalsMaps.end());
 
-        std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_height", shouldInvertUVs);
+        std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_height",
+                                                               shouldInvertUVs);
         textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-        std::vector<Texture> metallicMaps = loadMaterialTextures(material, aiTextureType_METALNESS, "texture_metalness", shouldInvertUVs);
+        std::vector<Texture> metallicMaps = loadMaterialTextures(material, aiTextureType_METALNESS, "texture_metalness",
+                                                                 shouldInvertUVs);
         textures.insert(textures.end(), metallicMaps.begin(), metallicMaps.end());
-        
-        std::vector<Texture> roughnessMaps = loadMaterialTextures(material, aiTextureType_SHININESS, "texture_roughness", shouldInvertUVs);
+
+        std::vector<Texture> roughnessMaps = loadMaterialTextures(material, aiTextureType_SHININESS,
+                                                                  "texture_roughness", shouldInvertUVs);
         textures.insert(textures.end(), roughnessMaps.begin(), roughnessMaps.end());
     }
     if (scene->HasMaterials())
@@ -120,7 +136,8 @@ BasicMesh Importer3D::processMesh(aiMesh* mesh, const aiScene* scene ,bool shoul
     return BasicMesh(vertices, indices, textures);
 }
 
-vector<Texture> Importer3D::loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName, bool shouldInvertUVs)
+vector<Texture> Importer3D::loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName,
+                                                 bool shouldInvertUVs)
 {
     vector<Texture> textures;
     unsigned int textureCount = mat->GetTextureCount(type);
@@ -142,7 +159,7 @@ vector<Texture> Importer3D::loadMaterialTextures(aiMaterial* mat, aiTextureType 
         {
             // if texture hasn't been loaded already, load it
             Texture texture;
-            texture.id = Importer2D::TextureFromFile(str.C_Str(), currentDirectory,shouldInvertUVs);
+            texture.id = Importer2D::TextureFromFile(str.C_Str(), currentDirectory, shouldInvertUVs);
             texture.type = typeName;
             texture.path = str.C_Str();
             textures.push_back(texture);

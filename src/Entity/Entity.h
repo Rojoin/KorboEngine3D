@@ -8,6 +8,7 @@ class EXPORT Entity
 {
 public:
     Entity(Renderer* renderer, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale);
+    Entity(Renderer* renderer, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale,Transform* parent);
     Entity(glm::vec3 position);
     Entity();
     virtual ~Entity() =0;
@@ -29,6 +30,7 @@ public:
     Vec3 GetScale();
     Vec3 GetPreviousPosition();
     void SetParent(Entity* newParent = nullptr);
+    Renderer* GetRenderer();
 
 
 protected:

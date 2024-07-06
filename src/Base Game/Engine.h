@@ -1,5 +1,6 @@
 #pragma once
 #include "Globals/dllHeader.h"
+
 #include "Renderer/renderer.h"
 #include "Shape/Shape.h"
 #include "Camera/Camera.h"
@@ -31,7 +32,7 @@ namespace Korbo
         void setLightPos(Vec3 position);
         void setAmbientLightStrengh(float value);
         float getDeltaTime();
-
+Transform* testTransform;
     protected:
         Input* input;
     };

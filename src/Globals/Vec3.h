@@ -1,13 +1,14 @@
 #include <iostream>
 #include <sstream>
 
+
 struct Vec3
 {
 public:
     float x;
     float y;
     float z;
-
+ 
     Vec3()
     {
         x = 0;
@@ -52,3 +53,5 @@ public:
     }
     
 };
+#define Vec3Zero {0,0,0}
+#define Vec3One {1,1,1}

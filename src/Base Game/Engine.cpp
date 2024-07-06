@@ -1,6 +1,8 @@
 #include "Engine.h"
 
+
 #include "Globals/Time.h"
+#include "Interface/Interface.h"
 #include "Shape/Square.h"
 #include "Shape/Triangle.h"
 
@@ -8,6 +10,7 @@ using namespace Korbo;
 
 Camera* newCamera;
 Window* currentWindow;
+bool moveCamera = true;
 
 Engine::Engine(int windowWidth, int windowHeight)
 {
@@ -61,19 +64,38 @@ void Engine::initGame(int windowWhidth, int windowHeight)
     glfwSetScrollCallback(window->getWindow(), scroll_callback);
     glfwSetKeyCallback(window->getWindow(), key_callback);
     glfwSetFramebufferSizeCallback(window->getWindow(), framebuffer_size_callback);
+
+    ImGui_ImplGlfw_InitForOpenGL(window->getWindow(), true);
+    ImGui_ImplOpenGL3_Init("#version 130");
 }
 
 void Engine::gameLoop()
 {
     while (!glfwWindowShouldClose(window->getWindow()))
     {
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        // Show a simple window
+        {
+            ImGui::Begin("Hello, World!"); // Create a window called "Hello, World!"
+            ImGui::Text("This is some useful text."); // Display some text
+            ImGui::End();
+        }
         Time::setTime();
         DeltaTime = Time::getDeltaTime();
         renderer->BeginDrawing();
         camera->checkKeyboardMovement(window->getWindow());
         renderer->projection = camera->getProjectionMatrix(window->getWidth(), window->getHeight());
         renderer->view = camera->getViewMatrix();
+        if (testTransform != nullptr)
+        {
+            Interface::ShowTransformEditor(testTransform);
+        }
+        ImGui::Render();
         update();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         renderer->EndDrawing();
     }
 }
@@ -95,6 +117,9 @@ float Engine::getDeltaTime()
 
 void Engine::endGame()
 {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
     delete window;
     delete renderer;
     delete camera;
@@ -118,7 +143,10 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
     newCamera->lastX = xpos;
     newCamera->lastY = ypos;
-    newCamera->checkMouseMovement(xoffset, yoffset);
+    if (moveCamera)
+    {
+        newCamera->checkMouseMovement(xoffset, yoffset);
+    }
 }
 
 void scroll_callback(GLFWwindow* window, double xpos, double ypos)
@@ -137,4 +165,14 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
     if (key == GLFW_KEY_R && action == GLFW_PRESS)
         newCamera->toggleCameraMode();
+    if (key == GLFW_KEY_T && action == GLFW_PRESS)
+    {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        moveCamera = false;
+    }
+    if (key == GLFW_KEY_Y && action == GLFW_PRESS)
+    {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        moveCamera = true;
+    }
 }
