@@ -14,6 +14,7 @@ public:
           bool shouldInvertUVs = false);
     Model(Renderer* renderer, Transform* parent);
     void Draw() override;
+    void setNewTextures(string currentDirectory, string fileName, bool shouldInvertUVs, string type);
     unique_ptr<AABB> boundingVolume;
     ~Model() override;
     vector<BasicMesh> meshes;

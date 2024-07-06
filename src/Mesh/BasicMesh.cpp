@@ -10,6 +10,14 @@ BasicMesh::BasicMesh(std::vector<Vertex> vertices, std::vector<unsigned int> ind
     setupMesh();
 }
 
+void BasicMesh::setNewTextures(string currentDirectory, string fileName, bool shouldInvertUVs, string type)
+{
+    Texture texture;
+    texture.id = Importer2D::TextureFromFile(fileName.c_str(), currentDirectory, shouldInvertUVs);
+    texture.type = type;
+    textures.push_back(texture);
+}
+
 void BasicMesh::setupMesh()
 {
     glGenVertexArrays(1, &VAO);

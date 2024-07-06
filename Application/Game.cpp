@@ -45,12 +45,13 @@ void Game::init()
     string resModelParcialbackgroundJpg = "../res/models/CH_Dummy_HurtV2.fbx";
     dummy = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {400, 0, -100.0f}, {90, 0, 0},
                       {1, 1, 1});
-    resModelParcialbackgroundJpg = "../res/models/Casa_v6.fbx";
+    resModelParcialbackgroundJpg = "../res/models/SM_Doors_V2.fbx";
     house = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {-400, -100, -400.0f}, {0, 0, 0},
                       {50, 50, 50});
     resModelParcialbackgroundJpg = "../res/models/TanqueDePrueba.fbx";
     backPack = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {100, 0, -100.0f}, {90, 90, 90},
                          {10, 10, 10}, true);
+    house->setNewTextures("../res/models","T_Doors_BC.png",false,"texture_baseColor");
     // swordAndShield->SetRotationY(90);
     // swordAndShield->SetRotationX(90);
     cout << "Global backPack pos:" << backPack->tranform->getGlobalPosition().toString() << endl;
@@ -72,7 +73,7 @@ void Game::init()
     cout << "Global backPack pos:" << backPack->tranform->getGlobalPosition().toString() << endl;
     cout << "Global backPack scale:" << backPack->tranform->getGlobalScaleVec3().toString() << endl;
     cout << "Global backPack rot:" << backPack->tranform->getRotation().toString() << endl;
-testTransform = dummy->tranform;
+testTransform = house->tranform;
 }
 
 
@@ -203,9 +204,9 @@ void Game::update()
     player1->Draw();
     obj1->Draw();
     obj2->Draw();
-    dummy->Draw();
+  //  dummy->Draw();
     house->Draw();
-    backPack->Draw();
+    //backPack->Draw();
 
 #pragma endregion
 }

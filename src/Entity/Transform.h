@@ -8,6 +8,7 @@
 #include "Globals/Vec3.h"
 
 
+
 class EXPORT Transform : public Component
 {
 public:
@@ -45,6 +46,7 @@ public:
     glm::vec3 getRightConst() const;
     glm::mat4 getLocalModelMatrix();
     glm::mat4 getLocalModelMatrixConst() const;
+    void AddChild(Transform* model);
 
 
     Transform* parent;

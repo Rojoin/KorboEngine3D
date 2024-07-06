@@ -33,14 +33,12 @@ void Importer3D::processNode(vector<BasicMesh>& meshes, aiNode* node, const aiSc
     // process all the node's meshes (if any)
 
     Model* modelToUse = model;
+  
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        meshes.push_back(processMesh(mesh, scene, shouldInvertUVs));
-    }
-    if (node->mNumMeshes > 0)
-    {
         modelToUse = new Model(model->GetRenderer(), model->tranform);
+        modelToUse->meshes.push_back(processMesh(mesh, scene, shouldInvertUVs));
     }
     // then do the same for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
@@ -130,9 +128,7 @@ BasicMesh Importer3D::processMesh(aiMesh* mesh, const aiScene* scene, bool shoul
                                                                   "texture_roughness", shouldInvertUVs);
         textures.insert(textures.end(), roughnessMaps.begin(), roughnessMaps.end());
     }
-    if (scene->HasMaterials())
-    {
-    }
+
     return BasicMesh(vertices, indices, textures);
 }
 

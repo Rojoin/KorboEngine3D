@@ -337,6 +337,11 @@ glm::mat4 Transform::getLocalModelMatrixConst() const
     return (glm::translate(glm::mat4(1.0f), localPosition)) * (transformY * transformX * transformZ) * glm::scale(glm::mat4(1.0f), localScale);
 }
 
+void Transform::AddChild(Transform* model)
+{
+    model->childs.push_back(model);
+}
+
 glm::vec3 Transform::getRight()
 {
     return modelWorld[0];

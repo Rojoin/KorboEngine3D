@@ -36,6 +36,24 @@ void Model::Draw()
     }
 }
 
+void Model::setNewTextures(string currentDirectory, string fileName, bool shouldInvertUVs, string type)
+{
+    for (BasicMesh& mesh : meshes)
+    {
+        mesh.setNewTextures(currentDirectory,fileName,shouldInvertUVs,type);
+    }
+    if (!tranform->childs.empty())
+    {
+        for (auto child : tranform->childs)
+        {
+            if (child->entity != nullptr && dynamic_cast<Model*>(child->entity))
+            {
+                dynamic_cast<Model*>(child->entity)->setNewTextures(currentDirectory,fileName,shouldInvertUVs,type);
+            }
+        }
+    }
+}
+
 Model::~Model()
 {
     std::cout << "Deleting model";
