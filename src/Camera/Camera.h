@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Globals/dllHeader.h"
 
+class Transform;
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
 const float SPEED = 100.5f;
@@ -19,6 +20,7 @@ typedef unsigned char GLboolean;
 class EXPORT Camera
 {
 public:
+    Transform* transform;
     glm::vec3 Position;
     glm::vec3 Target;
     glm::vec3 PositionThirdPerson;
@@ -43,6 +45,7 @@ public:
 
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),
            float yaw = YAW, float pitch = PITCH);
+    ~Camera();
     void checkKeyboardMovement(GLFWwindow* window);
     glm::mat4 getViewMatrix();
     glm::vec3 getCameraPosition();

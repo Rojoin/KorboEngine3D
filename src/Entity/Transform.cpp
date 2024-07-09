@@ -59,6 +59,10 @@ Vec3 Transform::getLocalPosition()
     glm::vec3 tempPos = glm::vec3(tranlateMatrix[3]);
     return (tempPos);
 }
+glm::vec3 Transform::getLocalPositionGLM()
+{
+    return   glm::vec3(tranlateMatrix[3]);
+}
 
 //Todo: Make rotations.
 void Transform::setRotationX(float angle)

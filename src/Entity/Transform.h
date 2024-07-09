@@ -26,6 +26,7 @@ public:
     void movePosition(glm::vec3 newPosition);
     Vec3 getGlobalPosition();
     Vec3 getLocalPosition();
+    glm::vec3 getLocalPositionGLM();
     void setLocalRotation(glm::vec3 angle);
     void setRotationX(float angle);
     void setRotationY(float angle);

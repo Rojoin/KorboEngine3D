@@ -1,9 +1,16 @@
 ﻿#include "Frustrum.h"
 #include "Camera/Camera.h"
+#include "Entity/Transform.h"
 
 Plane::Plane(const glm::vec3& p1, const glm::vec3& norm): normal(glm::normalize(norm)),
                                                           distance(glm::dot(normal, p1))
 {
+}
+
+void Plane::setNormalAndDistance(glm::vec3 point, glm::vec3 normal)
+{
+    this->normal = glm::normalize(normal);
+    distance = glm::dot(this->normal, point);
 }
 
 float Plane::getSignedDistanceToPlane(const glm::vec3& point) const
@@ -11,28 +18,21 @@ float Plane::getSignedDistanceToPlane(const glm::vec3& point) const
     return glm::dot(normal, point) - distance;
 }
 
-Frustum Frustum::createFrustumFromCamera(Camera* cam, float aspect, float fovY, float zNear, float zFar)
+void Frustum::createFrustumFromCamera(Camera* cam, float aspect, float fovY, float zNear, float zFar)
 {
-    Frustum frustum;
-    const float halfVSide = zFar * tanf(fovY * 0.5f);
-    const float halfHSide = halfVSide * aspect;
-    const glm::vec3 frontMultFar = zFar * cam->Front;
+    glm::vec3 camUp = cam->Up;
+    glm::vec3 camRight = cam->Right;
+    glm::vec3 camForward = cam->Front;
+    glm::vec3 camPos = (cam->transform->getLocalPositionGLM());
+    float halfheight = zFar * (glm::tan((fovY * .5f) * glm::pi<float>() / 180.f));
+    float halfWidth = halfheight * aspect;
+    glm::vec3 frontFar = zFar * camForward;
 
-    frustum.nearFace = {cam->Position + zNear * cam->Front, cam->Front};
-    frustum.farFace = {cam->Position + frontMultFar, -cam->Front};
+    nearFace.setNormalAndDistance(camPos + zNear * camForward, camForward);
+    farFace.setNormalAndDistance(camPos + frontFar, -camForward);
 
-    const glm::vec3 rightPlaneNormal = glm::normalize(glm::cross(cam->Up, frontMultFar - cam->Right * halfHSide));
-    frustum.rightFace = {cam->Position, rightPlaneNormal};
-
-    const glm::vec3 leftPlaneNormal = glm::normalize(glm::cross(frontMultFar + cam->Right * halfHSide, cam->Up));
-    frustum.leftFace = {cam->Position, leftPlaneNormal};
-
-    const glm::vec3 topPlaneNormal = glm::normalize(glm::cross(frontMultFar - cam->Up * halfVSide, cam->Right));
-    frustum.topFace = {cam->Position, topPlaneNormal};
-
-    const glm::vec3 bottomPlaneNormal = glm::normalize(glm::cross(cam->Right, frontMultFar + cam->Up * halfVSide));
-    frustum.bottomFace = {cam->Position, bottomPlaneNormal};
-    return frustum;
+    rightFace.setNormalAndDistance(camPos, glm::cross(camUp, frontFar + camRight * halfWidth));
+    leftFace.setNormalAndDistance(camPos, glm::cross(frontFar - camRight * halfWidth, camUp));
+    topFace.setNormalAndDistance(camPos, glm::cross(camRight, frontFar - camUp * halfheight));
+    bottomFace.setNormalAndDistance(camPos, glm::cross(frontFar + camUp * halfheight, camRight));
 }
-
-

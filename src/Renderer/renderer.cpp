@@ -10,6 +10,7 @@
 #include <format>
 #include <format>
 
+#include "Frustrum.h"
 #include "Camera/Camera.h"
 #include "Mesh/BasicMesh.h"
 #include "Mesh/BasicMesh.h"
@@ -514,21 +515,18 @@ void Renderer::DrawLinesAABB( glm::mat4x4 model,  std::vector<glm::vec3> vertice
     glDeleteVertexArrays(1, &VAO);
     glDeleteVertexArrays(1, &VAO);
 }
-void Renderer::DrawFrustum(glm::mat4x4 viewProjectionMatrix)
+void Renderer::DrawFrustum(glm::mat4x4 viewProjectionMatrix, Frustum frustum)
 {
-    // Calculate frustum vertices based on viewProjectionMatrix
-    // These vertices define the corners of the frustum in world space
 
-    // Example frustum vertices (modify according to your needs)
     std::vector<glm::vec3> vertices = {
-        glm::vec3(-1.0f, -1.0f, -1.0f), // near bottom left
-        glm::vec3(1.0f, -1.0f, -1.0f),  // near bottom right
-        glm::vec3(1.0f, 1.0f, -1.0f),   // near top right
-        glm::vec3(-1.0f, 1.0f, -1.0f),  // near top left
-        glm::vec3(-0.5f, -0.5f, 1.0f),  // far bottom left
-        glm::vec3(0.5f, -0.5f, 1.0f),   // far bottom right
-        glm::vec3(0.5f, 0.5f, 1.0f),    // far top right
-        glm::vec3(-0.5f, 0.5f, 1.0f)    // far top left
+        -frustum.nearFace.normal * frustum.nearFace.distance,   // near bottom left
+        frustum.nearFace.normal * frustum.nearFace.distance,    // near bottom right
+        frustum.rightFace.normal * frustum.rightFace.distance,  // near top right
+        -frustum.leftFace.normal * frustum.leftFace.distance,   // near top left
+        -frustum.farFace.normal * frustum.farFace.distance,     // far bottom left
+        frustum.farFace.normal * frustum.farFace.distance,      // far bottom right
+        frustum.rightFace.normal * frustum.rightFace.distance + frustum.farFace.normal * frustum.farFace.distance, // far top right
+        -frustum.leftFace.normal * frustum.leftFace.distance + frustum.farFace.normal * frustum.farFace.distance  // far top left
     };
 
     // Define indices for drawing the frustum as lines
@@ -542,7 +540,7 @@ void Renderer::DrawFrustum(glm::mat4x4 viewProjectionMatrix)
     shaderLines->bind();
     shaderLines->SetMat4("model", glm::mat4(1.0f)); // Identity matrix since frustum is already in world space
     shaderLines->SetMat4("view", glm::mat4(1.0f));  // Identity matrix since frustum is already in world space
-    shaderLines->SetMat4("projection", viewProjectionMatrix);
+    shaderLines->SetMat4("projection", projection);
 
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);

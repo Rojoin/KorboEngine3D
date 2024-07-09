@@ -11,6 +11,9 @@ using namespace Korbo;
 Camera* newCamera;
 Window* currentWindow;
 bool moveCamera = true;
+string debug = "";
+float zFar = FAR_PLANE - 500;
+AABB testAABB = {{0, 0, 0}, {1.f, 1.f, 1.f}};
 
 Engine::Engine(int windowWidth, int windowHeight)
 {
@@ -57,8 +60,8 @@ void Engine::initGame(int windowWhidth, int windowHeight)
     root = new Transform(nullptr, glm::vec3(0), glm::vec3(0), glm::vec3(1));
     //testTransform2 = new Frustum();
     root->name = "Root";
-    screenRatio = windowWhidth / windowHeight;
-    frustum = new Frustum(Frustum::createFrustumFromCamera(camera, screenRatio,glm::radians(camera->Zoom), NEAR_PLANE, FAR_PLANE-500));
+    screenRatio = window->getWidth() / window->getHeight();
+    // frustum = Frustum::createFrustumFromCamera(camera, screenRatio,glm::radians(camera->Zoom), NEAR_PLANE, FAR_PLANE-500);
     view = camera->getProjectionMatrix(window->getWidth(), window->getHeight());
     newCamera = camera;
     currentWindow = window;
@@ -88,8 +91,10 @@ void Engine::gameLoop()
 
         {
             ImGui::Begin("Korbo Engine Init!");
+            ImGui::DragFloat("Farplane Distance", &zFar, 1.0f);
             ImGui::Text(
                 "Move with WASD. Press T to lock the mouse and Y to use it as firstPerson Camera. Press R* for ThirdPersonMode");
+            ImGui::Text(("Debug:" + debug).c_str());
             ImGui::End();
         }
         Time::setTime();
@@ -100,9 +105,10 @@ void Engine::gameLoop()
         renderer->view = camera->getViewMatrix();
 
         interface.ShowTransformEditor(root);
+
         ImGui::Render();
         update();
-       // frustum = new Frustum(Frustum::createFrustumFromCamera(camera, screenRatio,glm::radians(camera->Zoom), NEAR_PLANE, FAR_PLANE-500));
+        frustum.createFrustumFromCamera(camera, window->getWidth() / window->getHeight(), ZOOM, NEAR_PLANE, zFar);
         drawScene();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         renderer->EndDrawing();
@@ -128,20 +134,34 @@ void Engine::drawScene()
             Model* entity = dynamic_cast<Model*>(child->entity);
             if (entity != nullptr)
             {
-               // std::vector<glm::vec3> vertices = entity->getGlobalAABB().getVertice();
-               // renderer->DrawLinesAABB(entity->tranform->modelWorld, vertices);
-
                 entity->generateAABB();
-               entity->DrawWithFrustum(frustum);
-               // child->entity->Draw();
+                entity->DrawWithFrustum(frustum);
+                // child->entity->Draw();
             }
             else
             {
-              //  
             }
         }
     }
-    renderer->DrawFrustum(view);
+
+    std::vector<glm::vec3> vertices = testAABB.getVertice();
+    renderer->DrawLinesAABB(root->modelWorld, vertices);
+
+    if (testAABB.isOnOrForwardPlane(frustum.leftFace) &&
+        testAABB.isOnOrForwardPlane(frustum.rightFace) &&
+        testAABB.isOnOrForwardPlane(frustum.topFace) &&
+        testAABB.isOnOrForwardPlane(frustum.bottomFace) &&
+        testAABB.isOnOrForwardPlane(frustum.farFace) &&
+        testAABB.isOnOrForwardPlane(frustum.nearFace))
+    {
+        debug = "its Inside Frustum";
+    }
+    else
+    {
+        debug = "No enojado :C";
+    }
+
+    // renderer->DrawFrustum(renderer->projection,frustum);
 }
 
 float Engine::getDeltaTime()
@@ -155,7 +175,7 @@ void Engine::endGame()
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
     //  delete frustum;
-    delete frustum;
+
     delete window;
     delete input;
     delete renderer;

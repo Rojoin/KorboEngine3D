@@ -23,7 +23,7 @@ bool SquareAABB::isOnOrForwardPlane(const Plane& plane) const
     return -r <= plane.getSignedDistanceToPlane(center);
 }
 
-bool SquareAABB::isOnFrustum(const Frustum* camFrustum, const Transform* transform) const
+bool SquareAABB::isOnFrustum(const Frustum camFrustum, const Transform* transform) const
  {
      //Get global scale thanks to our transform
      const glm::vec3 globalCenter{ transform->getLocalModelMatrixConst() * glm::vec4(center, 1.f) };
@@ -47,12 +47,12 @@ bool SquareAABB::isOnFrustum(const Frustum* camFrustum, const Transform* transfo
 
       SquareAABB globalAABB(globalCenter, std::max(std::max(newIi, newIj), newIk));
 
-     return (globalAABB.isOnOrForwardPlane(camFrustum->leftFace) &&
-         globalAABB.isOnOrForwardPlane(camFrustum->rightFace) &&
-         globalAABB.isOnOrForwardPlane(camFrustum->topFace) &&
-         globalAABB.isOnOrForwardPlane(camFrustum->bottomFace) &&
-         globalAABB.isOnOrForwardPlane(camFrustum->nearFace) &&
-         globalAABB.isOnOrForwardPlane(camFrustum->farFace));
+     return (globalAABB.isOnOrForwardPlane(camFrustum.leftFace) &&
+         globalAABB.isOnOrForwardPlane(camFrustum.rightFace) &&
+         globalAABB.isOnOrForwardPlane(camFrustum.topFace) &&
+         globalAABB.isOnOrForwardPlane(camFrustum.bottomFace) &&
+         globalAABB.isOnOrForwardPlane(camFrustum.nearFace) &&
+         globalAABB.isOnOrForwardPlane(camFrustum.farFace));
  }
 
 
@@ -83,15 +83,15 @@ bool AABB::isOnOrForwardPlane(const Plane& plane) const
     return -r <= plane.getSignedDistanceToPlane(center);
 }
 
-bool AABB::isOnFrustum(const Frustum* camFrustum, const Transform* transform) const 
+bool AABB::isOnFrustum(const Frustum camFrustum, const Transform* transform) const 
 {
     //Get global scale thanks to our transform
-    const glm::vec3 globalCenter{ transform->getLocalModelMatrixConst() * glm::vec4(center, 1.f) };
+    const glm::vec3 globalCenter{ transform->modelWorld * glm::vec4(center, 1.f) };
 
     // Scaled orientation
-    const glm::vec3 right = transform->getRightConst() * extents.x;
-    const glm::vec3 up = transform->getUpConst() * extents.y;
-    const glm::vec3 forward = transform->getForwardConst() * extents.z;
+    const glm::vec3 right = transform->getRightConst() * extents;
+    const glm::vec3 up = transform->getUpConst() * extents;
+    const glm::vec3 forward = transform->getForwardConst() * extents;
 
     const float newIi = std::abs(glm::dot(glm::vec3{ 1.f, 0.f, 0.f }, right)) +
         std::abs(glm::dot(glm::vec3{ 1.f, 0.f, 0.f }, up)) +
@@ -107,12 +107,12 @@ bool AABB::isOnFrustum(const Frustum* camFrustum, const Transform* transform) co
 
      AABB globalAABB(globalCenter, newIi, newIj, newIk);
 
-    return (globalAABB.isOnOrForwardPlane(camFrustum->leftFace) &&
-        globalAABB.isOnOrForwardPlane(camFrustum->rightFace) &&
-        globalAABB.isOnOrForwardPlane(camFrustum->topFace) &&
-        globalAABB.isOnOrForwardPlane(camFrustum->bottomFace) &&
-        globalAABB.isOnOrForwardPlane(camFrustum->nearFace) &&
-        globalAABB.isOnOrForwardPlane(camFrustum->farFace));
+    return (globalAABB.isOnOrForwardPlane(camFrustum.leftFace) &&
+        globalAABB.isOnOrForwardPlane(camFrustum.rightFace) &&
+        globalAABB.isOnOrForwardPlane(camFrustum.topFace) &&
+        globalAABB.isOnOrForwardPlane(camFrustum.bottomFace) &&
+        globalAABB.isOnOrForwardPlane(camFrustum.nearFace) &&
+        globalAABB.isOnOrForwardPlane(camFrustum.farFace));
 }
 
 AABB AABB::generateAABB(const Model& model)

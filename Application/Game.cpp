@@ -45,11 +45,11 @@ void Game::init()
     string resModelParcialbackgroundJpg = "../res/models/CH_Dummy_HurtV2.fbx";
     dummy = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {400, 0, -100.0f}, {90, 0, 0},{1, 1, 1},false,root);
     resModelParcialbackgroundJpg = "../res/models/SM_Doors_V2.fbx";
-    house = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {-400, -100, -400.0f}, {0, 0, 0},{50, 50, 50},false,root);
-    resModelParcialbackgroundJpg = "../res/models/TanqueDePrueba.fbx";
-    backPack = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {100, 0, -100.0f}, {90, 90, 90},{10, 10, 10}, true,root);
+    house = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {-400, 100, 0.0f}, {0, -90, 0},{0.5, 0.5, 0.5},false,root);
+    ///resModelParcialbackgroundJpg = "../res/models/TanqueDePrueba.fbx";
+    ///backPack = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {100, 0, -100.0f}, {90, 90, 90},{10, 10, 10}, true,root);
     house->setNewTextures("../res/models","T_Doors_BC.png",false,"texture_baseColor");
-    backPack->setNewTextures("../res/models","Militar.jpg",false,"texture_baseColor");
+  //  backPack->setNewTextures("../res/models","Militar.jpg",false,"texture_baseColor");
   
 }
 
@@ -94,11 +94,7 @@ void Game::update()
     if (input->isKeyPressed(KeyKode::KEY_LEFT))
     {
         newPos.x -= 1.0f * 2.0f;
-        house->tranform->childs[0]->setPosition(newPos);
-
         player1->ChangeAnimation(Animator["Right"]);
-
-
         hasBeenPressed = true;
     }
     if (input->isKeyPressed(KeyKode::KEY_UP))
@@ -118,7 +114,6 @@ void Game::update()
     if (input->isKeyPressed(KeyKode::KEY_RIGHT))
     {
         newPos.x += 1.0f * 2;
-        house->tranform->childs[0]->setPosition(newPos);
         player1->ChangeAnimation(Animator["Right"]);
         hasBeenPressed = true;
     }
@@ -140,33 +135,6 @@ void Game::update()
                                  glm::vec3(player1->GetRotation().x, player1->GetRotation().y,
                                            player1->GetRotation().z));
 
-#pragma region Movement3DObject
-    if (input->isKeyPressed(KEY_NUMPAD_1))
-    {
-        dummy->SetRotationZ(1.0f);
-    }
-    if (input->isKeyPressed(KEY_NUMPAD_3))
-    {
-        dummy->SetRotationZ(-1.0f);
-    }
-    if (input->isKeyPressed(KEY_NUMPAD_7))
-    {
-        dummy->SetRotationX(1.0f);
-    }
-    if (input->isKeyPressed(KEY_NUMPAD_9))
-    {
-        dummy->SetRotationX(-1.0f);
-    }
-    if (input->isKeyPressed(KEY_NUMPAD_4))
-    {
-        dummy->SetRotationY(1.0f);
-    }
-    if (input->isKeyPressed(KEY_NUMPAD_6))
-    {
-        dummy->SetRotationY(-1.0f);
-    }
-
-#pragma  endregion
 
 #pragma region Draw
     if (!hasBeenPressed)

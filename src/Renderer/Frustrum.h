@@ -17,6 +17,8 @@ struct Plane
     Plane() = default;
     
     Plane(const glm::vec3& p1, const glm::vec3& norm);
+   void setNormalAndDistance(glm::vec3 point, glm::vec3 normal);
+    
     
     float getSignedDistanceToPlane(const glm::vec3& point) const;
 };
@@ -32,5 +34,6 @@ struct Frustum
     Plane farFace;
     Plane nearFace;
 
-    static Frustum createFrustumFromCamera(Camera* cam, float aspect, float fovY, float zNear, float zFar);
+    void createFrustumFromCamera(Camera* cam, float aspect, float fovY, float zNear, float zFar);
+
 };

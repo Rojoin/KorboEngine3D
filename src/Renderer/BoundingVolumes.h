@@ -10,7 +10,7 @@ class Model;
 struct BoundingVolume
 {
     virtual ~BoundingVolume() = default;
-    virtual bool isOnFrustum(const Frustum* camFrustum, const Transform* transform) const = 0;
+    virtual bool isOnFrustum(const Frustum camFrustum, const Transform* transform) const = 0;
 
     virtual bool isOnOrForwardPlane(const Plane& plane) const = 0;
 
@@ -27,7 +27,7 @@ struct SquareAABB : public BoundingVolume
 
     bool isOnOrForwardPlane(const Plane& plane) const final;
 
-    bool isOnFrustum(const Frustum* camFrustum, const Transform* transform)const override;
+    bool isOnFrustum(const Frustum camFrustum, const Transform* transform)const override;
 };
 
 
@@ -51,7 +51,16 @@ struct AABB : public BoundingVolume
     //see https://gdbooks.gitbooks.io/3dcollisions/content/Chapter2/static_aabb_plane.html
     bool isOnOrForwardPlane(const Plane& plane) const final;
 
-    bool isOnFrustum(const Frustum* camFrustum, const Transform* transform) const override;
+    bool isOnFrustum(const Frustum camFrustum, const Transform* transform) const override;
 static AABB generateAABB(const Model& model);
+    
+    std::string toString() const
+    {
+        std::ostringstream oss;
+        oss << "Center:" << "X: " << center.x << ", Y: " << center.y << ", Z: " <<center.z << std::endl;
+        oss << "Extends:" << "X: " << extents.x << ", Y: " << extents.y << ", Z: " <<extents.z;
+        std::string result = oss.str();
+        return result;
+    }
 };
 
