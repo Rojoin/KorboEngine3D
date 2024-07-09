@@ -39,6 +39,7 @@ namespace Korbo
         float getDeltaTime();
         Transform* testTransform;
         Frustum* frustum = nullptr;
+        glm::mat4x4 view;
  
     protected:
         Input* input ;

@@ -54,17 +54,17 @@ void Model::Draw()
 
 void Model::DrawWithFrustum(Frustum* frustum)
 {
-
-
+    
     if (boundingVolume->isOnFrustum(frustum, tranform))
     {
-        Draw();
-        //drawBoundingBox(boundingVolume.get());
+        tranform->UpdateMatrix();
+        for (int i = 0; i < meshes.size(); ++i)
+        {
+            renderer->DrawModel3D(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices, meshes[i].textures);
+        }
     }
-    else
-    {
-    }
-    std::vector<glm::vec3> vertices = boundingVolume.get()->getVertice();
+
+    std::vector<glm::vec3> vertices = boundingVolume->getVertice();
     renderer->DrawLinesAABB(tranform->modelWorld, vertices);
 
     //AABB aabb = { glm::vec3(0.0f, 0.0f, 0.0f),glm::vec3(1.0f, 1.0f, 1.0f)};
@@ -105,8 +105,8 @@ void Model::generateAABB()
 {
     glm::vec3 minAABB = glm::vec3(std::numeric_limits<float>::max());
     glm::vec3 maxAABB = glm::vec3(std::numeric_limits<float>::min());
-    recursiveAABB(minAABB, maxAABB, tranform->modelWorld);
-    setMinMaxBoundingVolume(minAABB, maxAABB, tranform->modelWorld);
+    recursiveAABB(minAABB, maxAABB, tranform->modelLocal);
+    setMinMaxBoundingVolume(minAABB, maxAABB, tranform->modelLocal);
 
     *boundingVolume = AABB(minAABB, maxAABB);
 }
@@ -133,8 +133,8 @@ void Model::setMinMaxBoundingVolume(glm::vec3& minAABB, glm::vec3& maxAABB, cons
 
 void Model::recursiveAABB(glm::vec3& minAABB, glm::vec3& maxAABB, const glm::mat4& parentTransformMatrix)
 {
-    glm::vec3 originalMin = minAABB;
-    glm::vec3 originalMax = maxAABB;
+    glm::vec3 localMin = minAABB;
+    glm::vec3 localMax = maxAABB;
 
     for (auto child : tranform->childs)
     {
@@ -142,11 +142,20 @@ void Model::recursiveAABB(glm::vec3& minAABB, glm::vec3& maxAABB, const glm::mat
         if (entity)
         {
             glm::mat4 childTransformMatrix = parentTransformMatrix * child->getLocalModelMatrix();
-            entity->recursiveAABB(minAABB, maxAABB, childTransformMatrix);
-            entity->setMinMaxBoundingVolume(minAABB, maxAABB, childTransformMatrix);
-            *entity->boundingVolume = AABB(minAABB, maxAABB);
+
+            // Calculate local min and max for the current entity
+            glm::vec3 childMin = localMin;
+            glm::vec3 childMax = localMax;
+            entity->recursiveAABB(childMin, childMax, childTransformMatrix);
+            entity->setMinMaxBoundingVolume(childMin, childMax,childTransformMatrix);
+            
+            *entity->boundingVolume = AABB(childMin, childMax);
+            minAABB = glm::min(minAABB, childMin);
+            maxAABB = glm::max(maxAABB, childMax);
         }
     }
+
+
 }
 
 AABB Model::getGlobalAABB()

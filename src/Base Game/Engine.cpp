@@ -59,6 +59,7 @@ void Engine::initGame(int windowWhidth, int windowHeight)
     root->name = "Root";
     screenRatio = windowWhidth / windowHeight;
     frustum = new Frustum(Frustum::createFrustumFromCamera(camera, screenRatio,glm::radians(camera->Zoom), NEAR_PLANE, FAR_PLANE-500));
+    view = camera->getProjectionMatrix(window->getWidth(), window->getHeight());
     newCamera = camera;
     currentWindow = window;
     renderer = new Renderer(window, camera);
@@ -101,7 +102,7 @@ void Engine::gameLoop()
         interface.ShowTransformEditor(root);
         ImGui::Render();
         update();
-        frustum = new Frustum(Frustum::createFrustumFromCamera(camera, screenRatio,glm::radians(camera->Zoom), NEAR_PLANE, FAR_PLANE-500));
+       // frustum = new Frustum(Frustum::createFrustumFromCamera(camera, screenRatio,glm::radians(camera->Zoom), NEAR_PLANE, FAR_PLANE-500));
         drawScene();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         renderer->EndDrawing();
@@ -127,6 +128,9 @@ void Engine::drawScene()
             Model* entity = dynamic_cast<Model*>(child->entity);
             if (entity != nullptr)
             {
+               // std::vector<glm::vec3> vertices = entity->getGlobalAABB().getVertice();
+               // renderer->DrawLinesAABB(entity->tranform->modelWorld, vertices);
+
                 entity->generateAABB();
                entity->DrawWithFrustum(frustum);
                // child->entity->Draw();
@@ -137,6 +141,7 @@ void Engine::drawScene()
             }
         }
     }
+    renderer->DrawFrustum(view);
 }
 
 float Engine::getDeltaTime()

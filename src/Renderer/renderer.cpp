@@ -514,3 +514,58 @@ void Renderer::DrawLinesAABB( glm::mat4x4 model,  std::vector<glm::vec3> vertice
     glDeleteVertexArrays(1, &VAO);
     glDeleteVertexArrays(1, &VAO);
 }
+void Renderer::DrawFrustum(glm::mat4x4 viewProjectionMatrix)
+{
+    // Calculate frustum vertices based on viewProjectionMatrix
+    // These vertices define the corners of the frustum in world space
+
+    // Example frustum vertices (modify according to your needs)
+    std::vector<glm::vec3> vertices = {
+        glm::vec3(-1.0f, -1.0f, -1.0f), // near bottom left
+        glm::vec3(1.0f, -1.0f, -1.0f),  // near bottom right
+        glm::vec3(1.0f, 1.0f, -1.0f),   // near top right
+        glm::vec3(-1.0f, 1.0f, -1.0f),  // near top left
+        glm::vec3(-0.5f, -0.5f, 1.0f),  // far bottom left
+        glm::vec3(0.5f, -0.5f, 1.0f),   // far bottom right
+        glm::vec3(0.5f, 0.5f, 1.0f),    // far top right
+        glm::vec3(-0.5f, 0.5f, 1.0f)    // far top left
+    };
+
+    // Define indices for drawing the frustum as lines
+    const GLuint indices[] = {
+        0, 1, 1, 2, 2, 3, 3, 0,  // near plane
+        4, 5, 5, 6, 6, 7, 7, 4,  // far plane
+        0, 4, 1, 5, 2, 6, 3, 7   // connections between near and far planes
+    };
+
+    GLuint VAO, VBO, EBO;
+    shaderLines->bind();
+    shaderLines->SetMat4("model", glm::mat4(1.0f)); // Identity matrix since frustum is already in world space
+    shaderLines->SetMat4("view", glm::mat4(1.0f));  // Identity matrix since frustum is already in world space
+    shaderLines->SetMat4("projection", viewProjectionMatrix);
+
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Draw the frustum as lines
+    glDrawElements(GL_LINES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
+
+    // Cleanup
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+    glDeleteBuffers(1, &VBO);
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &EBO);
+}
