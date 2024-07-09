@@ -37,8 +37,7 @@ void Importer3D::processNode(vector<BasicMesh>& meshes, aiNode* node, const aiSc
    glm::vec3 posAux = nodeTransform[3];
     Vec3 pos = {posAux.x,posAux.y,posAux.z};
     Model* modelToUse = model;
-    std::cout << "Node Name: " << node->mName.C_Str() << "\n";
-    std::cout << "Pos: " << pos.toString() << "\n";
+
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];

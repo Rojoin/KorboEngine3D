@@ -49,6 +49,7 @@ void Game::init()
     resModelParcialbackgroundJpg = "../res/models/TanqueDePrueba.fbx";
     backPack = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {100, 0, -100.0f}, {90, 90, 90},{10, 10, 10}, true,root);
     house->setNewTextures("../res/models","T_Doors_BC.png",false,"texture_baseColor");
+    backPack->setNewTextures("../res/models","Militar.jpg",false,"texture_baseColor");
   
 }
 
@@ -181,7 +182,7 @@ void Game::update()
     obj1->Draw();
     obj2->Draw();
   //  dummy->Draw();
-    house->Draw();
+   // house->Draw();
     //backPack->Draw();
 
 #pragma endregion

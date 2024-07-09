@@ -1,7 +1,8 @@
 ﻿#pragma once
-#include "Window/window.h"
-#include <glm/gtc/matrix_transform.hpp>
 
+
+#include <glm/gtc/matrix_transform.hpp>
+#include "Globals/dllHeader.h"
 
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
@@ -13,7 +14,8 @@ const float ZOOM = 45.0f;
 const float NEAR_PLANE = 0.1f;
 const float FAR_PLANE = 2000.0f;
 
-
+struct GLFWwindow ;
+typedef unsigned char GLboolean;
 class EXPORT Camera
 {
 public:

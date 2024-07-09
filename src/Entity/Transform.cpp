@@ -178,8 +178,7 @@ Transform::Transform(Entity* newEntity) : Component(newEntity)
     previousPos = glm::vec3(localPosition.x, localPosition.y, localPosition.z);
     tranlateMatrix = glm::translate(tranlateMatrix, newPos);
     rotationMatrix = glm::rotate(rotationMatrix, glm::radians(0.0f), glm::vec3(0.0, 0.0, 1.0));
-
-
+    id = idCounter++;
     UpdateMatrix();
     setLocalPosition(localPosition);
 }
@@ -198,7 +197,7 @@ Transform::Transform(Entity* newEntity, Transform* parent) : Component(newEntity
 
     this->parent = parent;
     parent->childs.push_back(this);
-
+    id = idCounter++;
     UpdateMatrix();
     setLocalPosition(localPosition);
 }
@@ -213,6 +212,7 @@ void Transform::setLocalRotation(glm::vec3 angle)
     UpdateMatrix();
 }
 
+int Transform::idCounter = 0;
 //Todo: Rotation
 Transform::Transform(Entity* newEntity, glm::vec3 pos, glm::vec3 rot, glm::vec3 newScale) : Component(newEntity)
 {
@@ -227,7 +227,7 @@ Transform::Transform(Entity* newEntity, glm::vec3 pos, glm::vec3 rot, glm::vec3 
     setRotationX(rot.x);
     setRotationY(rot.y);
     setRotationZ(rot.z);
-
+    id = idCounter++;
     previousPos = localPosition;
     UpdateMatrix();
 }
@@ -252,6 +252,7 @@ void Transform::UpdateMatrix()
     modelLocal = getLocalModelMatrix();
     if (parent)
         modelWorld = parent->modelWorld * modelWorld;
+
 
     globalPosition = modelWorld[3];
     globalRotation = glm::eulerAngles(glm::quat_cast(modelWorld));
@@ -326,15 +327,16 @@ glm::mat4 Transform::getLocalModelMatrix()
 glm::mat4 Transform::getLocalModelMatrixConst() const
 {
     const glm::mat4 transformX = glm::rotate(glm::mat4(1.0f), glm::radians(localRotation.x),
-                                         glm::vec3(1.0f, 0.0f, 0.0f));
+                                             glm::vec3(1.0f, 0.0f, 0.0f));
     const glm::mat4 transformY = glm::rotate(glm::mat4(1.0f), glm::radians(localRotation.y),
                                              glm::vec3(0.0f, 1.0f, 0.0f));
     const glm::mat4 transformZ = glm::rotate(glm::mat4(1.0f), glm::radians(localRotation.z),
                                              glm::vec3(0.0f, 0.0f, 1.0f));
 
-    
+
     // Y * X * Z
-    return (glm::translate(glm::mat4(1.0f), localPosition)) * (transformY * transformX * transformZ) * glm::scale(glm::mat4(1.0f), localScale);
+    return (glm::translate(glm::mat4(1.0f), localPosition)) * (transformY * transformX * transformZ) * glm::scale(
+        glm::mat4(1.0f), localScale);
 }
 
 void Transform::AddChild(Transform* model)

@@ -67,7 +67,9 @@ public:
                       isUsingTexture);
     void DrawModel3D( glm::mat4x4 model, unsigned VAO, std::vector<unsigned int> indices,
                      std::vector<Texture> textures);
+    void DrawLinesAABB(glm::mat4x4 model, std::vector<glm::vec3> vertices);
     Shader* shaderBasicModel;
+    Shader* shaderLines;
 
 private:
     Window* GLFWW;

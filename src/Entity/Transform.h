@@ -6,7 +6,7 @@
 
 #include "Component.h"
 #include "Globals/Vec3.h"
-
+#include "Renderer/TransSource.h"
 
 
 class EXPORT Transform : public Component
@@ -17,7 +17,8 @@ public:
     Transform(Entity* newEntity, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale);
     ~Transform() override;
     std::string name;
-
+    int id;
+  //  TransSource* updateAABB;
     void setPosition(Vec3 newPosition);
     void setLocalPosition(glm::vec3 newPosition);
     void setPreviousPosition();
@@ -51,26 +52,27 @@ public:
 
     Transform* parent;
     std::vector<Transform*> childs;
-//Global
+    //Global
     glm::mat4x4 modelWorld;
     glm::mat4x4 modelLocal;
     glm::vec3 globalPosition;
     glm::vec3 globalRotation;
     glm::vec3 globalScale;
-    
-//Local
+
+    //Local
     glm::mat4 tranlateMatrix;
     glm::mat4 rotationMatrix;
     glm::mat4 scaleMatrix;
-    
+
     glm::vec3 localPosition;
     glm::vec3 localRotation;
     glm::vec3 localScale;
-    
+
     //Transform Vectors
     glm::vec3 previousPos;
     void UpdateMatrix();
     void UpdateMatrixReverse();
+    static int idCounter;
 
 protected:
     //Transform Matrix

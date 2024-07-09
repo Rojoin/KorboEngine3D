@@ -1,10 +1,10 @@
 #include "Engine.h"
-
-
 #include "Globals/Time.h"
 #include "Interface/Interface.h"
-#include "Shape/Square.h"
-#include "Shape/Triangle.h"
+#include "Mesh/Model.h"
+#include "Renderer/BoundingVolumes.h"
+//#include "Renderer/Frustrum.h"
+
 
 using namespace Korbo;
 
@@ -55,19 +55,26 @@ void Engine::initGame(int windowWhidth, int windowHeight)
 
     camera = new Camera();
     root = new Transform(nullptr, glm::vec3(0), glm::vec3(0), glm::vec3(1));
+    //testTransform2 = new Frustum();
     root->name = "Root";
+    screenRatio = windowWhidth / windowHeight;
+    frustum = new Frustum(Frustum::createFrustumFromCamera(camera, screenRatio,glm::radians(camera->Zoom), NEAR_PLANE, FAR_PLANE-500));
     newCamera = camera;
     currentWindow = window;
     renderer = new Renderer(window, camera);
     input = new Input(window->getWindow());
+
+#pragma region CallBacks
     glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window->getWindow(), mouse_callback);
     glfwSetScrollCallback(window->getWindow(), scroll_callback);
     glfwSetKeyCallback(window->getWindow(), key_callback);
     glfwSetFramebufferSizeCallback(window->getWindow(), framebuffer_size_callback);
-
+#pragma endregion
+#pragma  region ImGui
     ImGui_ImplGlfw_InitForOpenGL(window->getWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 130");
+#pragma  endregion
 }
 
 void Engine::gameLoop()
@@ -78,10 +85,10 @@ void Engine::gameLoop()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        // Show a simple window
         {
-            ImGui::Begin("Hello, World!"); // Create a window called "Hello, World!"
-            ImGui::Text("This is some useful text."); // Display some text
+            ImGui::Begin("Korbo Engine Init!");
+            ImGui::Text(
+                "Move with WASD. Press T to lock the mouse and Y to use it as firstPerson Camera. Press R* for ThirdPersonMode");
             ImGui::End();
         }
         Time::setTime();
@@ -92,9 +99,10 @@ void Engine::gameLoop()
         renderer->view = camera->getViewMatrix();
 
         interface.ShowTransformEditor(root);
-        drawScene();
         ImGui::Render();
         update();
+        frustum = new Frustum(Frustum::createFrustumFromCamera(camera, screenRatio,glm::radians(camera->Zoom), NEAR_PLANE, FAR_PLANE-500));
+        drawScene();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         renderer->EndDrawing();
     }
@@ -116,7 +124,17 @@ void Engine::drawScene()
     {
         if (child->entity != nullptr)
         {
-            child->entity->Draw();
+            Model* entity = dynamic_cast<Model*>(child->entity);
+            if (entity != nullptr)
+            {
+                entity->generateAABB();
+               entity->DrawWithFrustum(frustum);
+               // child->entity->Draw();
+            }
+            else
+            {
+              //  
+            }
         }
     }
 }
@@ -131,7 +149,10 @@ void Engine::endGame()
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+    //  delete frustum;
+    delete frustum;
     delete window;
+    delete input;
     delete renderer;
     delete camera;
     delete root;
@@ -163,7 +184,10 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
 void scroll_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    newCamera->checkMouseScroll(static_cast<float>(ypos));
+    if (moveCamera)
+    {
+        newCamera->checkMouseScroll(static_cast<float>(ypos));
+    }
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -186,5 +210,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         moveCamera = true;
+    }
+    if (key == GLFW_MOUSE_BUTTON_2 && action == GLFW_REPEAT && !moveCamera)
+    {
+        moveCamera = true;
+        if (key == GLFW_MOUSE_BUTTON_2 && action == GLFW_RELEASE)
+        {
+            moveCamera = false;
+        }
     }
 }

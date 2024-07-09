@@ -1,5 +1,8 @@
-﻿#include "Renderer/Frustrum.h"
-#include "Model.h"
+﻿#include "Model.h"
+
+#include "BasicMesh.h"
+#include "Renderer/TransSource.h"
+#include "Renderer/BoundingVolumes.h"
 
 
 Model::Model(const char* path, Renderer* renderer, Vec3 position, Vec3 rotation, Vec3 newScale,
@@ -7,19 +10,21 @@ Model::Model(const char* path, Renderer* renderer, Vec3 position, Vec3 rotation,
 {
     tranform->name = path;
     Importer3D::loadModel(path, directory, meshes, shouldInvertUVs, this);
-    boundingVolume = make_unique<AABB>(generateAABB(*this));
+    boundingVolume = make_unique<AABB>(AABB::generateAABB(*this));
+
+    // receiver.hookEvent(tranform->updateAABB);
     if (parent != nullptr)
     {
         tranform->parent = parent;
         parent->childs.push_back(this->tranform);
     }
-
 }
 
 
-Model::Model(Renderer* renderer, Transform* parent,Vec3 position, Vec3 rotation, Vec3 newScale) : Entity3D(renderer,position,rotation, newScale)
+Model::Model(Renderer* renderer, Transform* parent, Vec3 position, Vec3 rotation, Vec3 newScale) : Entity3D(
+    renderer, position, rotation, newScale)
 {
-    boundingVolume = make_unique<AABB>(generateAABB(*this));
+    boundingVolume = make_unique<AABB>(AABB::generateAABB(*this));
     tranform->parent = parent;
     parent->childs.push_back(this->tranform);
 }
@@ -38,9 +43,37 @@ void Model::Draw()
         {
             if (child->entity != nullptr)
             {
-                child->entity->Draw();
+                if (child->entity)
+                {
+                    child->entity->Draw();
+                }
             }
         }
+    }
+}
+
+void Model::DrawWithFrustum(Frustum* frustum)
+{
+
+
+    if (boundingVolume->isOnFrustum(frustum, tranform))
+    {
+        Draw();
+        //drawBoundingBox(boundingVolume.get());
+    }
+    else
+    {
+    }
+    std::vector<glm::vec3> vertices = boundingVolume.get()->getVertice();
+    renderer->DrawLinesAABB(tranform->modelWorld, vertices);
+
+    //AABB aabb = { glm::vec3(0.0f, 0.0f, 0.0f),glm::vec3(1.0f, 1.0f, 1.0f)};
+    for (auto child : tranform->childs)
+    {
+         if (child->entity != nullptr && dynamic_cast<Model*>(child->entity))
+         {
+            dynamic_cast<Model*>(child->entity)->DrawWithFrustum(frustum);
+         }
     }
 }
 
@@ -48,7 +81,7 @@ void Model::setNewTextures(string currentDirectory, string fileName, bool should
 {
     for (BasicMesh& mesh : meshes)
     {
-        mesh.setNewTextures(currentDirectory,fileName,shouldInvertUVs,type);
+        mesh.setNewTextures(currentDirectory, fileName, shouldInvertUVs, type);
     }
     if (!tranform->childs.empty())
     {
@@ -56,7 +89,7 @@ void Model::setNewTextures(string currentDirectory, string fileName, bool should
         {
             if (child->entity != nullptr && dynamic_cast<Model*>(child->entity))
             {
-                dynamic_cast<Model*>(child->entity)->setNewTextures(currentDirectory,fileName,shouldInvertUVs,type);
+                dynamic_cast<Model*>(child->entity)->setNewTextures(currentDirectory, fileName, shouldInvertUVs, type);
             }
         }
     }
@@ -64,7 +97,56 @@ void Model::setNewTextures(string currentDirectory, string fileName, bool should
 
 Model::~Model()
 {
+    // receiver.unhookEvent(tranform->updateAABB);
     std::cout << "Deleting model";
+}
+
+void Model::generateAABB()
+{
+    glm::vec3 minAABB = glm::vec3(std::numeric_limits<float>::max());
+    glm::vec3 maxAABB = glm::vec3(std::numeric_limits<float>::min());
+    recursiveAABB(minAABB, maxAABB, tranform->modelWorld);
+    setMinMaxBoundingVolume(minAABB, maxAABB, tranform->modelWorld);
+
+    *boundingVolume = AABB(minAABB, maxAABB);
+}
+
+
+void Model::setMinMaxBoundingVolume(glm::vec3& minAABB, glm::vec3& maxAABB, const glm::mat4& transformMatrix)
+{
+    for (const BasicMesh& mesh : meshes)
+    {
+        for (const Vertex& vertex : mesh.vertices)
+        {
+            glm::vec3 worldPosition = glm::vec3(transformMatrix * glm::vec4(vertex.Position, 1.0f));
+
+            minAABB.x = std::min(minAABB.x, worldPosition.x);
+            minAABB.y = std::min(minAABB.y, worldPosition.y);
+            minAABB.z = std::min(minAABB.z, worldPosition.z);
+
+            maxAABB.x = std::max(maxAABB.x, worldPosition.x);
+            maxAABB.y = std::max(maxAABB.y, worldPosition.y);
+            maxAABB.z = std::max(maxAABB.z, worldPosition.z);
+        }
+    }
+}
+
+void Model::recursiveAABB(glm::vec3& minAABB, glm::vec3& maxAABB, const glm::mat4& parentTransformMatrix)
+{
+    glm::vec3 originalMin = minAABB;
+    glm::vec3 originalMax = maxAABB;
+
+    for (auto child : tranform->childs)
+    {
+        Model* entity = dynamic_cast<Model*>(child->entity);
+        if (entity)
+        {
+            glm::mat4 childTransformMatrix = parentTransformMatrix * child->getLocalModelMatrix();
+            entity->recursiveAABB(minAABB, maxAABB, childTransformMatrix);
+            entity->setMinMaxBoundingVolume(minAABB, maxAABB, childTransformMatrix);
+            *entity->boundingVolume = AABB(minAABB, maxAABB);
+        }
+    }
 }
 
 AABB Model::getGlobalAABB()

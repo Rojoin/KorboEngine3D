@@ -55,10 +55,10 @@ public:
     void SetDirectionalLight(const std::string& name, DirectionLight value);
     void SetPointLight(const std::string& name, const PointLight value);
     void SetPointLight(const std::string& name, const PointLight* value);
+    unsigned int m_RendererID;
 
 private:
     std::string m_filePath;
-    unsigned int m_RendererID;
     std::unordered_map<std::string, GLint> m_UniformLocationCache;
     GLint GetUniformLocation(const std::string& name);
 };

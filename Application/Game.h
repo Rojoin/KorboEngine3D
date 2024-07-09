@@ -18,8 +18,8 @@ private:
     Model* house;
     Model* backPack;
     map<string, Animation> Animator;
-    int windowWidth = 800;
-    int windowHeight = 400;
+    int windowWidth = 1600;
+    int windowHeight = 900;
 public:
     Game(int windowWidth,int windowHeight);
     ~Game() override;

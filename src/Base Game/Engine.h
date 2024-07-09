@@ -3,11 +3,12 @@
 
 #include "Renderer/renderer.h"
 #include "Shape/Shape.h"
-#include "Camera/Camera.h"
+
 #include "Window/window.h"
 #include "Input/Input.h"
 #include "Colitions/Colitions.h"
 #include "Interface/Interface.h"
+#include "Renderer/Frustrum.h"
 
 
 namespace Korbo
@@ -20,11 +21,12 @@ namespace Korbo
         void initGame(int windowWhidth, int windowHeight);
         void endGame();
         float DeltaTime;
-Interface interface;
+        float screenRatio;
+        Interface interface;
     public:
         Engine(int windowWidth, int windowHeight);
         virtual ~Engine();
-        Renderer* getRenderer(); //TODO CAMBIAR POR Factory
+        Renderer* getRenderer(); 
         Camera* camera;
         Transform* root;
         virtual void init();
@@ -35,9 +37,11 @@ Interface interface;
         void setAmbientLightStrengh(float value);
         void drawScene();
         float getDeltaTime();
-Transform* testTransform;
+        Transform* testTransform;
+        Frustum* frustum = nullptr;
+ 
     protected:
-        Input* input;
+        Input* input ;
     };
 };
 

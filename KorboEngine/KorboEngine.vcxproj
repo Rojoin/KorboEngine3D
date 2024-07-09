@@ -47,8 +47,10 @@
     <ClCompile Include="..\src\Mesh\Importer3D.cpp" />
     <ClCompile Include="..\src\Mesh\BasicMesh.cpp" />
     <ClCompile Include="..\src\Mesh\Model.cpp" />
+    <ClCompile Include="..\src\Renderer\BoundingVolumes.cpp" />
     <ClCompile Include="..\src\Renderer\Frustrum.cpp" />
     <ClCompile Include="..\src\Renderer\renderer.cpp" />
+    <ClCompile Include="..\src\Renderer\TransReceiver.cpp" />
     <ClCompile Include="..\src\Shader\Material.cpp" />
     <ClCompile Include="..\src\Shader\shader.cpp" />
     <ClCompile Include="..\src\Shape\Cube.cpp" />
@@ -94,8 +96,11 @@
     <ClInclude Include="..\src\Mesh\Importer3D.h" />
     <ClInclude Include="..\src\Mesh\BasicMesh.h" />
     <ClInclude Include="..\src\Mesh\Model.h" />
+    <ClInclude Include="..\src\Renderer\BoundingVolumes.h" />
     <ClInclude Include="..\src\Renderer\Frustrum.h" />
     <ClInclude Include="..\src\Renderer\renderer.h" />
+    <ClInclude Include="..\src\Renderer\TransReceiver.h" />
+    <ClInclude Include="..\src\Renderer\TransSource.h" />
     <ClInclude Include="..\src\Shader\Material.h" />
     <ClInclude Include="..\src\Shader\shader.h" />
     <ClInclude Include="..\src\Shape\Cube.h" />
@@ -111,6 +116,7 @@
   <ItemGroup>
     <Compile Include="..\res\shaders\BasicShader.shader" />
     <Compile Include="..\res\shaders\LightningShader.shader" />
+    <Compile Include="..\res\shaders\LinesShader.shader" />
     <Compile Include="..\res\shaders\ModelLoading.shader" />
     <Compile Include="..\res\shaders\TextureShader.shader" />
   </ItemGroup>
@@ -190,6 +196,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)lib\include\imgui;$(SolutionDir)lib\include;$(SolutionDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TranslateIncludes>false</TranslateIncludes>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

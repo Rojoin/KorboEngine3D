@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Globals/Time.h"
+#include <GLFW/glfw3.h>
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch): Front(glm::vec3(0.0f, 0.0f, -1.0f)),
                                                                           MovementSpeed(SPEED),
@@ -25,11 +26,7 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch): Front(
 void Camera::checkKeyboardMovement(GLFWwindow* window)
 {
     float currentTime = Time::getDeltaTime();
-
-   
- 
-
-
+    
     MovementSpeedBonus = 1.0f;
     if (!thirdPerson)
     {

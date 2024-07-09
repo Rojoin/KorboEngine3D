@@ -6,7 +6,15 @@
 
 
 #define STB_IMAGE_IMPLEMENTATION
+#include <array>
+#include <format>
+#include <format>
+
 #include "Camera/Camera.h"
+#include "Mesh/BasicMesh.h"
+#include "Mesh/BasicMesh.h"
+#include "Mesh/BasicMesh.h"
+#include "Mesh/BasicMesh.h"
 #include "Mesh/BasicMesh.h"
 #include "Shader/Material.h"
 #include "stb/stb_image.h"
@@ -40,6 +48,7 @@ Renderer::Renderer(Window* window, Camera* camera)
     shaderSprite = new Shader("../res/shaders/TextureShader.shader");
     shaderLightning = new Shader("../res/shaders/LightningShader.shader");
     shaderBasicModel = new Shader("../res/shaders/ModelLoading.shader");
+    shaderLines = new Shader("../res/shaders/LinesShader.shader");
     createTextureBinder(textureDefault, "../res/images/DefaultSprite.png");
 
     glEnable(GL_DEPTH_TEST);
@@ -70,6 +79,7 @@ Renderer::~Renderer()
     delete pointLight;
     delete flashLight;
     delete shaderShape;
+    delete shaderLines;
     delete shaderSprite;
     delete shaderLightning;
     delete shaderBasicModel;
@@ -466,4 +476,41 @@ void Renderer::DrawModel3D( glm::mat4x4 model, unsigned VAO, std::vector<unsigne
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
     glActiveTexture(GL_TEXTURE0);
+}
+void Renderer::DrawLinesAABB( glm::mat4x4 model,  std::vector<glm::vec3> vertices)
+{
+    const GLuint indices[] = {
+        0, 1, 1, 2, 2, 3, 3, 0, // Bottom face
+        4, 5, 5, 6, 6, 7, 7, 4, // Top face
+        0, 4, 1, 5, 2, 6, 3, 7  // Vertical edges
+    };
+    GLuint VAO, VBO,EBO;
+    shaderLines->bind();
+    shaderLines->SetMat4("model", model);
+    shaderLines->SetMat4("view", view);
+    shaderLines->SetMat4("projection", projection);
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+
+    glBindVertexArray(VAO);
+    glGenBuffers(1, &EBO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // Use the shader program
+  
+    // Draw the bounding box as lines
+    glDrawElements(GL_LINES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
+
+    // Cleanup
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+    glDeleteBuffers(1, &VBO);
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteVertexArrays(1, &VAO);
 }
