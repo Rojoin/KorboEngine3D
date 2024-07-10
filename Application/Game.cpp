@@ -46,10 +46,10 @@ void Game::init()
     dummy = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {400, 0, -100.0f}, {90, 0, 0},{1, 1, 1},false,root);
     resModelParcialbackgroundJpg = "../res/models/SM_Doors_V2.fbx";
     house = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {-400, 100, 0.0f}, {0, -90, 0},{0.5, 0.5, 0.5},false,root);
-    ///resModelParcialbackgroundJpg = "../res/models/TanqueDePrueba.fbx";
-    ///backPack = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {100, 0, -100.0f}, {90, 90, 90},{10, 10, 10}, true,root);
+    resModelParcialbackgroundJpg = "../res/models/TanqueDePrueba.fbx";
+    backPack = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {100, 0, -100.0f}, {90, 90, 90},{10, 10, 10}, true,root);
     house->setNewTextures("../res/models","T_Doors_BC.png",false,"texture_baseColor");
-  //  backPack->setNewTextures("../res/models","Militar.jpg",false,"texture_baseColor");
+    backPack->setNewTextures("../res/models","Militar.jpg",false,"texture_baseColor");
   
 }
 

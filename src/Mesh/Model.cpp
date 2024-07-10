@@ -67,13 +67,6 @@ void Model::DrawWithFrustum(Frustum frustum)
             renderer->DrawModel3D(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices, meshes[i].textures);
         }
     }
-  if (boundingVolume->isOnFrustum(frustum, tranform))
-  {
- 
-  }
-
-    std::vector<glm::vec3> vertices = boundingVolume->getVertice();
-    renderer->DrawLinesAABB(tranform->modelWorld, vertices);
 
     for (auto child : tranform->childs)
     {
@@ -82,6 +75,10 @@ void Model::DrawWithFrustum(Frustum frustum)
             dynamic_cast<Model*>(child->entity)->DrawWithFrustum(frustum);
         }
     }
+
+
+    std::vector<glm::vec3> vertices = boundingVolume->getVertice();
+    renderer->DrawLinesAABB(tranform->modelWorld, vertices);
 }
 
 void Model::setNewTextures(string currentDirectory, string fileName, bool shouldInvertUVs, string type)
@@ -111,12 +108,12 @@ Model::~Model()
 void Model::generateAABB()
 {
     glm::vec3 minAABB = glm::vec3(std::numeric_limits<float>::max());
-    glm::vec3 maxAABB =  -glm::vec3(std::numeric_limits<float>::max());
+    glm::vec3 maxAABB = -glm::vec3(std::numeric_limits<float>::max());
     recursiveAABB(minAABB, maxAABB, tranform->modelLocal);
     setMinMaxBoundingVolume(minAABB, maxAABB, tranform->modelLocal);
 
     *boundingVolume = AABB(minAABB, maxAABB);
-   // std::cout << boundingVolume->toString() << endl;
+    // std::cout << boundingVolume->toString() << endl;
 }
 
 
