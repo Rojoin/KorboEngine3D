@@ -52,33 +52,44 @@ void Model::Draw()
     }
 }
 
-void Model::DrawWithFrustum(Frustum frustum)
+bool Model::isOnFrustum(Frustum frustum)
 {
-    tranform->UpdateMatrix();
-    if (boundingVolume->isOnOrForwardPlane(frustum.leftFace) &&
+    return boundingVolume->isOnOrForwardPlane(frustum.leftFace) &&
         boundingVolume->isOnOrForwardPlane(frustum.rightFace) &&
         boundingVolume->isOnOrForwardPlane(frustum.topFace) &&
         boundingVolume->isOnOrForwardPlane(frustum.bottomFace) &&
         boundingVolume->isOnOrForwardPlane(frustum.nearFace) &&
-        boundingVolume->isOnOrForwardPlane(frustum.farFace))
-    {
-        for (int i = 0; i < meshes.size(); ++i)
-        {
-            renderer->DrawModel3D(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices, meshes[i].textures);
-        }
-    }
+        boundingVolume->isOnOrForwardPlane(frustum.farFace);
+}
 
+bool Model::DrawWithFrustum(Frustum frustum, bool shouldBeDrawn)
+{
+    tranform->UpdateMatrix();
     for (auto child : tranform->childs)
     {
         if (child->entity != nullptr && dynamic_cast<Model*>(child->entity))
         {
-            dynamic_cast<Model*>(child->entity)->DrawWithFrustum(frustum);
+            bool isObjectBehindDraw = dynamic_cast<Model*>(child->entity)->DrawWithFrustum(frustum, shouldBeDrawn);
+            if (isObjectBehindDraw)
+            {
+                shouldBeDrawn = true;
+            }
         }
     }
 
-
     std::vector<glm::vec3> vertices = boundingVolume->getVertice();
     renderer->DrawLinesAABB(tranform->modelWorld, vertices);
+    if (isOnFrustum(frustum) || shouldBeDrawn)
+    {
+       for (int i = 0; i < meshes.size(); ++i)
+       {
+           renderer->DrawModel3D(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices, meshes[i].textures);
+       }
+        //Draw();
+    return true;
+    }
+    return shouldBeDrawn;
+
 }
 
 void Model::setNewTextures(string currentDirectory, string fileName, bool shouldInvertUVs, string type)

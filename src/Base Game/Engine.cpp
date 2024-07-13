@@ -135,7 +135,7 @@ void Engine::drawScene()
             if (entity != nullptr)
             {
                 entity->generateAABB();
-                entity->DrawWithFrustum(frustum);
+                entity->DrawWithFrustum(frustum,false);
                 // child->entity->Draw();
             }
             else

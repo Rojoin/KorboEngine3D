@@ -19,7 +19,8 @@ public:
           Transform* parent = nullptr);
     Model(Renderer* renderer, Transform* parent, Vec3 position, Vec3 rotation, Vec3 newScale);
     void Draw() override;
-    void DrawWithFrustum(Frustum frustum);
+    bool isOnFrustum(Frustum frustum);
+    bool DrawWithFrustum(Frustum frustum, bool shouldBeDrawn);
     void setNewTextures(string currentDirectory, string fileName, bool shouldInvertUVs, string type);
    unique_ptr<AABB> boundingVolume;
     void recursiveAABB(glm::vec3& minAABB, glm::vec3& maxAABB,const glm::mat4& parentTransformMatrix);

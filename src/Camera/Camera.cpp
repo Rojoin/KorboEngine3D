@@ -98,6 +98,7 @@ void Camera::changeCameraObjetive(glm::vec3 target, glm::vec3 rotationEulerAngle
 
     Yaw += newRotationY;
     previousTargetRotation = rotationEulerAngle;
+    transform->setLocalRotation({Pitch, -Yaw, 0});
     updateCameraVectors();
 }
 
