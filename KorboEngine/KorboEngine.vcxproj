@@ -47,6 +47,7 @@
     <ClCompile Include="..\src\Mesh\Importer3D.cpp" />
     <ClCompile Include="..\src\Mesh\BasicMesh.cpp" />
     <ClCompile Include="..\src\Mesh\Model.cpp" />
+    <ClCompile Include="..\src\Planes\Plane.cpp" />
     <ClCompile Include="..\src\Renderer\BoundingVolumes.cpp" />
     <ClCompile Include="..\src\Renderer\Frustrum.cpp" />
     <ClCompile Include="..\src\Renderer\renderer.cpp" />
@@ -96,6 +97,7 @@
     <ClInclude Include="..\src\Mesh\Importer3D.h" />
     <ClInclude Include="..\src\Mesh\BasicMesh.h" />
     <ClInclude Include="..\src\Mesh\Model.h" />
+    <ClInclude Include="..\src\Planes\Plane.h" />
     <ClInclude Include="..\src\Renderer\BoundingVolumes.h" />
     <ClInclude Include="..\src\Renderer\Frustrum.h" />
     <ClInclude Include="..\src\Renderer\renderer.h" />
