@@ -10,8 +10,8 @@ private:
     int nrChannels;
     Animation animation;
 public:
-    Sprite(Renderer* renderer, Vec4 color, Vec3 position, Vec3 newScale, const char* imagePath);
-    Sprite(Renderer* renderer, Vec4 color, Vec3 position, Vec3 newScale, const char* imagePath, GLint textureFilter);
+    Sprite(Renderer* renderer, Vec4 color, Vec3 position, Vec3 newScale, const char* imagePath, bool shouldBeTurnOffByBSP = false);
+    Sprite(Renderer* renderer, Vec4 color, Vec3 position, Vec3 newScale, const char* imagePath, GLint textureFilter, bool shouldBeTurnOffByBSP = false);
     int getWidth();
     int getHeight();
     void Draw() override;

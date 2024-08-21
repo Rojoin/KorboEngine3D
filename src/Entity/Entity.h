@@ -7,13 +7,14 @@
 class EXPORT Entity
 {
 public:
-    Entity(Renderer* renderer, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale);
-    Entity(Renderer* renderer, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale,Transform* parent);
+    Entity(Renderer* renderer, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale,bool shouldBeTurnOffByBSP = false);
+    Entity(Renderer* renderer, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale,Transform* parent,bool shouldBeTurnOffByBSP= false);
     Entity(glm::vec3 position);
     Entity();
     virtual ~Entity() =0;
     virtual void Draw() =0;
     Transform* tranform;
+    bool shouldBeTurnOffByBSP = false;
 
     
     void SetPosition(Vec3 newPosition);

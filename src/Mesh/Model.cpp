@@ -6,10 +6,10 @@
 
 
 Model::Model(const char* path, Renderer* renderer, Vec3 position, Vec3 rotation, Vec3 newScale,
-             bool shouldInvertUVs, Transform* parent): Entity3D(renderer, position, rotation, newScale)
+             bool shouldInvertUVs, Transform* parent ,bool shouldBeTurnOffByBSP): Entity3D(renderer, position, rotation, newScale, shouldBeTurnOffByBSP)
 {
     tranform->name = path;
-    Importer3D::loadModel(path, directory, meshes, shouldInvertUVs, this);
+    Importer3D::loadModel(path, directory, meshes, shouldInvertUVs, this, shouldBeTurnOffByBSP);
     boundingVolume = make_unique<AABB>(AABB::generateAABB(*this));
 
     // receiver.hookEvent(tranform->updateAABB);
@@ -21,8 +21,8 @@ Model::Model(const char* path, Renderer* renderer, Vec3 position, Vec3 rotation,
 }
 
 
-Model::Model(Renderer* renderer, Transform* parent, Vec3 position, Vec3 rotation, Vec3 newScale) : Entity3D(
-    renderer, position, rotation, newScale)
+Model::Model(Renderer* renderer, Transform* parent, Vec3 position, Vec3 rotation, Vec3 newScale, bool shouldBeTurnOffByBSP) : Entity3D(
+    renderer, position, rotation, newScale, shouldBeTurnOffByBSP)
 {
     boundingVolume = make_unique<AABB>(AABB::generateAABB(*this));
     tranform->parent = parent;

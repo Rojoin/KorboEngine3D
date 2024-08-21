@@ -2,17 +2,19 @@
 
 
 
-Entity::Entity(Renderer* renderer, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
+Entity::Entity(Renderer* renderer, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale,bool shouldBeTurnOffByBSP)
 {
     cout << "Init Entity";
     tranform = new Transform(this, position, rotation, scale);
     this->renderer = renderer;
+    this->shouldBeTurnOffByBSP = shouldBeTurnOffByBSP;
 }
-Entity::Entity(Renderer* renderer, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale,Transform* parent)
+Entity::Entity(Renderer* renderer, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale,Transform* parent,bool shouldBeTurnOffByBSP)
 {
     cout << "Init Entity";
     tranform = new Transform(this,parent);
     this->renderer = renderer;
+    this->shouldBeTurnOffByBSP = shouldBeTurnOffByBSP;
 }
 
 Entity::Entity()

@@ -8,8 +8,8 @@ protected:
     Material m_material;
     unsigned m_isUsingTexture;
 public:
-    Entity3D(Renderer* renderer,Vec3 position,Vec3 rotation,Vec3 newScale);
-    Entity3D(Renderer* renderer,Vec3 position,Vec3 newScale);
+    Entity3D(Renderer* renderer,Vec3 position,Vec3 rotation,Vec3 newScale,bool shouldBeTurnOffByBSP = false);
+    Entity3D(Renderer* renderer,Vec3 position,Vec3 newScale, bool shouldBeTurnOffByBSP = false);
     void setMaterial(Material material);
     ~Entity3D() override;
     void Draw() override;

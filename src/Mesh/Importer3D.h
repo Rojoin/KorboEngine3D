@@ -15,8 +15,8 @@ private:
     static string currentDirectory;
     static vector<Texture> texturesLoaded; 
 public:
-    static void loadModel(const string& path, string& directory, vector<BasicMesh>& meshes,bool shouldInvertUVs, Model* transform);
-    static void processNode(vector<BasicMesh>& meshes, aiNode* node, const aiScene* scene, bool shouldInvertUVs, Model* transform);
+    static void loadModel(const string& path, string& directory, vector<BasicMesh>& meshes,bool shouldInvertUVs, Model* transform,bool shouldBeTurnOffByBSP = false);
+    static void processNode(vector<BasicMesh>& meshes, aiNode* node, const aiScene* scene, bool shouldInvertUVs, Model* transform, bool shouldBeTurnOffByBSP = false);
     static BasicMesh processMesh(aiMesh *mesh, const aiScene *scene,bool shouldInvertUVs);
     static vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, 
                                      string typeName,bool shouldInvertUVs);

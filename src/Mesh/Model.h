@@ -14,10 +14,10 @@ class EXPORT Model : public Entity3D
 {
 public:
     Model(const char* path, Renderer* renderer, Vec3 position, Vec3 rotation, Vec3 newScale,
-          bool shouldInvertUVs = false);
+          bool shouldInvertUVs = false, bool shouldBeTurnOffByBSP = false);
     Model(const char* path, Renderer* renderer, Vec3 position, Vec3 rotation, Vec3 newScale, bool shouldInvertUVs = false,
-          Transform* parent = nullptr);
-    Model(Renderer* renderer, Transform* parent, Vec3 position, Vec3 rotation, Vec3 newScale);
+          Transform* parent = nullptr, bool shouldBeTurnOffByBSP = false);
+    Model(Renderer* renderer, Transform* parent, Vec3 position, Vec3 rotation, Vec3 newScale, bool shouldBeTurnOffByBSP = false);
     void Draw() override;
     bool isOnFrustum(Frustum frustum);
     bool DrawWithFrustum(Frustum frustum, bool shouldBeDrawn);

@@ -6,7 +6,7 @@
 class EXPORT Shape : public Entity2D
 {
 public:
-    Shape(Renderer* renderer,Vec3 position, Vec3 newScale);
+    Shape(Renderer* renderer,Vec3 position, Vec3 newScale,bool shouldBeTurnOffByBSP = false);
     virtual ~Shape() = 0;
 
 private:

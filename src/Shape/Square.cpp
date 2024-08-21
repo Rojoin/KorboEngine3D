@@ -1,6 +1,6 @@
 ﻿#include "Square.h"
 
-Square::Square(Renderer* renderer,Vec3 position,Vec3 newScale) : Shape(renderer,position,newScale)
+Square::Square(Renderer* renderer,Vec3 position,Vec3 newScale,bool shouldBeTurnOffByBSP) : Shape(renderer,position,newScale,shouldBeTurnOffByBSP)
 {
     vertexSize = 12;
     //Reads clockwise
@@ -20,7 +20,7 @@ Square::Square(Renderer* renderer,Vec3 position,Vec3 newScale) : Shape(renderer,
     renderer->createVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO);
 }
 
-Square::Square(Renderer* renderer,Vec4 color,Vec3 position,Vec3 newScale): Shape(renderer,position,newScale)
+Square::Square(Renderer* renderer,Vec4 color,Vec3 position,Vec3 newScale, bool shouldBeTurnOffByBSP): Shape(renderer,position,newScale, shouldBeTurnOffByBSP)
 {
     vertexSize = 12;
     //Reads clockwise

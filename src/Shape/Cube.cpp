@@ -1,6 +1,6 @@
 ﻿#include "Cube.h"
 
-Cube::Cube(Renderer* renderer, Vec3 position, Vec3 newScale) : Entity3D(renderer, position,{0,0,0}, newScale)
+Cube::Cube(Renderer* renderer, Vec3 position, Vec3 newScale, bool shouldBeTurnOffByBSP) : Entity3D(renderer, position,{0,0,0}, newScale,shouldBeTurnOffByBSP)
 {
     
     vertexSize = 288;
@@ -70,7 +70,7 @@ Cube::Cube(Renderer* renderer, Vec3 position, Vec3 newScale) : Entity3D(renderer
                                             VAO, VBO, EBO);
 }
 
-Cube::Cube(Renderer* renderer, Vec3 position, Vec3 newScale,const char* textureLocation) : Entity3D(renderer, position,{0,0,0} ,newScale)
+Cube::Cube(Renderer* renderer, Vec3 position, Vec3 newScale,const char* textureLocation, bool shouldBeTurnOffByBSP) : Entity3D(renderer, position,{0,0,0} ,newScale,shouldBeTurnOffByBSP)
 {
 
     

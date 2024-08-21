@@ -3,8 +3,8 @@
 #include "Animation/Animation.h"
 
 
-Sprite::Sprite(Renderer* renderer, Vec4 color, Vec3 position,Vec3 newScale, const char* imagePath): Entity2D(
-    renderer, position, newScale)
+Sprite::Sprite(Renderer* renderer, Vec4 color, Vec3 position,Vec3 newScale, const char* imagePath, bool shouldBeTurnOffByBSP): Entity2D(
+    renderer, position, newScale, shouldBeTurnOffByBSP)
 {
     vertexSize = 36;
     //Reads clockwise
@@ -32,8 +32,8 @@ Sprite::Sprite(Renderer* renderer, Vec4 color, Vec3 position,Vec3 newScale, cons
 }
 
 Sprite::Sprite(Renderer* renderer, Vec4 color, Vec3 position, Vec3 newScale, const char* imagePath,
-               GLint textureFilter): Entity2D(
-    renderer, position, {0,0,0},newScale)
+               GLint textureFilter, bool shouldBeTurnOffByBSP): Entity2D(
+    renderer, position, {0,0,0},newScale, shouldBeTurnOffByBSP)
 {
     vertexSize = 36;
     //Reads clockwise

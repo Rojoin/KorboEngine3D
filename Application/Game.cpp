@@ -33,7 +33,7 @@ void Game::init()
     Animation animationCartel = Animation(132, 94, 5, 0.5f, 830, 465, 49, 48);
     cartel = new Sprite(getRenderer(), {1, 1, 1, 1}, {150, 0, -400.0f}, {100, 100, 0},
                         playerPath,GL_NEAREST);
-    obj2 = new Cube(getRenderer(), {30, 1, 30}, {50, 50, 50}, "../res/images/Persona.png");
+    obj2 = new Cube(getRenderer(), {30, 1, 30}, {50, 50, 50}, "../res/images/Persona.png",false);
     obj2->setMaterial(DEFAULT_MATERIAL);
     Animator.insert_or_assign("Right", animationPlayerRight);
     Animator.insert_or_assign("Idle", animationPlayerIdle);

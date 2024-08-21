@@ -12,7 +12,7 @@ string Importer3D::currentDirectory = "";
 vector<Texture> Importer3D::texturesLoaded;
 
 void Importer3D::loadModel(const string& path, string& directory, vector<BasicMesh>& meshes, bool shouldInvertUVs,
-                           Model* model)
+                           Model* model,bool shouldBeTurnOffByBSP)
 {
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(
@@ -24,12 +24,12 @@ void Importer3D::loadModel(const string& path, string& directory, vector<BasicMe
         return;
     }
 
-    processNode(model->meshes, scene->mRootNode, scene, shouldInvertUVs, model);
+    processNode(model->meshes, scene->mRootNode, scene, shouldInvertUVs, model, shouldBeTurnOffByBSP);
 }
 
 
 void Importer3D::processNode(vector<BasicMesh>& meshes, aiNode* node, const aiScene* scene, bool shouldInvertUVs,
-                             Model* model)
+                             Model* model, bool shouldBeTurnOffByBSP)
 {
     // process all the node's meshes (if any)
     aiMatrix4x4 aiTransform = node->mTransformation;
@@ -41,14 +41,14 @@ void Importer3D::processNode(vector<BasicMesh>& meshes, aiNode* node, const aiSc
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        modelToUse = new Model(model->GetRenderer(), model->tranform,pos,Vec3Zero,Vec3One);
+        modelToUse = new Model(model->GetRenderer(), model->tranform,pos,Vec3Zero,Vec3One, shouldBeTurnOffByBSP);
         modelToUse->tranform->name = node->mName.C_Str();
         modelToUse->meshes.push_back(processMesh(mesh, scene, shouldInvertUVs));
     }
     // then do the same for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
-        processNode(modelToUse->meshes, node->mChildren[i], scene, shouldInvertUVs, modelToUse);
+        processNode(modelToUse->meshes, node->mChildren[i], scene, shouldInvertUVs, modelToUse, shouldBeTurnOffByBSP);
         
     }
 }

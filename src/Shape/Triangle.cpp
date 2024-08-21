@@ -1,6 +1,6 @@
 ﻿#include "Triangle.h"
 
-Triangle::Triangle(Renderer* renderer,Vec3 position, Vec3 newScale): Shape(renderer,position,newScale)
+Triangle::Triangle(Renderer* renderer,Vec3 position, Vec3 newScale, bool shouldBeTurnOffByBSP): Shape(renderer,position,newScale, shouldBeTurnOffByBSP)
 {
     vertexSize = 9;
     //Reads clockwise
@@ -20,7 +20,7 @@ Triangle::Triangle(Renderer* renderer,Vec3 position, Vec3 newScale): Shape(rende
     renderer->createVecBuffer(vertexPositions, indices, vertexSize, indexSize, atribPosSize, VAO, VBO, EBO);
 }
 
-Triangle::Triangle(Renderer* renderer,Vec4 color,Vec3 position, Vec3 newScale) : Shape(renderer,position,newScale)
+Triangle::Triangle(Renderer* renderer,Vec4 color,Vec3 position, Vec3 newScale, bool shouldBeTurnOffByBSP) : Shape(renderer,position,newScale,shouldBeTurnOffByBSP)
 {
     vertexSize = 9;
     //Reads clockwise
