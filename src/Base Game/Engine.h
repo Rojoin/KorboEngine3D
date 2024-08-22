@@ -23,6 +23,8 @@ namespace Korbo
         float DeltaTime;
         float screenRatio;
         Interface interface;
+        bool showDebug = false;
+        list<MyPlane*> bspPlanes;
     public:
         Engine(int windowWidth, int windowHeight);
         virtual ~Engine();
@@ -40,6 +42,8 @@ namespace Korbo
         Transform* testTransform;
         Frustum frustum;
         glm::mat4x4 view;
+        void addPlaneToBSP(MyPlane* plane);
+        
  
     protected:
         Input* input ;

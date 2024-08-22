@@ -3,6 +3,7 @@
 #include "Interface/Interface.h"
 #include "Mesh/Model.h"
 #include "Renderer/BoundingVolumes.h"
+#include "Planes/Plane.h"
 //#include "Renderer/Frustrum.h"
 
 
@@ -68,6 +69,7 @@ void Engine::initGame(int windowWhidth, int windowHeight)
     renderer = new Renderer(window, camera);
     input = new Input(window->getWindow());
 
+
 #pragma region CallBacks
     glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window->getWindow(), mouse_callback);
@@ -92,6 +94,7 @@ void Engine::gameLoop()
         {
             ImGui::Begin("Korbo Engine Init!");
             ImGui::DragFloat("Farplane Distance", &zFar, 1.0f);
+            ImGui::Checkbox("Show Debug", &showDebug);
             ImGui::Text(
                 "Move with WASD. Press T to lock the mouse and Y to use it as firstPerson Camera. Press R* for ThirdPersonMode");
             ImGui::Text(("Debug:" + debug).c_str());
@@ -135,7 +138,7 @@ void Engine::drawScene()
             if (entity != nullptr)
             {
                 entity->generateAABB();
-                entity->DrawWithFrustum(frustum,false);
+                entity->DrawWithFrustum(frustum, false);
                 // child->entity->Draw();
             }
             else
@@ -143,23 +146,33 @@ void Engine::drawScene()
             }
         }
     }
-
-    std::vector<glm::vec3> vertices = testAABB.getVertice();
-    renderer->DrawLinesAABB(root->modelWorld, vertices);
-
-    if (testAABB.isOnOrForwardPlane(frustum.leftFace) &&
-        testAABB.isOnOrForwardPlane(frustum.rightFace) &&
-        testAABB.isOnOrForwardPlane(frustum.topFace) &&
-        testAABB.isOnOrForwardPlane(frustum.bottomFace) &&
-        testAABB.isOnOrForwardPlane(frustum.farFace) &&
-        testAABB.isOnOrForwardPlane(frustum.nearFace))
+    if (showDebug)
     {
-        debug = "its Inside Frustum";
+        std::vector<glm::vec3> vertices = testAABB.getVertice();
+        renderer->DrawLinesAABB(root->modelWorld, vertices);
+        if (!bspPlanes.empty())
+        {
+            for (MyPlane* plane : bspPlanes)
+            {
+                renderer->DrawPlane(plane);
+                debug = "Plane Drawed";
+            }
+        }
     }
-    else
-    {
-        debug = "No enojado :C";
-    }
+
+    // if (testAABB.isOnOrForwardPlane(frustum.leftFace) &&
+    //     testAABB.isOnOrForwardPlane(frustum.rightFace) &&
+    //     testAABB.isOnOrForwardPlane(frustum.topFace) &&
+    //     testAABB.isOnOrForwardPlane(frustum.bottomFace) &&
+    //     testAABB.isOnOrForwardPlane(frustum.farFace) &&
+    //     testAABB.isOnOrForwardPlane(frustum.nearFace))
+    // {
+    //     debug = "its Inside Frustum";
+    // }
+    // else
+    // {
+    //     debug = "No enojado :C";
+    // }
 
     // renderer->DrawFrustum(renderer->projection,frustum);
 }
@@ -182,6 +195,16 @@ void Engine::endGame()
     delete camera;
     delete root;
     glfwTerminate();
+    for (MyPlane* value : bspPlanes)
+    {
+        delete value;
+    }
+}
+
+void Engine::addPlaneToBSP(MyPlane* plane)
+{
+    bspPlanes.push_back(plane);
+    cout << "The number of planes are" << bspPlanes.size() << endl;
 }
 
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)

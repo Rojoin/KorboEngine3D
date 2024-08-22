@@ -3,7 +3,7 @@
 
 
 class Camera;
-//Todo: Add to engine the frustum check and to the draw of each model
+
 //https://learnopengl.com/code_viewer_gh.php?code=src/8.guest/2021/1.scene/1.scene_graph/scene_graph.cpp
 //https://learnopengl.com/code_viewer_gh.php?code=includes/learnopengl/entity.h
 //https://learnopengl.com/Guest-Articles/2021/Scene/Frustum-Culling

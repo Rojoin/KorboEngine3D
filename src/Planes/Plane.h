@@ -1,7 +1,8 @@
 ﻿#pragma once
 #include <glm/vec3.hpp>
+#include "Globals/dllHeader.h"
 
-class MyPlane
+class EXPORT MyPlane
 {
 public:
     glm::vec3 normal;

@@ -3,6 +3,7 @@
 
 #include "Base Game/Engine.h"
 #include "Mesh/Model.h"
+#include "Planes/Plane.h"
 #include "Shape/Triangle.h"
 #include "Shape/Square.h"
 #include "Sprite/Sprite.h"
@@ -17,6 +18,7 @@ private:
     Model* dummy;
     Model* house;
     Model* backPack;
+
     map<string, Animation> Animator;
     int windowWidth = 1600;
     int windowHeight = 900;

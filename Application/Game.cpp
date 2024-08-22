@@ -33,7 +33,7 @@ void Game::init()
     Animation animationCartel = Animation(132, 94, 5, 0.5f, 830, 465, 49, 48);
     cartel = new Sprite(getRenderer(), {1, 1, 1, 1}, {150, 0, -400.0f}, {100, 100, 0},
                         playerPath,GL_NEAREST);
-    obj2 = new Cube(getRenderer(), {30, 1, 30}, {50, 50, 50}, "../res/images/Persona.png",false);
+    obj2 = new Cube(getRenderer(), {30, 1, 30}, {50, 50, 50}, "../res/images/Persona.png", false);
     obj2->setMaterial(DEFAULT_MATERIAL);
     Animator.insert_or_assign("Right", animationPlayerRight);
     Animator.insert_or_assign("Idle", animationPlayerIdle);
@@ -43,14 +43,17 @@ void Game::init()
 
 
     string resModelParcialbackgroundJpg = "../res/models/CH_Dummy_HurtV2.fbx";
-    dummy = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {400, 0, -100.0f}, {90, 0, 0},{1, 1, 1},false,root);
+    dummy = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {400, 0, -100.0f}, {90, 0, 0}, {1, 1, 1},
+                      false, root);
     resModelParcialbackgroundJpg = "../res/models/SM_Doors_V2.fbx";
-    house = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {-400, 100, 0.0f}, {0, -90, 0},{0.5, 0.5, 0.5},false,root);
+    house = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {-400, 100, 0.0f}, {0, -90, 0},
+                      {0.5, 0.5, 0.5}, false, root);
     resModelParcialbackgroundJpg = "../res/models/TanqueDePrueba.fbx";
-    backPack = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {100, 0, -100.0f}, {90, 90, 90},{10, 10, 10}, true,root);
-    house->setNewTextures("../res/models","T_Doors_BC.png",false,"texture_baseColor");
-    backPack->setNewTextures("../res/models","Militar.jpg",false,"texture_baseColor");
-  
+    backPack = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {100, 0, -100.0f}, {90, 90, 90},
+                         {10, 10, 10}, true, root);
+    house->setNewTextures("../res/models", "T_Doors_BC.png", false, "texture_baseColor");
+    backPack->setNewTextures("../res/models", "Militar.jpg", false, "texture_baseColor");
+    addPlaneToBSP(new MyPlane(dummy->tranform->globalPosition, dummy->tranform->getForward()));
 }
 
 
@@ -135,7 +138,14 @@ void Game::update()
                                  glm::vec3(player1->GetRotation().x, player1->GetRotation().y,
                                            player1->GetRotation().z));
 
-
+    // if (testPlane->getDistanceToPoint(camera->transform->globalPosition) > 0)
+    // {
+    //     cout << "The object is positive" << endl;
+    // }
+    // else
+    // {
+    //     cout << "The object is negative" << endl;
+    // }
 #pragma region Draw
     if (!hasBeenPressed)
     {
@@ -149,8 +159,8 @@ void Game::update()
     player1->Draw();
     obj1->Draw();
     obj2->Draw();
-  //  dummy->Draw();
-   // house->Draw();
+    //  dummy->Draw();
+    // house->Draw();
     //backPack->Draw();
 
 #pragma endregion
@@ -162,6 +172,7 @@ void Game::exit()
     delete obj1;
     delete obj2;
     delete cartel;
+  
     //delete house;
     // if (backPack != nullptr)
     // {

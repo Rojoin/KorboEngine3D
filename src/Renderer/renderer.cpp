@@ -17,6 +17,7 @@
 #include "Mesh/BasicMesh.h"
 #include "Mesh/BasicMesh.h"
 #include "Mesh/BasicMesh.h"
+#include "Planes/Plane.h"
 #include "Shader/Material.h"
 #include "stb/stb_image.h"
 
@@ -566,4 +567,72 @@ void Renderer::DrawFrustum(glm::mat4x4 viewProjectionMatrix, Frustum frustum)
     glDeleteBuffers(1, &VBO);
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &EBO);
+}
+void Renderer::DrawPlane(MyPlane* plane)
+{
+    glm::vec3 planeCenter = plane->normal * plane->distance;
+    glm::vec3 up = glm::vec3(0.0f, 25.0f, 0.0f);
+    glm::vec3 right = glm::normalize(glm::cross(plane->normal, up)) * plane->distance;
+
+    up = glm::normalize(glm::cross(right,plane->normal)) * plane->distance;
+    
+    std::vector<glm::vec3> planeVertices = {
+        planeCenter + right + up,    // top right
+        planeCenter + right - up,    // bottom right
+        planeCenter - right - up,    // bottom left
+        planeCenter - right + up     // top left
+    };
+
+    const GLuint planeIndices[] = {
+        0, 1, 1, 2, 2, 3, 3, 0   // draw the plane as a quadrilateral
+    };
+    GLuint VAO, VBO, EBO;
+    shaderLines->bind();
+    shaderLines->SetMat4("model", glm::mat4(1.0f));
+    shaderLines->SetMat4("view", glm::mat4(1.0f));
+    shaderLines->SetMat4("projection", projection);
+
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, planeVertices.size() * sizeof(glm::vec3), &planeVertices[0], GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(planeIndices), planeIndices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Draw the plane as lines
+    glDrawElements(GL_LINES, sizeof(planeIndices) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
+
+    // Draw the normal
+    glm::vec3 normalStart = planeCenter;
+    glm::vec3 normalEnd = planeCenter + plane->normal * plane->distance;
+
+    std::vector<glm::vec3> normalLine = { normalStart, normalEnd };
+
+    GLuint normalVBO;
+    glGenBuffers(1, &normalVBO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, normalVBO);
+    glBufferData(GL_ARRAY_BUFFER, normalLine.size() * sizeof(glm::vec3), &normalLine[0], GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Draw the normal as a line
+    glDrawArrays(GL_LINES, 0, normalLine.size());
+
+    // Cleanup
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+    glDeleteBuffers(1, &VBO);
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &EBO);
+    glDeleteBuffers(1, &normalVBO);
 }

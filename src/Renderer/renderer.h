@@ -21,6 +21,7 @@
 #include "Vertex/vertex.h"
 #include "Shader/shader.h"
 
+class MyPlane;
 struct Frustum;
 using namespace std;
 
@@ -70,6 +71,7 @@ public:
                      std::vector<Texture> textures);
     void DrawLinesAABB(glm::mat4x4 model, std::vector<glm::vec3> vertices);
     void DrawFrustum(glm::mat4x4 viewProjectionMatrix, Frustum frustum);
+    void DrawPlane(MyPlane* plane);
     Shader* shaderBasicModel;
     Shader* shaderLines;
 
