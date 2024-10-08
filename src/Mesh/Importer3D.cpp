@@ -60,8 +60,7 @@ void Importer3D::processNode(vector<BasicMesh>& meshes, aiNode* node, const aiSc
         modelToUse->tranform->name = node->mName.C_Str();
 
         //Todo: Make bsp to be obtainable for name
-        if (modelToUse->tranform->name.find("bspPlane2") != string::npos || modelToUse->tranform->name.find("bspPlane1")
-            != string::npos || modelToUse->tranform->name.find("bspPlane3") != string::npos || modelToUse->tranform->name.find("bspPlane4") != string::npos)
+        if (modelToUse->tranform->name.find("bspPlane") != string::npos)
         {
             Vec3 rotation;
             rotation = modelToUse->tranform->getRotation();
