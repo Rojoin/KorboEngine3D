@@ -7,16 +7,18 @@
 #include "Sprite/Importer2D.h"
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
+#include "Base Game/Engine.h"
 
 string Importer3D::currentDirectory = "";
 vector<Texture> Importer3D::texturesLoaded;
 
 void Importer3D::loadModel(const string& path, string& directory, vector<BasicMesh>& meshes, bool shouldInvertUVs,
-                           Model* model,bool shouldBeTurnOffByBSP)
+                           Model* model, bool shouldBeTurnOffByBSP)
 {
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(
-        path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+        path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace |
+        aiProcess_JoinIdenticalVertices);
     currentDirectory = path.substr(0, path.find_last_of('/'));
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
@@ -33,23 +35,50 @@ void Importer3D::processNode(vector<BasicMesh>& meshes, aiNode* node, const aiSc
 {
     // process all the node's meshes (if any)
     aiMatrix4x4 aiTransform = node->mTransformation;
+    aiVector3f aiPos;
+    aiVector3f aiQua;
+    aiVector3f aiSca;
+    aiTransform.Decompose(aiSca, aiQua, aiPos);
+
+
+    float RadianToDegree = (180 / Assimp::Math::aiPi<float>());
+    Vec3 eulerAng = {aiQua.x * RadianToDegree, aiQua.y * RadianToDegree, aiQua.z * RadianToDegree};
+
     glm::mat4 nodeTransform = glm::transpose(glm::make_mat4(&aiTransform.a1));
-   glm::vec3 posAux = nodeTransform[3];
-    Vec3 pos = {posAux.x,posAux.y,posAux.z};
+    glm::vec3 posAux = nodeTransform[3];
+    Vec3 pos = {posAux.x, posAux.y, posAux.z};
+    Vec3 rot = {aiQua.x * RadianToDegree, aiQua.y * RadianToDegree, aiQua.z * RadianToDegree};
+    Vec3 sca = {aiSca.x, aiSca.y, aiSca.z};
     Model* modelToUse = model;
+
 
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        modelToUse = new Model(model->GetRenderer(), model->tranform,pos,Vec3Zero,Vec3One, shouldBeTurnOffByBSP);
+
+        modelToUse = new Model(model->GetRenderer(), model->tranform, pos, rot, sca, shouldBeTurnOffByBSP);
         modelToUse->tranform->name = node->mName.C_Str();
+
+        //Todo: Make bsp to be obtainable for name
+        if (modelToUse->tranform->name.find("bspPlane2") != string::npos || modelToUse->tranform->name.find("bspPlane1")
+            != string::npos || modelToUse->tranform->name.find("bspPlane3") != string::npos || modelToUse->tranform->name.find("bspPlane4") != string::npos)
+        {
+            Vec3 rotation;
+            rotation = modelToUse->tranform->getRotation();
+            cout << "Rotation: " << rotation.x << " " << rotation.y << " " << rotation.z << '\n';
+
+            glm::vec3 point = modelToUse->tranform->getGlobalPositionGLM();
+            glm::vec3 normal = modelToUse->tranform->getUp();
+
+            model->GetRenderer()->engine->addPlaneToBSP(point, normal);
+        }
+
         modelToUse->meshes.push_back(processMesh(mesh, scene, shouldInvertUVs));
     }
     // then do the same for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
         processNode(modelToUse->meshes, node->mChildren[i], scene, shouldInvertUVs, modelToUse, shouldBeTurnOffByBSP);
-        
     }
 }
 

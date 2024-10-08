@@ -1,6 +1,7 @@
 #include "BoundingVolumes.h"
 
 #include "Mesh/Model.h"
+#include "Planes/Plane.h"
 
 
 bool BoundingVolume::isOnFrustum(const Frustum& camFrustum) 
@@ -81,6 +82,14 @@ bool AABB::isOnOrForwardPlane(const Plane& plane) const
         extents.z * std::abs(plane.normal.z);
 
     return -r <= plane.getSignedDistanceToPlane(center);
+}
+bool AABB::isOnOrForwardPlane(MyPlane& plane) const
+{
+    // Compute the projection interval radius of b onto L(t) = b.c + t * p.n
+    const float r = extents.x * std::abs(plane.normal.x) + extents.y * std::abs(plane.normal.y) +
+        extents.z * std::abs(plane.normal.z);
+
+    return -r <= plane.getDistanceToPoint(center);
 }
 
 bool AABB::isOnFrustum(const Frustum camFrustum, const Transform* transform) const 

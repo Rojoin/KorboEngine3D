@@ -6,7 +6,8 @@
 
 
 Model::Model(const char* path, Renderer* renderer, Vec3 position, Vec3 rotation, Vec3 newScale,
-             bool shouldInvertUVs, Transform* parent ,bool shouldBeTurnOffByBSP): Entity3D(renderer, position, rotation, newScale, shouldBeTurnOffByBSP)
+             bool shouldInvertUVs, Transform* parent, bool shouldBeTurnOffByBSP): Entity3D(
+    renderer, position, rotation, newScale, shouldBeTurnOffByBSP)
 {
     tranform->name = path;
     Importer3D::loadModel(path, directory, meshes, shouldInvertUVs, this, shouldBeTurnOffByBSP);
@@ -21,7 +22,8 @@ Model::Model(const char* path, Renderer* renderer, Vec3 position, Vec3 rotation,
 }
 
 
-Model::Model(Renderer* renderer, Transform* parent, Vec3 position, Vec3 rotation, Vec3 newScale, bool shouldBeTurnOffByBSP) : Entity3D(
+Model::Model(Renderer* renderer, Transform* parent, Vec3 position, Vec3 rotation, Vec3 newScale,
+             bool shouldBeTurnOffByBSP) : Entity3D(
     renderer, position, rotation, newScale, shouldBeTurnOffByBSP)
 {
     boundingVolume = make_unique<AABB>(AABB::generateAABB(*this));
@@ -81,16 +83,56 @@ bool Model::DrawWithFrustum(Frustum frustum, bool shouldBeDrawn)
     renderer->DrawLinesAABB(tranform->modelWorld, vertices);
     if (isOnFrustum(frustum) || shouldBeDrawn)
     {
-       for (int i = 0; i < meshes.size(); ++i)
-       {
-           renderer->DrawModel3D(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices, meshes[i].textures);
-       }
+        for (int i = 0; i < meshes.size(); ++i)
+        {
+            renderer->DrawModel3D(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices, meshes[i].textures);
+        }
         //Draw();
-    return true;
+        return true;
     }
     return shouldBeDrawn;
-
 }
+
+bool Model::DrawWithBSP(std::vector<Plane>& bspPlanes, std::vector<bool>& cameraPlanes, Frustum frustum,
+                        bool shouldBeDrawn)
+{
+    tranform->UpdateMatrix();
+    
+    for (int i = 0; i < bspPlanes.size(); ++i)
+    {
+        if (bspPlanes[i].getSide(tranform->globalPosition) != cameraPlanes[i])
+        {
+            return false;
+        }
+    }
+    bool isDrawn = false;
+    for (auto child : tranform->childs)
+    {
+        if (child->entity != nullptr && dynamic_cast<Model*>(child->entity))
+        {
+            bool isChildDrawn = dynamic_cast<Model*>(child->entity)->DrawWithBSP(
+                bspPlanes, cameraPlanes, frustum, shouldBeDrawn);
+            if (isChildDrawn)
+            {
+                isDrawn = true;
+            }
+        }
+    }
+
+    std::vector<glm::vec3> vertices = boundingVolume->getVertice();
+    renderer->DrawLinesAABB(tranform->modelWorld, vertices);
+    if (isOnFrustum(frustum) || shouldBeDrawn)
+    {
+        for (int i = 0; i < meshes.size(); ++i)
+        {
+            renderer->DrawModel3D(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices, meshes[i].textures);
+        }
+        //Draw();
+        return true;
+    }
+    return isDrawn;
+}
+
 
 void Model::setNewTextures(string currentDirectory, string fileName, bool shouldInvertUVs, string type)
 {
@@ -104,7 +146,8 @@ void Model::setNewTextures(string currentDirectory, string fileName, bool should
         {
             if (child->entity != nullptr && dynamic_cast<Model*>(child->entity))
             {
-                dynamic_cast<Model*>(child->entity)->setNewTextures(currentDirectory, fileName, shouldInvertUVs, type);
+                dynamic_cast<Model*>(child->entity)->setNewTextures(currentDirectory, fileName, shouldInvertUVs,
+                                                                    type);
             }
         }
     }

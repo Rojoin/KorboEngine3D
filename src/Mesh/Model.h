@@ -21,6 +21,8 @@ public:
     void Draw() override;
     bool isOnFrustum(Frustum frustum);
     bool DrawWithFrustum(Frustum frustum, bool shouldBeDrawn);
+    bool DrawWithBSP(std::vector<Plane>& bspPlanes, std::vector<bool>& cameraPlanes, Frustum frustum,
+                     bool shouldBeDrawn);
     void setNewTextures(string currentDirectory, string fileName, bool shouldInvertUVs, string type);
    unique_ptr<AABB> boundingVolume;
     void recursiveAABB(glm::vec3& minAABB, glm::vec3& maxAABB,const glm::mat4& parentTransformMatrix);

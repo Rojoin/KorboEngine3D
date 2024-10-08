@@ -27,6 +27,7 @@ public:
     Vec3 getGlobalPosition();
     Vec3 getLocalPosition();
     glm::vec3 getLocalPositionGLM();
+    glm::vec3  getGlobalPositionGLM();
     void setLocalRotation(glm::vec3 angle);
     void setRotationX(float angle);
     void setRotationY(float angle);
@@ -39,6 +40,7 @@ public:
     glm::vec3 getGlobalScale();
     Vec3 getGlobalScaleVec3();
     glm::vec3 getForward();
+    glm::vec3 GetForward();
     glm::vec3 getForwardConst() const;
     glm::vec3 getBackward();
     glm::vec3 getBackwardConst() const;
@@ -49,7 +51,8 @@ public:
     glm::mat4 getLocalModelMatrix();
     glm::mat4 getLocalModelMatrixConst() const;
     void AddChild(Transform* model);
-
+    void Rotate(const glm::vec3& angle);
+    void SetRotation(const glm::vec3& angle);
 
     Transform* parent;
     std::vector<Transform*> childs;

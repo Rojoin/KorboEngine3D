@@ -21,6 +21,7 @@ struct Plane
     
     
     float getSignedDistanceToPlane(const glm::vec3& point) const;
+    bool getSide(glm::vec3& point);
 };
 
 struct Frustum

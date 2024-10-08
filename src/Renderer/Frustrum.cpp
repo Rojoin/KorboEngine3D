@@ -2,9 +2,12 @@
 #include "Camera/Camera.h"
 #include "Entity/Transform.h"
 
-Plane::Plane(const glm::vec3& p1, const glm::vec3& norm): normal(glm::normalize(norm)),
-                                                          distance(glm::dot(normal, p1))
+Plane::Plane(const glm::vec3& p1, const glm::vec3& norm)
 {
+    normal = (glm::normalize(norm));
+    distance = -(glm::dot(normal, p1));
+    std::cout << "The distance is : " << distance << std::endl;
+    std::cout<<std::endl << "The normal is : " << normal.x << " " << normal.y << " " << normal.z << std::endl;
 }
 
 void Plane::setNormalAndDistance(glm::vec3 point, glm::vec3 normal)
@@ -16,6 +19,11 @@ void Plane::setNormalAndDistance(glm::vec3 point, glm::vec3 normal)
 float Plane::getSignedDistanceToPlane(const glm::vec3& point) const
 {
     return glm::dot(normal, point) - distance;
+}
+
+bool Plane::getSide(glm::vec3& point)
+{
+    return glm::dot(normal, point) + distance > 0.0F;
 }
 
 void Frustum::createFrustumFromCamera(Camera* cam, float aspect, float fovY, float zNear, float zFar)

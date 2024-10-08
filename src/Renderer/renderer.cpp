@@ -568,29 +568,37 @@ void Renderer::DrawFrustum(glm::mat4x4 viewProjectionMatrix, Frustum frustum)
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &EBO);
 }
-void Renderer::DrawPlane(MyPlane* plane)
+void Renderer::DrawPlane(Plane* plane)
 {
-    glm::vec3 planeCenter = plane->normal * plane->distance;
-    glm::vec3 up = glm::vec3(0.0f, 25.0f, 0.0f);
-    glm::vec3 right = glm::normalize(glm::cross(plane->normal, up)) * plane->distance;
+   glm::vec3 planeCenter = plane->normal * -plane->distance;
+    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 
-    up = glm::normalize(glm::cross(right,plane->normal)) * plane->distance;
-    
+    // Avoids the case when the plane is parallel to the Y-axis
+    if (plane->normal == up) {
+        up = glm::vec3(1.0f, 0.0f, 0.0f);
+    }
+
+    glm::vec3 right = glm::normalize(glm::cross(plane->normal, up));
+    up = glm::normalize(glm::cross(right, plane->normal));
+
+    float planeSize = 100.0f; // Adjust the size of the plane as needed
+
     std::vector<glm::vec3> planeVertices = {
-        planeCenter + right + up,    // top right
-        planeCenter + right - up,    // bottom right
-        planeCenter - right - up,    // bottom left
-        planeCenter - right + up     // top left
+        planeCenter + (right * planeSize) + (up * planeSize),    // top right
+        planeCenter + (right * planeSize) - (up * planeSize),    // bottom right
+        planeCenter - (right * planeSize) - (up * planeSize),    // bottom left
+        planeCenter - (right * planeSize) + (up * planeSize)     // top left
     };
 
     const GLuint planeIndices[] = {
-        0, 1, 1, 2, 2, 3, 3, 0   // draw the plane as a quadrilateral
+        0, 1, 2, 2, 3, 0   // forming two triangles for a quad
     };
+
     GLuint VAO, VBO, EBO;
     shaderLines->bind();
-    shaderLines->SetMat4("model", glm::mat4(1.0f));
-    shaderLines->SetMat4("view", glm::mat4(1.0f));
-    shaderLines->SetMat4("projection", projection);
+    shaderLines->SetMat4("model", glm::mat4(1.0f)); // Assuming identity model matrix for simplicity
+    shaderLines->SetMat4("view", view);             // Using pre-defined view matrix
+    shaderLines->SetMat4("projection", projection); // Using pre-defined projection matrix
 
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -607,12 +615,12 @@ void Renderer::DrawPlane(MyPlane* plane)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    // Draw the plane as lines
-    glDrawElements(GL_LINES, sizeof(planeIndices) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
+    // Draw the plane as triangles
+    glDrawElements(GL_TRIANGLES, sizeof(planeIndices) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
 
     // Draw the normal
     glm::vec3 normalStart = planeCenter;
-    glm::vec3 normalEnd = planeCenter + plane->normal * plane->distance;
+    glm::vec3 normalEnd = planeCenter + plane->normal * 50.0f; // Lengthen the normal line
 
     std::vector<glm::vec3> normalLine = { normalStart, normalEnd };
 

@@ -4,7 +4,7 @@
 #include "Mesh/Model.h"
 #include "Renderer/BoundingVolumes.h"
 #include "Planes/Plane.h"
-//#include "Renderer/Frustrum.h"
+#include "Renderer/Frustrum.h"
 
 
 using namespace Korbo;
@@ -64,10 +64,12 @@ void Engine::initGame(int windowWhidth, int windowHeight)
     screenRatio = window->getWidth() / window->getHeight();
     // frustum = Frustum::createFrustumFromCamera(camera, screenRatio,glm::radians(camera->Zoom), NEAR_PLANE, FAR_PLANE-500);
     view = camera->getProjectionMatrix(window->getWidth(), window->getHeight());
-    newCamera = camera;
+    newCamera = camera; 
     currentWindow = window;
     renderer = new Renderer(window, camera);
+    renderer->engine = this;
     input = new Input(window->getWindow());
+    bspTarget = camera->transform;
 
 
 #pragma region CallBacks
@@ -102,6 +104,7 @@ void Engine::gameLoop()
         }
         Time::setTime();
         DeltaTime = Time::getDeltaTime();
+        CalculateTargetPlanes();
         renderer->BeginDrawing();
         camera->checkKeyboardMovement(window->getWindow());
         renderer->projection = camera->getProjectionMatrix(window->getWidth(), window->getHeight());
@@ -130,6 +133,20 @@ void Engine::setAmbientLightStrengh(float value)
 
 void Engine::drawScene()
 {
+    // for (auto child : root->childs)
+    // {
+    //     if (child->entity != nullptr)
+    //     {
+    //         Model* entity = dynamic_cast<Model*>(child->entity);
+    //         if (entity != nullptr)
+    //         {
+    //             entity->generateAABB();
+    //             entity->DrawWithFrustum(frustum, false);
+    //             // child->entity->Draw();
+    //         }
+    //      
+    //     }
+    //}
     for (auto child : root->childs)
     {
         if (child->entity != nullptr)
@@ -138,11 +155,8 @@ void Engine::drawScene()
             if (entity != nullptr)
             {
                 entity->generateAABB();
-                entity->DrawWithFrustum(frustum, false);
+                entity->DrawWithBSP(bspPlanes,planesToCheck,frustum, false);
                 // child->entity->Draw();
-            }
-            else
-            {
             }
         }
     }
@@ -152,11 +166,10 @@ void Engine::drawScene()
         renderer->DrawLinesAABB(root->modelWorld, vertices);
         if (!bspPlanes.empty())
         {
-            for (MyPlane* plane : bspPlanes)
-            {
-                renderer->DrawPlane(plane);
-                debug = "Plane Drawed";
-            }
+             for (Plane plane : bspPlanes)
+             {
+                 renderer->DrawPlane(&plane);
+             }
         }
     }
 
@@ -195,14 +208,35 @@ void Engine::endGame()
     delete camera;
     delete root;
     glfwTerminate();
-    for (MyPlane* value : bspPlanes)
+  
+    // for (MyPlane* value : bspPlanes)
+    // {
+    //     delete value;s
+    // }
+}
+
+void Engine::CalculateTargetPlanes()
+{
+    planesToCheck.clear();
+    debug = "Camera position";
+    debug += bspTarget->getGlobalPosition().toString();
+    for (int i = 0; i < bspPlanes.size(); ++i)
     {
-        delete value;
+        bool side = bspPlanes[i].getSide(bspTarget->globalPosition);
+        planesToCheck.push_back(side);
+        debug +=  "\nThe side is ";
+        debug+= (side ? "True" : "false");
     }
 }
 
-void Engine::addPlaneToBSP(MyPlane* plane)
+void Engine::addPlaneToBSP(Plane plane)
 {
+    bspPlanes.push_back(plane);
+    cout << "The number of planes are" << bspPlanes.size() << endl;
+}
+void Engine::addPlaneToBSP(glm::vec3 point,glm::vec3 normal)
+{
+    Plane plane = {point,normal};
     bspPlanes.push_back(plane);
     cout << "The number of planes are" << bspPlanes.size() << endl;
 }

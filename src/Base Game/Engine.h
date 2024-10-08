@@ -20,11 +20,15 @@ namespace Korbo
         Window* window;
         void initGame(int windowWhidth, int windowHeight);
         void endGame();
+        void CalculateTargetPlanes();
         float DeltaTime;
         float screenRatio;
+        Transform* bspTarget;
         Interface interface;
         bool showDebug = false;
-        list<MyPlane*> bspPlanes;
+        vector<Plane> bspPlanes;
+        vector<bool> planesToCheck;
+    //    list<bool> bspTargetDirections ={};
     public:
         Engine(int windowWidth, int windowHeight);
         virtual ~Engine();
@@ -42,7 +46,9 @@ namespace Korbo
         Transform* testTransform;
         Frustum frustum;
         glm::mat4x4 view;
-        void addPlaneToBSP(MyPlane* plane);
+        void addPlaneToBSP(Plane plane);
+        void addPlaneToBSP(glm::vec3 point,glm::vec3 normal);
+    
         
  
     protected:

@@ -31,19 +31,25 @@ void Game::init()
     Animation animationPlayerRight = Animation(19, 205, 3, 0.5f, 830, 465, 40, 33);
     Animation animationPlayerIdle = Animation(390, 98, 3, 1.2f, 830, 465, 33, 40);
     Animation animationCartel = Animation(132, 94, 5, 0.5f, 830, 465, 49, 48);
-    cartel = new Sprite(getRenderer(), {1, 1, 1, 1}, {150, 0, -400.0f}, {100, 100, 0},
-                        playerPath,GL_NEAREST);
-    obj2 = new Cube(getRenderer(), {30, 1, 30}, {50, 50, 50}, "../res/images/Persona.png", false);
-    obj2->setMaterial(DEFAULT_MATERIAL);
+    cartel = new Sprite(getRenderer(), {1, 1, 1, 1}, {250, 0, 0}, {100, 100, 0}, playerPath,GL_NEAREST);
+    obj2 = new Sprite(getRenderer(), {1, 1, 1, 1}, {-250, 0, 0}, {100, 100, 0}, playerPath,GL_NEAREST);
+    obj3 = new Sprite(getRenderer(), {1, 1, 1, 1}, {-250, 0, -250}, {100, 100, 0}, playerPath,GL_NEAREST);
+   // obj4 = new Sprite(getRenderer(), {1, 1, 1, 1}, {0, 0, 250}, {100, 100, 0}, playerPath,GL_NEAREST);
+     //obj2->setMaterial(DEFAULT_MATERIAL);
     Animator.insert_or_assign("Right", animationPlayerRight);
     Animator.insert_or_assign("Idle", animationPlayerIdle);
     Animator.insert_or_assign("cartel", animationCartel);
     cartel->ChangeAnimation(Animator["cartel"]);
+    obj2->ChangeAnimation(Animator["cartel"]);
+    obj3->ChangeAnimation(Animator["cartel"]);
+   // obj4->ChangeAnimation(Animator["cartel"]);
     player1->ChangeAnimation(Animator["Idle"]);
+    cartel->SetRotationY(-90);
+    obj2->SetRotationY(-90);
 
 
     string resModelParcialbackgroundJpg = "../res/models/CH_Dummy_HurtV2.fbx";
-    dummy = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {400, 0, -100.0f}, {90, 0, 0}, {1, 1, 1},
+    dummy = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {0, -50, 0}, {0, 0, 0}, {1, 1, 1},
                       false, root);
     resModelParcialbackgroundJpg = "../res/models/SM_Doors_V2.fbx";
     house = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {-400, 100, 0.0f}, {0, -90, 0},
@@ -53,7 +59,20 @@ void Game::init()
                          {10, 10, 10}, true, root);
     house->setNewTextures("../res/models", "T_Doors_BC.png", false, "texture_baseColor");
     backPack->setNewTextures("../res/models", "Militar.jpg", false, "texture_baseColor");
-    addPlaneToBSP(new MyPlane(dummy->tranform->globalPosition, dummy->tranform->getForward()));
+
+    resModelParcialbackgroundJpg = "../res/models/bspPlanesNew4.fbx";
+    obj4 = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {0, 0, 0.0f}, {0, 0, 0},{100, 100, 100},false,nullptr,false);
+    obj4->setNewTextures("../res/models", "T_Dummy_BC.png", false, "texture_baseColor");
+    
+    glm::vec3 plane1 = cartel->tranform->globalPosition;
+    glm::vec3 plane3 = obj2->tranform->globalPosition;
+    glm::vec3 plane2 = obj3->tranform->globalPosition;
+    glm::vec3 plane4 = obj4->tranform->globalPosition;
+
+      // addPlaneToBSP(plane1,glm::vec3(1,0,0));
+      // addPlaneToBSP(plane3,glm::vec3(-1,0,0));
+      // addPlaneToBSP(plane2,glm::vec3(0,0,-1));
+      // addPlaneToBSP(plane4,glm::vec3(0,0,1));
 }
 
 
@@ -155,10 +174,17 @@ void Game::update()
     setLightPos(newPos);
     player1->UpdateAnimation();
     cartel->UpdateAnimation();
+    obj2->UpdateAnimation();
+    obj3->UpdateAnimation();
+ //   obj4->UpdateAnimation();
     cartel->Draw();
-    player1->Draw();
-    obj1->Draw();
-    obj2->Draw();
+   // player1->Draw();
+    
+     obj1->Draw();
+     obj2->Draw();
+     obj3->Draw();
+     obj4->Draw();
+    
     //  dummy->Draw();
     // house->Draw();
     //backPack->Draw();
@@ -171,8 +197,10 @@ void Game::exit()
     delete player1;
     delete obj1;
     delete obj2;
+    delete obj3;
+    delete obj4;
     delete cartel;
-  
+
     //delete house;
     // if (backPack != nullptr)
     // {

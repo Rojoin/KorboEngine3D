@@ -14,7 +14,9 @@ private:
     Sprite* player1;
     Sprite* cartel;
     Sprite* obj1;
-    Entity3D* obj2;
+    Sprite* obj2;
+    Sprite* obj3;
+    Model* obj4;
     Model* dummy;
     Model* house;
     Model* backPack;

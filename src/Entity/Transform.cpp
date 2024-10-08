@@ -53,6 +53,11 @@ Vec3 Transform::getGlobalPosition()
     glm::vec3 tempPos = glm::vec3(modelWorld[3]);
     return (tempPos);
 }
+glm::vec3 Transform::getGlobalPositionGLM()
+{
+    UpdateMatrix();
+    return modelWorld[3];
+}
 
 Vec3 Transform::getLocalPosition()
 {
@@ -85,6 +90,8 @@ void Transform::setRotationZ(float angle)
     localRotation.z += angle;
     UpdateMatrix();
 }
+
+
 
 Vec3 Transform::getRotation()
 {
@@ -122,7 +129,26 @@ void Transform::setLocalScale(glm::vec3 newScale)
     localScale = newScale;
     UpdateMatrix();
 }
+glm::vec3 Transform::GetForward()
+{
+   // glm::vec3 forward = glm::vec3(rotationMatrix * glm::vec4(0.0f, 0.0f, -1.0f, 1.0f));
 
+      // glm::mat4 inverted = glm::inverse(modelLocal);
+      glm::vec3 forward = normalize(glm::vec3(-modelLocal[2]));
+     return glm::normalize(forward); // Return normalized forward vector
+
+
+    // float yaw = glm::radians(localRotation.y);   // Horizontal angle (yaw)
+    // float pitch = glm::radians(localRotation.x); // Vertical angle (pitch)
+    //
+    // // Calculate the forward vector using spherical coordinates
+    // glm::vec3 forward;
+    // forward.x = cos(pitch) * sin(yaw);  // X component of forward vector
+    // forward.y = sin(pitch);             // Y component (vertical)
+    // forward.z = cos(pitch) * cos(yaw);  // Z component of forward vector
+    //
+    // return glm::normalize(forward);
+}
 void Transform::setParent(Transform* newTransform)
 {
     this->parent = newTransform;
@@ -228,11 +254,22 @@ Transform::Transform(Entity* newEntity, glm::vec3 pos, glm::vec3 rot, glm::vec3 
     localRotation = glm::vec3(0);
     localScale = newScale;
     modelWorld = getLocalModelMatrix();
-    setRotationX(rot.x);
-    setRotationY(rot.y);
-    setRotationZ(rot.z);
+    SetRotation(glm::vec3(rot.x,rot.y,rot.z));
+    // setRotationX(rot.x);
+    // setRotationY(rot.y);
+    // setRotationZ(rot.z);
     id = idCounter++;
     previousPos = localPosition;
+    UpdateMatrix();
+}
+void Transform::Rotate(const glm::vec3& angle)
+{
+    localRotation += angle;
+    UpdateMatrix();
+}
+void Transform::SetRotation(const glm::vec3& angle)
+{
+    localRotation = angle;
     UpdateMatrix();
 }
 
@@ -324,8 +361,6 @@ glm::mat4 Transform::getLocalModelMatrix()
     scaleMatrix = glm::scale(glm::mat4(1.0f), localScale);
 
     return tranlateMatrix * rotationMatrix * scaleMatrix;
-
-    //return tranlate* rotation* scaleMatrix;
 }
 
 glm::mat4 Transform::getLocalModelMatrixConst() const

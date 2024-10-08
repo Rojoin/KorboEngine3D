@@ -4,6 +4,7 @@
 #include "Entity/Transform.h"
 
 
+class MyPlane;
 class Model;
 
 
@@ -50,6 +51,7 @@ struct AABB : public BoundingVolume
 
     //see https://gdbooks.gitbooks.io/3dcollisions/content/Chapter2/static_aabb_plane.html
     bool isOnOrForwardPlane(const Plane& plane) const final;
+    bool isOnOrForwardPlane(MyPlane& plane) const;
 
     bool isOnFrustum(const Frustum camFrustum, const Transform* transform) const override;
 static AABB generateAABB(const Model& model);

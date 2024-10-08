@@ -10,6 +10,7 @@
 #include <iostream>
 #include <glm/mat4x4.hpp>
 
+#include "Frustrum.h"
 #include "Camera/Camera.h"
 
 
@@ -20,6 +21,11 @@
 
 #include "Vertex/vertex.h"
 #include "Shader/shader.h"
+
+namespace Korbo
+{
+    class Engine;
+}
 
 class MyPlane;
 struct Frustum;
@@ -38,6 +44,7 @@ public:
     glm::mat4x4 projection;
     glm::mat4x4 view;
     glm::vec3 lightPos;
+    Korbo::Engine* engine;
     Renderer(Window* window, Camera* mainCamera);
     Renderer(Window* window, GLbitfield mask);
     ~Renderer();
@@ -71,7 +78,7 @@ public:
                      std::vector<Texture> textures);
     void DrawLinesAABB(glm::mat4x4 model, std::vector<glm::vec3> vertices);
     void DrawFrustum(glm::mat4x4 viewProjectionMatrix, Frustum frustum);
-    void DrawPlane(MyPlane* plane);
+    void DrawPlane(Plane* plane);
     Shader* shaderBasicModel;
     Shader* shaderLines;
 
