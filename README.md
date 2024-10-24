@@ -48,4 +48,3 @@ Before you can use KorboEngine3D, you will need:
    ```bash
    git clone https://github.com/YourUsername/KorboEngine3D.git
    cd KorboEngine3D
-```
