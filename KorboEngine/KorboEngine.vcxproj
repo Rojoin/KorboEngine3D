@@ -51,6 +51,7 @@
     <ClCompile Include="..\src\Renderer\BoundingVolumes.cpp" />
     <ClCompile Include="..\src\Renderer\Frustrum.cpp" />
     <ClCompile Include="..\src\Renderer\renderer.cpp" />
+    <ClCompile Include="..\src\Renderer\ToonShaderMaterial.cpp" />
     <ClCompile Include="..\src\Renderer\TransReceiver.cpp" />
     <ClCompile Include="..\src\Shader\Material.cpp" />
     <ClCompile Include="..\src\Shader\shader.cpp" />
@@ -101,6 +102,7 @@
     <ClInclude Include="..\src\Renderer\BoundingVolumes.h" />
     <ClInclude Include="..\src\Renderer\Frustrum.h" />
     <ClInclude Include="..\src\Renderer\renderer.h" />
+    <ClInclude Include="..\src\Renderer\ToonShaderMaterial.h" />
     <ClInclude Include="..\src\Renderer\TransReceiver.h" />
     <ClInclude Include="..\src\Renderer\TransSource.h" />
     <ClInclude Include="..\src\Shader\Material.h" />

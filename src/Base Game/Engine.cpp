@@ -111,6 +111,9 @@ void Engine::gameLoop()
         renderer->view = camera->getViewMatrix();
 
         interface.ShowTransformEditor(root);
+        renderer->material->RenderImGui(renderer->isToonShaderActive);
+        renderer->globalLight->ImGuiDirLight();
+        
 
         ImGui::Render();
         update();

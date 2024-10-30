@@ -11,6 +11,7 @@
 #include <glm/mat4x4.hpp>
 
 #include "Frustrum.h"
+#include "ToonShaderMaterial.h"
 #include "Camera/Camera.h"
 
 
@@ -36,6 +37,8 @@ using namespace std;
 class EXPORT Renderer
 {
 public:
+    ToonShaderMaterial* material;
+    bool isToonShaderActive;
     float ambientStrengh;
     unsigned textureDefault;
     DirectionLight* globalLight;
@@ -88,6 +91,7 @@ private:
     Shader* shaderShape;
     Shader* shaderSprite;
     Shader* shaderLightning;
+    Shader* shaderToon;
     glm::mat4x4 model;
     Camera* camera;
 };

@@ -37,7 +37,15 @@ void Model::Draw()
     tranform->UpdateMatrix();
     for (int i = 0; i < meshes.size(); ++i)
     {
-        renderer->DrawModel3D(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices, meshes[i].textures);
+        if (renderer->isToonShaderActive)
+        {
+            renderer->DrawToonModel(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices,
+                                    meshes[i].textures);
+        }
+        else
+        {
+            renderer->DrawModel3D(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices, meshes[i].textures);
+        }
     }
     if (!tranform->childs.empty())
     {
@@ -85,7 +93,15 @@ bool Model::DrawWithFrustum(Frustum frustum, bool shouldBeDrawn)
     {
         for (int i = 0; i < meshes.size(); ++i)
         {
-            renderer->DrawModel3D(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices, meshes[i].textures);
+            if (renderer->isToonShaderActive)
+            {
+                renderer->DrawToonModel(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices,
+                                        meshes[i].textures);
+            }
+            else
+            {
+                renderer->DrawModel3D(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices, meshes[i].textures);
+            }
         }
         //Draw();
         return true;
@@ -97,7 +113,7 @@ bool Model::DrawWithBSP(std::vector<Plane>& bspPlanes, std::vector<bool>& camera
                         bool shouldBeDrawn)
 {
     tranform->UpdateMatrix();
-    
+
     for (int i = 0; i < bspPlanes.size(); ++i)
     {
         if (bspPlanes[i].getSide(tranform->globalPosition) != cameraPlanes[i])
@@ -125,7 +141,15 @@ bool Model::DrawWithBSP(std::vector<Plane>& bspPlanes, std::vector<bool>& camera
     {
         for (int i = 0; i < meshes.size(); ++i)
         {
-            renderer->DrawModel3D(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices, meshes[i].textures);
+            if (renderer->isToonShaderActive)
+            {
+                renderer->DrawToonModel(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices,
+                                        meshes[i].textures);
+            }
+            else
+            {
+                renderer->DrawModel3D(this->tranform->modelWorld, meshes[i].VAO, meshes[i].indices, meshes[i].textures);
+            }
         }
         //Draw();
         return true;

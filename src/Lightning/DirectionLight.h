@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <glm/vec3.hpp>
 
+#include "imgui/imgui.h"
+
 struct DirectionLight
 {
     glm::vec3 direction;
@@ -29,5 +31,17 @@ struct DirectionLight
         ambient = amb;
         diffuse = dif;
         specular = spec;
+    }
+    void ImGuiDirLight()
+    {
+        // Create collapsible section for this material
+        if (ImGui::CollapsingHeader("Global Lighting"))
+        {
+            ImGui::DragFloat3("Direction", &direction[0]);
+            ImGui::ColorEdit3("Ambient", &ambient[0]);
+            ImGui::ColorEdit3("Diffuse", &diffuse[0]);
+            ImGui::ColorEdit3("Specular", &specular[0]);
+   
+        }
     }
 };

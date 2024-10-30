@@ -8,14 +8,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <array>
 #include <format>
-#include <format>
 
 #include "Frustrum.h"
 #include "Camera/Camera.h"
-#include "Mesh/BasicMesh.h"
-#include "Mesh/BasicMesh.h"
-#include "Mesh/BasicMesh.h"
-#include "Mesh/BasicMesh.h"
 #include "Mesh/BasicMesh.h"
 #include "Planes/Plane.h"
 #include "Shader/Material.h"
@@ -51,6 +46,7 @@ Renderer::Renderer(Window* window, Camera* camera)
     shaderLightning = new Shader("../res/shaders/LightningShader.shader");
     shaderBasicModel = new Shader("../res/shaders/ModelLoading.shader");
     shaderLines = new Shader("../res/shaders/LinesShader.shader");
+    shaderToon = new Shader("../res/shaders/Toon.glsl");
     createTextureBinder(textureDefault, "../res/images/DefaultSprite.png");
 
     glEnable(GL_DEPTH_TEST);
@@ -65,6 +61,7 @@ Renderer::Renderer(Window* window, Camera* camera)
     glEnable(GL_ALPHA_TEST);
     glAlphaFunc(GL_GREATER, 0.1f);
 
+    material = new ToonShaderMaterial();
     shaderShape->bind();
     shaderSprite->bind();
     shaderLightning->bind();
@@ -77,6 +74,7 @@ Renderer::Renderer(Window* window, Camera* camera)
 Renderer::~Renderer()
 {
     cout << "Renderer Deleted" << endl;
+    delete material;
     delete globalLight;
     delete pointLight;
     delete flashLight;
@@ -85,6 +83,7 @@ Renderer::~Renderer()
     delete shaderSprite;
     delete shaderLightning;
     delete shaderBasicModel;
+    delete shaderToon;
 }
 
 void Renderer::DeleteObjects(unsigned& VAO, unsigned& VBO, unsigned& EBO)
@@ -484,16 +483,13 @@ void Renderer::DrawToonModel( glm::mat4x4 model, unsigned VAO, std::vector<unsig
 {
     unsigned int diffuseNr = 1;
     unsigned int specularNr = 1;
-    unsigned int normalsNr = 1;
-    unsigned int heightNr = 1;
     unsigned int baseColorNr = 1;
-    unsigned int metalnessNr = 1;
-    unsigned int roughnessNR = 1;
 
-    shaderBasicModel->bind();
-    shaderBasicModel->SetMat4("model", model);
-    shaderBasicModel->SetMat4("view", view);
-    shaderBasicModel->SetMat4("projection", projection);
+
+    shaderToon->bind();
+    shaderToon->SetMat4("model", model);
+    shaderToon->SetMat4("view", view);
+    shaderToon->SetMat4("projection", projection);
 
     for (unsigned int i = 0; i < textures.size(); i++)
     {
@@ -507,33 +503,28 @@ void Renderer::DrawToonModel( glm::mat4x4 model, unsigned VAO, std::vector<unsig
             number = std::to_string(specularNr++);
         else if (name == "texture_baseColor")
             number = std::to_string(baseColorNr++);
-        else if (name == "texture_normals")
-            number = std::to_string(normalsNr++);
-        else if (name == "texture_height")
-            number = std::to_string(heightNr++);
-        else if (name == "texture_metalness")
-            number = std::to_string(metalnessNr++);
-        else if (name == "texture_roughness")
-            number = std::to_string(roughnessNR++);
-
-        shaderBasicModel->SetInt(("material." + name + number).c_str(), i);
+        
+        shaderToon->SetInt(("material." + name + number).c_str(), i);
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
     }
-    shaderBasicModel->SetVec3("viewPos", camera->Position);
+    shaderToon->SetVec3("viewPos", camera->Position);
 
     // directional light
-    shaderBasicModel->SetDirectionalLight("dirLight", globalLight);
+    shaderToon->SetDirectionalLight("dirLight", globalLight);
 
     flashLight->setDirAndPos(camera->Front, camera->getCameraPosition());
 
 
-
+    shaderToon->SetVec4("_Color",         material->materialColor);
+    shaderToon->SetVec4("_AmbientColor",  material->ambientColor);
+    shaderToon->SetVec4("_SpecularColor", material->specularColor);
+    shaderToon->SetVec4("_RimColor",      material->rimColor);
+    shaderToon->SetFloat("_Glossiness",   material->glossiness);
+    shaderToon->SetFloat("_RimAmount",    material->rimAmount);
+    shaderToon->SetFloat("_RimThreshold", material->rimThreshold);
     // material properties
 
-    // shader->SetMaterial("material", RUBY);
 
-    shaderBasicModel->SetFloat("material.shininess", BRONZE.shininess);
-    shaderBasicModel->SetFloat("material.metalness", BRONZE.shininess);
     // draw mesh
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
