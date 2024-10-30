@@ -74,8 +74,8 @@ public:
     void DrawEntity3D(unsigned VAO, int sizeIndices, ::Vec4 color, glm::mat4x4 model, Material material,
                       unsigned& texture, bool
                       isUsingTexture);
-    void DrawModel3D( glm::mat4x4 model, unsigned VAO, std::vector<unsigned int> indices,
-                     std::vector<Texture> textures);
+    void DrawModel3D( glm::mat4x4 model, unsigned VAO, std::vector<unsigned int> indices,std::vector<Texture> textures);
+    void DrawToonModel( glm::mat4x4 model, unsigned VAO, std::vector<unsigned int> indices,std::vector<Texture> textures);
     void DrawLinesAABB(glm::mat4x4 model, std::vector<glm::vec3> vertices);
     void DrawFrustum(glm::mat4x4 viewProjectionMatrix, Frustum frustum);
     void DrawPlane(Plane* plane);

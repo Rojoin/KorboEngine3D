@@ -479,6 +479,67 @@ void Renderer::DrawModel3D( glm::mat4x4 model, unsigned VAO, std::vector<unsigne
     glBindVertexArray(0);
     glActiveTexture(GL_TEXTURE0);
 }
+void Renderer::DrawToonModel( glm::mat4x4 model, unsigned VAO, std::vector<unsigned int> indices,
+                           std::vector<Texture> textures)
+{
+    unsigned int diffuseNr = 1;
+    unsigned int specularNr = 1;
+    unsigned int normalsNr = 1;
+    unsigned int heightNr = 1;
+    unsigned int baseColorNr = 1;
+    unsigned int metalnessNr = 1;
+    unsigned int roughnessNR = 1;
+
+    shaderBasicModel->bind();
+    shaderBasicModel->SetMat4("model", model);
+    shaderBasicModel->SetMat4("view", view);
+    shaderBasicModel->SetMat4("projection", projection);
+
+    for (unsigned int i = 0; i < textures.size(); i++)
+    {
+        glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
+        // retrieve texture number (the N in diffuse_textureN)
+        string number;
+        string name = textures[i].type;
+        if (name == "texture_diffuse")
+            number = std::to_string(diffuseNr++);
+        else if (name == "texture_specular")
+            number = std::to_string(specularNr++);
+        else if (name == "texture_baseColor")
+            number = std::to_string(baseColorNr++);
+        else if (name == "texture_normals")
+            number = std::to_string(normalsNr++);
+        else if (name == "texture_height")
+            number = std::to_string(heightNr++);
+        else if (name == "texture_metalness")
+            number = std::to_string(metalnessNr++);
+        else if (name == "texture_roughness")
+            number = std::to_string(roughnessNR++);
+
+        shaderBasicModel->SetInt(("material." + name + number).c_str(), i);
+        glBindTexture(GL_TEXTURE_2D, textures[i].id);
+    }
+    shaderBasicModel->SetVec3("viewPos", camera->Position);
+
+    // directional light
+    shaderBasicModel->SetDirectionalLight("dirLight", globalLight);
+
+    flashLight->setDirAndPos(camera->Front, camera->getCameraPosition());
+
+
+
+    // material properties
+
+    // shader->SetMaterial("material", RUBY);
+
+    shaderBasicModel->SetFloat("material.shininess", BRONZE.shininess);
+    shaderBasicModel->SetFloat("material.metalness", BRONZE.shininess);
+    // draw mesh
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+    glActiveTexture(GL_TEXTURE0);
+}
 void Renderer::DrawLinesAABB( glm::mat4x4 model,  std::vector<glm::vec3> vertices)
 {
     const GLuint indices[] = {

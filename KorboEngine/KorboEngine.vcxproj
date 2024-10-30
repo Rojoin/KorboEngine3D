@@ -121,6 +121,8 @@
     <Compile Include="..\res\shaders\LinesShader.shader" />
     <Compile Include="..\res\shaders\ModelLoading.shader" />
     <Compile Include="..\res\shaders\TextureShader.shader" />
+    <Compile Include="..\res\shaders\Toon.glsl" />
+    <Compile Include="..\res\shaders\Toon.shader" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

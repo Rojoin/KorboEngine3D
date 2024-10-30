@@ -59,7 +59,7 @@ void Importer3D::processNode(vector<BasicMesh>& meshes, aiNode* node, const aiSc
         modelToUse = new Model(model->GetRenderer(), model->tranform, pos, rot, sca, shouldBeTurnOffByBSP);
         modelToUse->tranform->name = node->mName.C_Str();
 
-        //Todo: Make bsp to be obtainable for name
+   
         if (modelToUse->tranform->name.find("bspPlane") != string::npos)
         {
             Vec3 rotation;
@@ -74,7 +74,7 @@ void Importer3D::processNode(vector<BasicMesh>& meshes, aiNode* node, const aiSc
 
         modelToUse->meshes.push_back(processMesh(mesh, scene, shouldInvertUVs));
     }
-    // then do the same for each of its children
+
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
         processNode(modelToUse->meshes, node->mChildren[i], scene, shouldInvertUVs, modelToUse, shouldBeTurnOffByBSP);
