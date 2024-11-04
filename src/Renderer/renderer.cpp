@@ -522,6 +522,9 @@ void Renderer::DrawToonModel( glm::mat4x4 model, unsigned VAO, std::vector<unsig
     shaderToon->SetFloat("_Glossiness",   material->glossiness);
     shaderToon->SetFloat("_RimAmount",    material->rimAmount);
     shaderToon->SetFloat("_RimThreshold", material->rimThreshold);
+    shaderToon->SetFloat("_LightIntensity", material->lightIntensity);
+    shaderToon->SetFloat("fadeStartDistance", material->fadeStartDistance);
+    shaderToon->SetFloat("fadeEndDistance", material->fadeEndDistance);
     // material properties
 
 

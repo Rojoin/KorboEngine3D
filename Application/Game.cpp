@@ -34,15 +34,15 @@ void Game::init()
     cartel = new Sprite(getRenderer(), {1, 1, 1, 1}, {250, 0, 0}, {100, 100, 0}, playerPath,GL_NEAREST);
     obj2 = new Sprite(getRenderer(), {1, 1, 1, 1}, {-250, 0, 0}, {100, 100, 0}, playerPath,GL_NEAREST);
     obj3 = new Sprite(getRenderer(), {1, 1, 1, 1}, {-250, 0, -250}, {100, 100, 0}, playerPath,GL_NEAREST);
-   // obj4 = new Sprite(getRenderer(), {1, 1, 1, 1}, {0, 0, 250}, {100, 100, 0}, playerPath,GL_NEAREST);
-     //obj2->setMaterial(DEFAULT_MATERIAL);
+    // obj4 = new Sprite(getRenderer(), {1, 1, 1, 1}, {0, 0, 250}, {100, 100, 0}, playerPath,GL_NEAREST);
+    //obj2->setMaterial(DEFAULT_MATERIAL);
     Animator.insert_or_assign("Right", animationPlayerRight);
     Animator.insert_or_assign("Idle", animationPlayerIdle);
     Animator.insert_or_assign("cartel", animationCartel);
     cartel->ChangeAnimation(Animator["cartel"]);
     obj2->ChangeAnimation(Animator["cartel"]);
     obj3->ChangeAnimation(Animator["cartel"]);
-   // obj4->ChangeAnimation(Animator["cartel"]);
+    // obj4->ChangeAnimation(Animator["cartel"]);
     player1->ChangeAnimation(Animator["Idle"]);
     cartel->SetRotationY(-90);
     obj2->SetRotationY(-90);
@@ -60,19 +60,15 @@ void Game::init()
     house->setNewTextures("../res/models", "T_Doors_BC.png", false, "texture_baseColor");
     backPack->setNewTextures("../res/models", "Militar.jpg", false, "texture_baseColor");
 
-    resModelParcialbackgroundJpg = "../res/models/bspPlanesNew4.fbx";
-    obj4 = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {0, 0, 0.0f}, {0, 0, 0},{100, 100, 100},false,nullptr,false);
-    obj4->setNewTextures("../res/models", "T_Dummy_BC.png", false, "texture_baseColor");
-    
-    glm::vec3 plane1 = cartel->tranform->globalPosition;
-    glm::vec3 plane3 = obj2->tranform->globalPosition;
-    glm::vec3 plane2 = obj3->tranform->globalPosition;
-    glm::vec3 plane4 = obj4->tranform->globalPosition;
+    resModelParcialbackgroundJpg = "../res/models/Yukinko_Death.fbx";
+    obj4 = new Model(resModelParcialbackgroundJpg.c_str(), getRenderer(), {50, 0, -0.0f}, {0, 90, 0},
+                         {1, 1, 1}, false, root);
 
-      // addPlaneToBSP(plane1,glm::vec3(1,0,0));
-      // addPlaneToBSP(plane3,glm::vec3(-1,0,0));
-      // addPlaneToBSP(plane2,glm::vec3(0,0,-1));
-      // addPlaneToBSP(plane4,glm::vec3(0,0,1));
+
+    // addPlaneToBSP(plane1,glm::vec3(1,0,0));
+    // addPlaneToBSP(plane3,glm::vec3(-1,0,0));
+    // addPlaneToBSP(plane2,glm::vec3(0,0,-1));
+    // addPlaneToBSP(plane4,glm::vec3(0,0,1));
 }
 
 
@@ -176,15 +172,15 @@ void Game::update()
     cartel->UpdateAnimation();
     obj2->UpdateAnimation();
     obj3->UpdateAnimation();
- //   obj4->UpdateAnimation();
+    //   obj4->UpdateAnimation();
     cartel->Draw();
-   // player1->Draw();
-    
-     obj1->Draw();
-     obj2->Draw();
-     obj3->Draw();
-     obj4->Draw();
-    
+    // player1->Draw();
+
+    obj1->Draw();
+    obj2->Draw();
+    obj3->Draw();
+    obj4->Draw();
+
     //  dummy->Draw();
     // house->Draw();
     //backPack->Draw();

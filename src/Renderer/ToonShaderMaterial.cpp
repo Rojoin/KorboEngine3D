@@ -24,5 +24,8 @@ void ToonShaderMaterial::RenderImGui(bool& isActive)
         ImGui::SliderFloat("Glossiness", &glossiness, 0.0f, 1.0f);
         ImGui::SliderFloat("Rim Amount", &rimAmount, 0.0f, 1.0f);
         ImGui::SliderFloat("Rim Threshold", &rimThreshold, 0.0f, 1.0f);
+        ImGui::SliderFloat("Light Intensity", &lightIntensity, 0.0f, 10.0f);
+        ImGui::SliderFloat("FadeStart", &fadeStartDistance, 0.0f, 1000.0f);
+        ImGui::SliderFloat("FadeEnd", &fadeEndDistance, 0.0f, 1000.0f);
     }
 }

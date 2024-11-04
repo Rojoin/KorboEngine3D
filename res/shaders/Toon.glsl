@@ -38,18 +38,29 @@ uniform vec4 _RimColor;
 uniform float _Glossiness;
 uniform float _RimAmount;
 uniform float _RimThreshold;
+uniform float _LightIntensity;
 
 uniform sampler2D texture_baseColor1;
 uniform vec3 viewPos;
 
+uniform float fadeStartDistance;
+uniform float fadeEndDistance;
+
 struct DirLight {
     vec3 direction;
-    vec3 color;
-    float intensity;
+    vec3 ambient;
 };
 uniform DirLight dirLight;
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
+
+float ditherMatrix[16] = float[16](
+0.0, 0.5, 0.125, 0.625,
+0.75, 0.25, 0.875, 0.375,
+0.1875, 0.6875, 0.0625, 0.5625,
+0.9375, 0.4375, 0.8125, 0.3125
+);
+
 
 void main()
 {
@@ -66,8 +77,28 @@ void main()
     vec4 ambient = _AmbientColor;
     vec4 result = ambient + vec4(lightColor, 1.0);
 
-    // Final color
-    FragColor = result * _Color * texColor;
+    vec4 finalColor = result * texColor;
+
+    float distanceToView = length(viewPos- FragPos);
+    float fadeFactor = smoothstep(fadeEndDistance, fadeStartDistance, distanceToView);
+
+    if(distanceToView < fadeEndDistance)
+    {
+        discard;
+    }
+    //  finalColor.a *= fadeFactor;
+    ivec2 screenPos = ivec2(gl_FragCoord.xy) %4;
+    int ditherIndex = screenPos.y * 4 + screenPos.x;
+    float threshold = ditherMatrix[ditherIndex];
+
+
+    if (fadeFactor < threshold && finalColor.a != 0)
+    {
+        finalColor.a = threshold* fadeFactor;
+discard;
+    }
+
+    FragColor = finalColor;
 }
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
@@ -76,16 +107,19 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 
     // Diffuse calculation
     float diff = max(dot(normal, lightDir), 0.0);
+    float quantizedDiff= floor(diff * 4.0)/4.0;
 
     // Specular calculation
     vec3 halfwayDir = normalize(lightDir + viewDir);
     float spec = pow(max(dot(normal, halfwayDir), 0.0), _Glossiness * _Glossiness);
+    //TODO: Add 3.0 as a Variable
+    float quantizedSpec = floor(spec * 3.0)/3.0;
 
     // Rim lighting
     float rim = max(0.0, 1.0 - dot(viewDir, normal));
     rim = smoothstep(_RimAmount - 0.01, _RimAmount + 0.01, rim) * _RimThreshold;
 
-    vec3 color = light.color * (diff + spec) * light.intensity;
+    vec3 color = light.ambient * (quantizedDiff + quantizedSpec) * _LightIntensity;
     color += rim * vec3(_RimColor);
 
     return color;
