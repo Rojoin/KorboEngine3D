@@ -12,8 +12,8 @@ public:
     float rimAmount = 0.2f;
     float rimThreshold = 0.2f;
     float lightIntensity = 0.5f;
-    float fadeEndDistance = 0.2f;
-    float fadeStartDistance = 1.0f;
+    float fadeEndDistance = 50.0f;
+    float fadeStartDistance = 184.0f;
 
     ToonShaderMaterial();
     ~ToonShaderMaterial();
